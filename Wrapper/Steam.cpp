@@ -1,3 +1,19 @@
+//	BlitzSteam - Steam wrapper for Blitz.
+//	Copyright (C) 2015 Project Kube (Michael Fabian Dirks)
+//
+//	This program is free software: you can redistribute it and/or modify
+//	it under the terms of the GNU Lesser General Public License as
+//	published by the Free Software Foundation, either version 3 of the 
+//	License, or (at your option) any later version.
+//
+//	This program is distributed in the hope that it will be useful,
+//	but WITHOUT ANY WARRANTY; without even the implied warranty of
+//	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+//	GNU General Public License for more details.
+//
+//	You should have received a copy of the GNU Lesser General Public License
+//	along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
 #include "dllmain.h"
 
 DLL_EXPORT uint32_t BlitzSteam_Init() {
@@ -29,32 +45,6 @@ DLL_EXPORT void BlitzSteam_WriteMiniDump(uint32_t uStructuredExceptionCode, void
 	SteamAPI_WriteMiniDump(uStructuredExceptionCode, pvExceptionInfo, uBuildID);
 }
 #pragma comment(linker, "/EXPORT:BlitzSteam_WriteMiniDump=_BlitzSteam_WriteMiniDump@12")
-
-// Callbacks & Hooks
-DLL_EXPORT void BlitzSteam_RunCallbacks() {
-	SteamAPI_RunCallbacks();
-}
-#pragma comment(linker, "/EXPORT:BlitzSteam_RunCallbacks=_BlitzSteam_RunCallbacks@0")
-
-DLL_EXPORT void BlitzSteam_RegisterCallback(class CCallbackBase *pCallback, int iCallback) {
-	SteamAPI_RegisterCallback(pCallback, iCallback);
-}
-#pragma comment(linker, "/EXPORT:BlitzSteam_RegisterCallback=_BlitzSteam_RegisterCallback@8")
-
-DLL_EXPORT void BlitzSteam_UnregisterCallback(class CCallbackBase *pCallback) {
-	SteamAPI_UnregisterCallback(pCallback);
-}
-#pragma comment(linker, "/EXPORT:BlitzSteam_UnregisterCallback=_BlitzSteam_UnregisterCallback@4")
-
-DLL_EXPORT void BlitzSteam_RegisterCallResult(class CCallbackBase *pCallback, uint32_t hAPICall_L, uint32_t hAPICall_R) {
-	SteamAPI_RegisterCallResult(pCallback, ((uint64_t)hAPICall_L << 32) + (uint64_t)hAPICall_R);
-}
-#pragma comment(linker, "/EXPORT:BlitzSteam_RegisterCallResult=_BlitzSteam_RegisterCallResult@12")
-
-DLL_EXPORT void BlitzSteam_UnregisterCallResult(class CCallbackBase *pCallback, uint32_t hAPICall_L, uint32_t hAPICall_R) {
-	SteamAPI_UnregisterCallResult(pCallback, ((uint64_t)hAPICall_L << 32) + (uint64_t)hAPICall_R);
-}
-#pragma comment(linker, "/EXPORT:BlitzSteam_UnregisterCallResult=_BlitzSteam_UnregisterCallResult@12")
 
 // Interface Pointers, configured by SteamAPI_Init().
 DLL_EXPORT ISteamClient* BlitzSteamClient() {
@@ -161,3 +151,29 @@ DLL_EXPORT ISteamVideo* BlitzSteamVideo() {
 	return SteamVideo();
 }
 #pragma comment(linker, "/EXPORT:BlitzSteamVideo=_BlitzSteamVideo@0")
+
+// Callbacks & Hooks
+DLL_EXPORT void BlitzSteam_RunCallbacks() {
+	SteamAPI_RunCallbacks();
+}
+#pragma comment(linker, "/EXPORT:BlitzSteam_RunCallbacks=_BlitzSteam_RunCallbacks@0")
+
+DLL_EXPORT void BlitzSteam_RegisterCallback(class CCallbackBase *pCallback, int iCallback) {
+	SteamAPI_RegisterCallback(pCallback, iCallback);
+}
+#pragma comment(linker, "/EXPORT:BlitzSteam_RegisterCallback=_BlitzSteam_RegisterCallback@8")
+
+DLL_EXPORT void BlitzSteam_UnregisterCallback(class CCallbackBase *pCallback) {
+	SteamAPI_UnregisterCallback(pCallback);
+}
+#pragma comment(linker, "/EXPORT:BlitzSteam_UnregisterCallback=_BlitzSteam_UnregisterCallback@4")
+
+DLL_EXPORT void BlitzSteam_RegisterCallResult(class CCallbackBase *pCallback, uint32_t hAPICall_L, uint32_t hAPICall_R) {
+	SteamAPI_RegisterCallResult(pCallback, ((uint64_t)hAPICall_L << 32) + (uint64_t)hAPICall_R);
+}
+#pragma comment(linker, "/EXPORT:BlitzSteam_RegisterCallResult=_BlitzSteam_RegisterCallResult@12")
+
+DLL_EXPORT void BlitzSteam_UnregisterCallResult(class CCallbackBase *pCallback, uint32_t hAPICall_L, uint32_t hAPICall_R) {
+	SteamAPI_UnregisterCallResult(pCallback, ((uint64_t)hAPICall_L << 32) + (uint64_t)hAPICall_R);
+}
+#pragma comment(linker, "/EXPORT:BlitzSteam_UnregisterCallResult=_BlitzSteam_UnregisterCallResult@12")

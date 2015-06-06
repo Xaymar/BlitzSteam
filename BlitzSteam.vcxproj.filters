@@ -1,9 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="Blitz Files">
-      <UniqueIdentifier>{3072c53c-2be5-4712-b853-1bc1438cdc6e}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files">
       <UniqueIdentifier>{5016ba8f-d781-40f4-9904-56cc2ce9a588}</UniqueIdentifier>
       <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
@@ -13,6 +10,12 @@
     </Filter>
     <Filter Include="Source Files\Libraries">
       <UniqueIdentifier>{1b813d7f-3558-4f10-b237-1bcf7d5f0b60}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SteamworksSDK">
+      <UniqueIdentifier>{14616756-e67f-4b1c-ac90-776c00a0271d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Blitz Files">
+      <UniqueIdentifier>{3072c53c-2be5-4712-b853-1bc1438cdc6e}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -53,10 +56,16 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="BlitzSteam.bb">
+    <None Include="SteamworksSDK\redistributable_bin\steam_api.dll">
+      <Filter>SteamworksSDK</Filter>
+    </None>
+    <None Include="Blitz\BlitzSteam.bb">
       <Filter>Blitz Files</Filter>
     </None>
-    <None Include="BlitzSteam.decls">
+    <None Include="Blitz\BlitzSteam.decls">
+      <Filter>Blitz Files</Filter>
+    </None>
+    <None Include="Blitz\BlitzSteamUtility.bb">
       <Filter>Blitz Files</Filter>
     </None>
   </ItemGroup>

@@ -151,11 +151,15 @@
     <ClInclude Include="Libraries\BlitzPointer.h" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="BlitzSteam.bb">
+    <None Include="Blitz\BlitzSteam.bb">
       <Link>BlitzSteam.bb</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="BlitzSteam.decls">
+    <None Include="Blitz\BlitzSteamUtility.bb">
+      <Link>BlitzSteamUtility.bb</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Blitz\BlitzSteam.decls">
       <Link>BlitzSteam.decls</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
