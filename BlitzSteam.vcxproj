@@ -138,6 +138,8 @@
   <ItemGroup>
     <ClCompile Include="dllmain.cpp" />
     <ClCompile Include="Helper.cpp" />
+    <ClCompile Include="Helpers\Double.cpp" />
+    <ClCompile Include="Helpers\Int64.cpp" />
     <ClCompile Include="Libraries\BlitzPointer.cpp" />
     <ClCompile Include="Wrapper\Steam.cpp" />
     <ClCompile Include="Wrapper\SteamAppList.cpp" />

@@ -17,6 +17,9 @@
     <Filter Include="Blitz Files">
       <UniqueIdentifier>{3072c53c-2be5-4712-b853-1bc1438cdc6e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Helpers">
+      <UniqueIdentifier>{a6fc08f6-97d9-4a53-a803-34b985d9ae7c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dllmain.cpp">
@@ -34,9 +37,6 @@
     <ClCompile Include="Libraries\BlitzPointer.cpp">
       <Filter>Source Files\Libraries</Filter>
     </ClCompile>
-    <ClCompile Include="Helper.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Wrapper\SteamAppList.cpp">
       <Filter>Source Files\Wrapper</Filter>
     </ClCompile>
@@ -45,6 +45,15 @@
     </ClCompile>
     <ClCompile Include="Wrapper\SteamController.cpp">
       <Filter>Source Files\Wrapper</Filter>
+    </ClCompile>
+    <ClCompile Include="Helpers\Int64.cpp">
+      <Filter>Source Files\Helpers</Filter>
+    </ClCompile>
+    <ClCompile Include="Helper.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Helpers\Double.cpp">
+      <Filter>Source Files\Helpers</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

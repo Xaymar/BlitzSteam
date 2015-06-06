@@ -456,16 +456,53 @@ Function BSUApps_GetAppInstallDir$(nAppID%, BankInstallDirStorage=0)
 	If BSUInitialized Then
 		If BankInstallDirStorage = 0 Then
 			; Create temporary storage.
+			BankInstallDir = CreateBank(BankInstallDirSz)
 		Else
 			; Reuse existing storage.
 			BankInstallDir = BankInstallDirStorage
-			BankInstallDirSz = 
+			BankInstallDirSz = BankSize(BankInstallDir)
 		EndIf
+		
+		; Request install dir from Steam.
+		Local InstallDirLen% = BlitzSteamApps_GetAppInstallDir(BSUApps, nAppID, BankInstallDir, BankInstallDirSz)
+		
+		; Read returned value.
+		InstallDir = BSU_PeekCString(BankInstallDir, 0)
+		
+		; Free temporary storage.
+		If BankInstallDirStorage = 0 Then FreeBank BankInstallDir
 	EndIf
 	
 	Return InstallDir$
 End Function
 
+Function BSUApps_GetDLCDownloadProgress#(nAppID%)
+	Local Progress# = 1.0
+	If BSUInitialized
+		; Create temporary storage.
+		Local i64_Downloaded, i64_Total
+		i64_Downloaded	= BlitzSteamInt64_New()
+		i64_Total		= BlitzSteamInt64_New()
+		
+		; Request download progress from Steam.
+		If BlitzSteamApps_GetDlcDownloadProgressEx(BSUApps, nAppID, i64_Downloaded, i64_Total) Then
+			Local dDownloaded, dTotal
+			dDownloaded = BlitzSteamInt64_ToDouble(i64_Downloaded)
+			dTotal = BlitzSteamInt64_ToDouble(i64_Total)
+			
+			BlitzSteamDouble_DivP dDownloaded, dTotal
+			Progress = BlitzSteamDouble_ToFloat(dDownloaded)
+			
+			BlitzSteamDouble_Destroy dDownloaded
+			BlitzSteamDouble_Destroy dTotal
+		EndIf
+		
+		; Free temporary storage.
+		BlitzSteamInt64_Destroy i64_Downloaded
+		BlitzSteamInt64_Destroy i64_Total
+	EndIf
+	Return Progress
+End Function
+
 ;~IDEal Editor Parameters:
-;~F#18#1E#24#35#4A#63#82#A0#DD#F9#116#146#178
 ;~C#Blitz3D

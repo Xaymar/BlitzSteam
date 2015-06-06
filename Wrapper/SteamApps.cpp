@@ -126,10 +126,10 @@ DLL_EXPORT const char* BlitzSteamApps_GetLaunchQueryParam(ISteamApps* lpSteamApp
 }
 #pragma comment(linker, "/EXPORT:BlitzSteamApps_GetLaunchQueryParam=_BlitzSteamApps_GetLaunchQueryParam@8")
 
-DLL_EXPORT uint32_t BlitzSteamApps_GetDlcDownloadProgress(ISteamApps* lpSteamApps, AppId_t nAppID, uint64_t* pOutputBank) {
-	return lpSteamApps->GetDlcDownloadProgress(nAppID, pOutputBank, pOutputBank + 1);
+DLL_EXPORT uint32_t BlitzSteamApps_GetDlcDownloadProgress(ISteamApps* lpSteamApps, AppId_t nAppID, uint64_t* punBytesDownloaded, uint64_t* punBytesTotal) {
+	return lpSteamApps->GetDlcDownloadProgress(nAppID, punBytesDownloaded, punBytesTotal);
 }
-#pragma comment(linker, "/EXPORT:BlitzSteamApps_GetDlcDownloadProgress=_BlitzSteamApps_GetDlcDownloadProgress@12")
+#pragma comment(linker, "/EXPORT:BlitzSteamApps_GetDlcDownloadProgress=_BlitzSteamApps_GetDlcDownloadProgress@16")
 
 DLL_EXPORT uint32_t BlitzSteamApps_GetAppBuildId(ISteamApps* lpSteamApps) {
 	return lpSteamApps->GetAppBuildId();

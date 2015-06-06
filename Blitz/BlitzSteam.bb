@@ -14,6 +14,113 @@
 ;	You should have received a copy of the GNU Lesser General Public License
 ;	along with this program.  If not, see <http:;www.gnu.org/licenses/>.
 
+; Steam -------------------------------------------------------------------------
+Const BLITZSTEAM_ENUM_CALLBACK_SteamAppListCallbacks					= 3900
+Const BLITZSTEAM_ENUM_CALLBACK_SteamAppsCallbacks						= 1000
+Const BLITZSTEAM_ENUM_CALLBACK_SteamBillingCallbacks					= 400
+Const BLITZSTEAM_ENUM_CALLBACK_SteamContentServerCallbacks				= 600
+Const BLITZSTEAM_ENUM_CALLBACK_SteamControllerCallbacks					= 2800
+Const BLITZSTEAM_ENUM_CALLBACK_SteamFriendsCallbacks					= 300
+Const BLITZSTEAM_ENUM_CALLBACK_SteamGameCoordinatorCallbacks			= 1700
+Const BLITZSTEAM_ENUM_CALLBACK_SteamGameServerCallbacks					= 200
+Const BLITZSTEAM_ENUM_CALLBACK_SteamGameServerItemsCallbacks			= 1500
+Const BLITZSTEAM_ENUM_CALLBACK_SteamGameServerStatsCallbacks			= 1800
+Const BLITZSTEAM_ENUM_CALLBACK_SteamGameStatsCallbacks					= 2000
+Const BLITZSTEAM_ENUM_CALLBACK_SteamHTMLSurfaceCallbacks				= 4500
+Const BLITZSTEAM_ENUM_CALLBACK_SteamMatchmakingCallbacks				= 500
+Const BLITZSTEAM_ENUM_CALLBACK_SteamMusicCallbacks						= 4000
+Const BLITZSTEAM_ENUM_CALLBACK_SteamMusicRemoteCallbacks				= 4100
+Const BLITZSTEAM_ENUM_CALLBACK_SteamNetworkingCallbacks					= 1200
+Const BLITZSTEAM_ENUM_CALLBACK_SteamReservedCallbacks					= 4400
+Const BLITZSTEAM_ENUM_CALLBACK_SteamScreenshotsCallbacks				= 2300
+Const BLITZSTEAM_ENUM_CALLBACK_SteamStreamLauncherCallbacks				= 2600
+Const BLITZSTEAM_ENUM_CALLBACK_SteamStreamClientCallbacks				= 3500
+Const BLITZSTEAM_ENUM_CALLBACK_SteamUserCallbacks						= 100
+Const BLITZSTEAM_ENUM_CALLBACK_SteamUserStatsCallbacks					= 1100
+Const BLITZSTEAM_ENUM_CALLBACK_SteamUtilsCallbacks						= 700
+Const BLITZSTEAM_ENUM_CALLBACK_Steam2AsyncCallbacks						= 1900
+Const BLITZSTEAM_ENUM_CALLBACK_ClientAudioCallbacks						= 2400
+Const BLITZSTEAM_ENUM_CALLBACK_ClientControllerCallbacks				= 2700
+Const BLITZSTEAM_ENUM_CALLBACK_ClientDepotBuilderCallbacks				= 1400
+Const BLITZSTEAM_ENUM_CALLBACK_ClientDeviceAuthCallbacks				= 3000
+Const BLITZSTEAM_ENUM_CALLBACK_ClientFriendsCallbacks					= 800
+Const BLITZSTEAM_ENUM_CALLBACK_ClientHTTPCallbacks						= 2100
+Const BLITZSTEAM_ENUM_CALLBACK_ClientInventoryCallbacks					= 4700
+Const BLITZSTEAM_ENUM_CALLBACK_ClientMusicCallbacks						= 3200
+Const BLITZSTEAM_ENUM_CALLBACK_ClientNetworkDeviceManagerCallbacks		= 3100
+Const BLITZSTEAM_ENUM_CALLBACK_ClientParentalSettingsCallbacks			= 2900
+Const BLITZSTEAM_ENUM_CALLBACK_ClientProductBuilderCallbacks			= 3600
+Const BLITZSTEAM_ENUM_CALLBACK_ClientRemoteStorageCallbacks				= 1300
+Const BLITZSTEAM_ENUM_CALLBACK_ClientRemoteClientManagerCallbacks		= 3300
+Const BLITZSTEAM_ENUM_CALLBACK_ClientRemoteControlManagerCallbacks		= 3800
+Const BLITZSTEAM_ENUM_CALLBACK_ClientReservedCallbacks					= 4300
+Const BLITZSTEAM_ENUM_CALLBACK_ClientScreenshotsCallbacks				= 2200
+Const BLITZSTEAM_ENUM_CALLBACK_ClientShortcutsCallbacks					= 3700
+Const BLITZSTEAM_ENUM_CALLBACK_ClientUGCCallbacks						= 3400
+Const BLITZSTEAM_ENUM_CALLBACK_ClientUnifiedMessagesCallbacks			= 2500
+Const BLITZSTEAM_ENUM_CALLBACK_ClientUserCallbacks						= 900
+Const BLITZSTEAM_ENUM_CALLBACK_ClientUtilsCallbacks						= 1600
+Const BLITZSTEAM_ENUM_CALLBACK_ClientVideoCallbacks						= 4600
+Const BLITZSTEAM_ENUM_CALLBACK_ClientVRCallbacks						= 4200
+
+; SteamAppList ------------------------------------------------------------------
+Const BLITZSTEAM_CALLBACK_APPINSTALLED								= BLITZSTEAM_ENUM_CALLBACK_SteamAppListCallbacks + 1
+Const BLITZSTEAM_CALLBACK_APPUNINSTALLED							= BLITZSTEAM_ENUM_CALLBACK_SteamAppListCallbacks + 2
+
+; SteamApps ---------------------------------------------------------------------
+Const BLITZSTEAM_CALLBACK_DLCINSTALLED								= BLITZSTEAM_ENUM_CALLBACK_SteamAppsCallbacks + 5
+Const BLITZSTEAM_CALLBACK_APPPROOFOFPURCHASEKEYRESPONSE				= BLITZSTEAM_ENUM_CALLBACK_SteamAppsCallbacks + 13
+Const BLITZSTEAM_CALLBACK_NEWLAUNCHQUERYPARAMETERS					= BLITZSTEAM_ENUM_CALLBACK_SteamAppsCallbacks + 14
+; The following things are PS3 only:
+;   ERegisterActivationCodeResult
+;   RegisterActivationCodeResponse_t
+
+; SteamClient -------------------------------------------------------------------
+Const BLITZSTEAM_EACCOUNTYPE_INVALID								= 0
+Const BLITZSTEAM_EACCOUNTYPE_INDIVIDUAL								= 1
+Const BLITZSTEAM_EACCOUNTYPE_MULTISEAT								= 2
+Const BLITZSTEAM_EACCOUNTYPE_GAMESERVER								= 3
+Const BLITZSTEAM_EACCOUNTYPE_ANONGAMESERVER							= 4
+Const BLITZSTEAM_EACCOUNTYPE_PENDING								= 5
+Const BLITZSTEAM_EACCOUNTYPE_CONTENTSERVER							= 6
+Const BLITZSTEAM_EACCOUNTYPE_CLAN									= 7
+Const BLITZSTEAM_EACCOUNTYPE_CHAT									= 8
+;Const BLITZSTEAM_EACCOUNTYPE_CONSOLEUSER							= 9
+Const BLITZSTEAM_EACCOUNTYPE_ANONUSER								= 10
+
+; SteamController ---------------------------------------------------------------
+Const BLITZSTEAM_RIGHT_TRIGGER_MASK									= $00000001
+Const BLITZSTEAM_LEFT_TRIGGER_MASK									= $00000002
+Const BLITZSTEAM_RIGHT_BUMPER_MASK									= $00000004
+Const BLITZSTEAM_LEFT_BUMPER_MASK									= $00000008
+Const BLITZSTEAM_BUTTON_0_MASK										= $00000010
+Const BLITZSTEAM_BUTTON_1_MASK										= $00000020
+Const BLITZSTEAM_BUTTON_2_MASK										= $00000040
+Const BLITZSTEAM_BUTTON_3_MASK										= $00000080
+Const BLITZSTEAM_TOUCH_0_MASK										= $00000100
+Const BLITZSTEAM_TOUCH_1_MASK										= $00000200
+Const BLITZSTEAM_TOUCH_2_MASK										= $00000400
+Const BLITZSTEAM_TOUCH_3_MASK										= $00000800
+Const BLITZSTEAM_BUTTON_MENU_MASK									= $0001000
+Const BLITZSTEAM_BUTTON_STEAM_MASK							        = $0002000
+Const BLITZSTEAM_BUTTON_ESCAPE_MASK									= $0004000
+Const BLITZSTEAM_BUTTON_BACK_LEFT_MASK							    = $0008000
+Const BLITZSTEAM_BUTTON_BACK_RIGHT_MASK								= $0010000
+Const BLITZSTEAM_BUTTON_LEFTPAD_CLICKED_MASK						= $0020000
+Const BLITZSTEAM_BUTTON_RIGHTPAD_CLICKED_MASK						= $0040000
+Const BLITZSTEAM_LEFTPAD_FINGERDOWN_MASK							= $0080000
+Const BLITZSTEAM_RIGHTPAD_FINGERDOWN_MASK							= $0100000
+Const BLITZSTEAM_JOYSTICK_BUTTON_MASK								= $0400000
+Const BLITZSTEAM_ESTEAMCONTROLLERPAD_LEFT							= 0
+Const BLITZSTEAM_ESTEAMCONTROLLERPAD_RIGHT							= 1
+
+Type BlitzSteamControllerState
+	Field unPacketNum%
+	Field ulButtonsL%, ulButtonsR%
+	Field sLeftPadXY // Left/High = X, Right/Low = Y
+	Field sRightPadXY // Left/High = X, Right/Low = Y
+End Type
+
 ;----------------------------------------------------------------
 ;-- Enumerations
 ;----------------------------------------------------------------
