@@ -137,7 +137,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="dllmain.cpp" />
-    <ClCompile Include="Helper.cpp" />
+    <ClCompile Include="Helpers\Helper.cpp" />
     <ClCompile Include="Helpers\Double.cpp" />
     <ClCompile Include="Helpers\Int64.cpp" />
     <ClCompile Include="Libraries\BlitzPointer.cpp" />
@@ -146,13 +146,39 @@
     <ClCompile Include="Wrapper\SteamApps.cpp" />
     <ClCompile Include="Wrapper\SteamClient.cpp" />
     <ClCompile Include="Wrapper\SteamController.cpp" />
+    <ClCompile Include="Wrapper\SteamFriends.cpp" />
+    <ClCompile Include="Wrapper\SteamGameServer.cpp" />
+    <ClCompile Include="Wrapper\SteamGameServerStats.cpp" />
+    <ClCompile Include="Wrapper\SteamHTMLSurface.cpp" />
+    <ClCompile Include="Wrapper\SteamHTTP.cpp" />
+    <ClCompile Include="Wrapper\SteamInventory.cpp" />
+    <ClCompile Include="Wrapper\SteamMatchmaking.cpp" />
+    <ClCompile Include="Wrapper\SteamMatchmakingServer.cpp" />
+    <ClCompile Include="Wrapper\SteamMusic.cpp" />
+    <ClCompile Include="Wrapper\SteamMusicRemote.cpp" />
+    <ClCompile Include="Wrapper\SteamNetworking.cpp" />
+    <ClCompile Include="Wrapper\SteamRemoteStorage.cpp" />
+    <ClCompile Include="Wrapper\SteamScreenshots.cpp" />
+    <ClCompile Include="Wrapper\SteamUGC.cpp" />
+    <ClCompile Include="Wrapper\SteamUnifiedMessages.cpp" />
     <ClCompile Include="Wrapper\SteamUser.cpp" />
+    <ClCompile Include="Wrapper\SteamUserStats.cpp" />
+    <ClCompile Include="Wrapper\SteamUtils.cpp" />
+    <ClCompile Include="Wrapper\SteamVideo.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="dllmain.h" />
     <ClInclude Include="Libraries\BlitzPointer.h" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="LICENSE">
+      <Link>LICENSE</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="LICENSE.lesser">
+      <Link>LICENSE.lesser</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="Blitz\BlitzSteam.bb">
       <Link>BlitzSteam.bb</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
