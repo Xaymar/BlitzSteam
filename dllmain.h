@@ -9,7 +9,7 @@
 #include <windows.h>
 
 // Macros
-#define DLL_EXPORT extern "C" __declspec(dllexport)
+#define DLL_EXPORT extern "C" //__declspec(dllexport)
 
 // Steam
 #include "steam/steam_api.h"

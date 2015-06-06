@@ -137,9 +137,13 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="dllmain.cpp" />
+    <ClCompile Include="Helper.cpp" />
     <ClCompile Include="Libraries\BlitzPointer.cpp" />
     <ClCompile Include="Wrapper\Steam.cpp" />
+    <ClCompile Include="Wrapper\SteamAppList.cpp" />
+    <ClCompile Include="Wrapper\SteamApps.cpp" />
     <ClCompile Include="Wrapper\SteamClient.cpp" />
+    <ClCompile Include="Wrapper\SteamController.cpp" />
     <ClCompile Include="Wrapper\SteamUser.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -153,6 +157,10 @@
     </None>
     <None Include="BlitzSteam.decls">
       <Link>BlitzSteam.decls</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="SteamworksSDK\redistributable_bin\steam_api.dll">
+      <Link>steam_api.dll</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
