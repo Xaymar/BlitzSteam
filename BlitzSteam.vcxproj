@@ -137,7 +137,8 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="dllmain.cpp" />
-    <ClCompile Include="Helpers\Helper.cpp" />
+    <ClCompile Include="Helpers\CSteamID.cpp" />
+    <ClCompile Include="Helpers\Callbacks.cpp" />
     <ClCompile Include="Helpers\Double.cpp" />
     <ClCompile Include="Helpers\Int64.cpp" />
     <ClCompile Include="Libraries\BlitzPointer.cpp" />

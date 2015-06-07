@@ -65,30 +65,15 @@ DLL_EXPORT void BlitzSteamInt64_DivV(int64_t* pthis, uint32_t left, uint32_t rig
 #pragma endregion Math
 
 #pragma region Comparison
-DLL_EXPORT uint32_t BlitzSteamInt64_EqualsP(int64_t* pthis, int64_t* other) { return (*pthis == *other); }
-DLL_EXPORT uint32_t BlitzSteamInt64_EqualsV(int64_t* pthis, uint32_t left, uint32_t right) { return (*pthis == ((int64_t)left << 32) + right); }
-#pragma comment(linker, "/EXPORT:BlitzSteamInt64_EqualsP=_BlitzSteamInt64_EqualsP@8")
-#pragma comment(linker, "/EXPORT:BlitzSteamInt64_EqualsV=_BlitzSteamInt64_EqualsV@12")
-
-DLL_EXPORT uint32_t BlitzSteamInt64_GEqualsP(int64_t* pthis, int64_t* other) { return (*pthis >= *other); }
-DLL_EXPORT uint32_t BlitzSteamInt64_GEqualsV(int64_t* pthis, uint32_t left, uint32_t right) { return (*pthis >= ((int64_t)left << 32) + right); }
-#pragma comment(linker, "/EXPORT:BlitzSteamInt64_GEqualsP=_BlitzSteamInt64_GEqualsP@8")
-#pragma comment(linker, "/EXPORT:BlitzSteamInt64_GEqualsV=_BlitzSteamInt64_GEqualsV@12")
-
-DLL_EXPORT uint32_t BlitzSteamInt64_SEqualsP(int64_t* pthis, int64_t* other) { return (*pthis <= *other); }
-DLL_EXPORT uint32_t BlitzSteamInt64_SEqualsV(int64_t* pthis, uint32_t left, uint32_t right) { return (*pthis <= ((int64_t)left << 32) + right); }
-#pragma comment(linker, "/EXPORT:BlitzSteamInt64_SEqualsP=_BlitzSteamInt64_SEqualsP@8")
-#pragma comment(linker, "/EXPORT:BlitzSteamInt64_SEqualsV=_BlitzSteamInt64_SEqualsV@12")
-
-DLL_EXPORT uint32_t BlitzSteamInt64_GreaterP(int64_t* pthis, int64_t* other) { return (*pthis > *other); }
-DLL_EXPORT uint32_t BlitzSteamInt64_GreaterV(int64_t* pthis, uint32_t left, uint32_t right) { return (*pthis > ((int64_t)left << 32) + right); }
-#pragma comment(linker, "/EXPORT:BlitzSteamInt64_GreaterP=_BlitzSteamInt64_GreaterP@8")
-#pragma comment(linker, "/EXPORT:BlitzSteamInt64_GreaterV=_BlitzSteamInt64_GreaterV@12")
-
-DLL_EXPORT uint32_t BlitzSteamInt64_SmallerP(int64_t* pthis, int64_t* other) { return (*pthis < *other); }
-DLL_EXPORT uint32_t BlitzSteamInt64_SmallerV(int64_t* pthis, uint32_t left, uint32_t right) { return (*pthis < ((int64_t)left << 32) + right); }
-#pragma comment(linker, "/EXPORT:BlitzSteamInt64_SmallerP=_BlitzSteamInt64_SmallerP@8")
-#pragma comment(linker, "/EXPORT:BlitzSteamInt64_SmallerV=_BlitzSteamInt64_SmallerV@12")
+DLL_EXPORT uint32_t BlitzSteamInt64_CompareP(int64_t* pthis, int64_t* other) {
+	return (*pthis == *other ? 1 : 0) + (*pthis < *other ? 2 : 0) + (*pthis > *other ? 4 : 0);
+}
+DLL_EXPORT uint32_t BlitzSteamInt64_CompareV(int64_t* pthis, uint32_t left, uint32_t right) {
+	int64_t other = ((int64_t)left << 32) + right;
+	return (*pthis == other ? 1 : 0) + (*pthis < other ? 2 : 0) + (*pthis > other ? 4 : 0);
+}
+#pragma comment(linker, "/EXPORT:BlitzSteamInt64_CompareP=_BlitzSteamInt64_CompareP@8")
+#pragma comment(linker, "/EXPORT:BlitzSteamInt64_CompareV=_BlitzSteamInt64_CompareV@12")
 #pragma endregion Comparison
 
 #pragma region Conversion

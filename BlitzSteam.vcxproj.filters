@@ -106,7 +106,10 @@
     <ClCompile Include="Wrapper\SteamVideo.cpp">
       <Filter>Source Files\Wrapper</Filter>
     </ClCompile>
-    <ClCompile Include="Helpers\Helper.cpp">
+    <ClCompile Include="Helpers\CSteamID.cpp">
+      <Filter>Source Files\Helpers</Filter>
+    </ClCompile>
+    <ClCompile Include="Helpers\Callbacks.cpp">
       <Filter>Source Files\Helpers</Filter>
     </ClCompile>
   </ItemGroup>
@@ -131,5 +134,7 @@
     <None Include="Blitz\BlitzSteamUtility.bb">
       <Filter>Blitz Files</Filter>
     </None>
+    <None Include="LICENSE" />
+    <None Include="LICENSE.lesser" />
   </ItemGroup>
 </Project>

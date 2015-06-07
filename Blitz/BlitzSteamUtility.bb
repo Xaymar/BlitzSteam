@@ -54,12 +54,25 @@ Type BSU_Depot
 	Field DepotId%
 End Type
 
-Type BSU_DLCDownloadProgress
-	Field unBytesDownloaded_L
-	Field unBytesDownloaded_R
-	Field unBytesTotal_L
-	Field unBytesTotal_R
+Type BSU_Friend
+	Field SteamID_L, SteamID_R
+	
+	Field Name$
+	Field NickName$
+	
+	Field Index%
+	Field Relationship%
+	Field State%
+	Field SteamLevel%
 End Type
+
+;----------------------------------------------------------------
+; -- Globals
+;----------------------------------------------------------------
+Global BSU_AppCount
+Global BSU_DLCCount
+Global BSU_DepotCount
+Global BSU_FriendCount
 
 ;----------------------------------------------------------------
 ; -- Functions
@@ -197,10 +210,10 @@ Function BSUAppList_GetInstalledApps(BankAppIdsStorage=0, BankAppNameStorage=0, 
 		EndIf
 		
 		; Request installed apps from Steam.
-		AppCount = BlitzSteamAppList_GetInstalledApps(BSUAppList, BankAppIds, BankAppIdsSz)
+		BSU_AppCount = BlitzSteamAppList_GetInstalledApps(BSUAppList, BankAppIds, BankAppIdsSz)
 		
 		; We don't need to do this if we don't actually have any apps returned.
-		If AppCount > 0 Then
+		If BSU_AppCount > 0 Then
 			If BankAppNameStorage = 0 Then
 				; Create temporary storage for name.
 				BankAppName = CreateBank(BankAppNameSz)
@@ -218,7 +231,7 @@ Function BSUAppList_GetInstalledApps(BankAppIdsStorage=0, BankAppNameStorage=0, 
 			
 			; Index all apps.
 			Local AppIndex
-			For AppIndex = 1 To AppCount
+			For AppIndex = 0 To BSU_AppCount - 1
 				InstalledApp.BSU_App = New BSU_App
 				InstalledApp\AppId = PeekInt(BankAppIds, AppIndex * 4)
 				InstalledApp\Name = BSUAppList_GetAppName(InstalledApp\AppId, BankAppName)
@@ -300,8 +313,8 @@ Function BSUApps_GetDLCData(BankAppIdStorage=0, BankAvailableStorage=0, BankName
 	If BSUInitialized Then
 		Delete Each BSU_DLC
 		
-		DLCCount = BlitzSteamApps_GetDLCCount(BSUApps)
-		If DLCCount > 0
+		BSU_DLCCount = BlitzSteamApps_GetDLCCount(BSUApps)
+		If BSU_DLCCount > 0
 			If BankAppIdStorage = 0 Then
 				; Create temporary storage for AppId.
 				BankAppId = CreateBank(4)
@@ -328,7 +341,7 @@ Function BSUApps_GetDLCData(BankAppIdStorage=0, BankAvailableStorage=0, BankName
 			EndIf
 			
 			Local DLCIndex%
-			For DLCIndex = 0 To DLCCount - 1
+			For DLCIndex = 0 To BSU_DLCCount - 1
 				BSUApps_GetDLCDataByIndex(DLCIndex, BankAppId, BankAvailable, BankName)
 			Next
 			
@@ -435,11 +448,11 @@ Function BSUApps_GetInstalledDepots(nAppID%, BankDepotStorage=0)
 		EndIf
 		
 		; Request depots from Steam.
-		DepotCount = BlitzSteamApps_GetInstalledDepots(BSUApps, nAppID, BankDepot, BankDepotSz)
+		BSU_DepotCount = BlitzSteamApps_GetInstalledDepots(BSUApps, nAppID, BankDepot, BankDepotSz)
 		
 		; Read returned depots into objects.
 		Local DepotIndex
-		For DepotIndex = 0 To DepotCount - 1
+		For DepotIndex = 0 To BSU_DepotCount - 1
 			Local Depot.BSU_Depot = New BSU_Depot
 			Depot\DepotId = PeekInt(BankDepot, DepotIndex * 4)
 		Next
@@ -504,5 +517,40 @@ Function BSUApps_GetDLCDownloadProgress#(nAppID%)
 	Return Progress
 End Function
 
+; -- SteamFriends
+Function BSUFriends_GetFriends(iFriendFlags=BLITZSTEAM_EFriendFlags_All)
+	If BSUInitialized Then
+		Delete Each BSU_Friend
+		
+		BSU_FriendCount = BlitzSteamFriends_GetFriendCount(BSUFriends, iFriendFlags)
+		If BSU_FriendCount > 0 Then
+			Local FriendIndex
+			For FriendIndex = 0 To BSU_FriendCount - 1
+				Local CSteamID = BlitzSteamFriends_GetFriendByIndex(BSUFriends, FriendIndex, iFriendFlags)
+				Local Friend.BSU_Friend = New BSU_Friend
+				
+				; Store a 'native' version of the SteamID
+				Local SteamID64 = BlitzSteamCSteamID_ConvertToUInt64(CSteamID)
+				Friend\SteamID_L = BlitzSteamInt64_ValueL(SteamID64)
+				Friend\SteamID_R = BlitzSteamInt64_ValueR(SteamID64)
+				BlitzSteamInt64_Destroy(SteamID64)
+				
+				; Names
+				Friend\Name = BlitzSteamFriends_GetFriendPersonaName(BSUFriends, CSteamID)
+				Friend\NickName = BlitzSteamFriends_GetPlayerNickname(BSUFriends, CSteamID)
+				
+				; Other Stuff
+				Friend\Index = FriendIndex
+				Friend\Relationship = BlitzSteamFriends_GetFriendRelationship(BSUFriends, CSteamID)
+				Friend\State = BlitzSteamFriends_GetFriendPersonaState(BSUFriends, CSteamID)
+				Friend\SteamLevel = BlitzSteamFriends_GetFriendSteamLevel(BSUFriends, CSteamID)
+				
+				BlitzSteamCSteamID_Destroy(CSteamID)
+			Next
+		EndIf
+	EndIf
+End Function
+
 ;~IDEal Editor Parameters:
+;~F#52#67#80#9F#BD#FA#116#133#163#195#1B1#1D0#1EB
 ;~C#Blitz3D

@@ -175,15 +175,19 @@ DLL_EXPORT ISteamVideo* BlitzSteamClient_GetSteamVideo(ISteamClient* lpSteamClie
 DLL_EXPORT void BlitzSteamClient_SetWarningMessageHook(ISteamClient* lpSteamClient, SteamAPIWarningMessageHook_t fpfunction) {
 	lpSteamClient->SetWarningMessageHook(fpfunction);
 }
+#pragma comment(linker, "/EXPORT:BlitzSteamClient_SetWarningMessageHook=_BlitzSteamClient_SetWarningMessageHook@8")
 
 DLL_EXPORT void BlitzSteamClient_Set_SteamAPI_CPostAPIResultInProcess(ISteamClient* lpSteamClient, SteamAPI_PostAPIResultInProcess_t fpFunction) {
 	lpSteamClient->Set_SteamAPI_CPostAPIResultInProcess(fpFunction);
 }
+#pragma comment(linker, "/EXPORT:BlitzSteamClient_Set_SteamAPI_CPostAPIResultInProcess=_BlitzSteamClient_Set_SteamAPI_CPostAPIResultInProcess@8")
 
 DLL_EXPORT void BlitzSteamClient_Remove_SteamAPI_CPostAPIResultInProcess(ISteamClient* lpSteamClient, SteamAPI_PostAPIResultInProcess_t fpFunction) {
 	lpSteamClient->Remove_SteamAPI_CPostAPIResultInProcess(fpFunction);
 }
+#pragma comment(linker, "/EXPORT:BlitzSteamClient_Remove_SteamAPI_CPostAPIResultInProcess=_BlitzSteamClient_Remove_SteamAPI_CPostAPIResultInProcess@8")
 
 DLL_EXPORT void BlitzSteamClient_Set_SteamAPI_CCheckCallbackRegisteredInProcess(ISteamClient* lpSteamClient, SteamAPI_CheckCallbackRegistered_t fpFunction) {
 	lpSteamClient->Set_SteamAPI_CCheckCallbackRegisteredInProcess(fpFunction);
 }
+#pragma comment(linker, "/EXPORT:BlitzSteamClient_Set_SteamAPI_CCheckCallbackRegisteredInProcess=_BlitzSteamClient_Set_SteamAPI_CCheckCallbackRegisteredInProcess@8")

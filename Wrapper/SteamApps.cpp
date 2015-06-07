@@ -117,7 +117,7 @@ DLL_EXPORT uint32_t BlitzSteamApps_IsAppInstalled(ISteamApps* lpSteamApps, AppId
 #pragma comment(linker, "/EXPORT:BlitzSteamApps_IsAppInstalled=_BlitzSteamApps_IsAppInstalled@8")
 
 DLL_EXPORT CSteamID* BlitzSteamApps_GetAppOwner(ISteamApps* lpSteamApps) {
-	return &lpSteamApps->GetAppOwner();
+	return new CSteamID(lpSteamApps->GetAppOwner());
 }
 #pragma comment(linker, "/EXPORT:BlitzSteamApps_GetAppOwner=_BlitzSteamApps_GetAppOwner@4")
 

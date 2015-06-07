@@ -65,30 +65,14 @@ DLL_EXPORT void BlitzSteamDouble_DivF(double_t* pthis, float_t other) { *pthis /
 #pragma endregion Math
 
 #pragma region Comparison
-DLL_EXPORT uint32_t BlitzSteamDouble_EqualsP(double_t* pthis, double_t* other) { return *pthis == *other; }
-DLL_EXPORT uint32_t BlitzSteamDouble_EqualsF(double_t* pthis, float_t other) { return *pthis == other; }
-#pragma comment(linker, "/EXPORT:BlitzSteamDouble_EqualsP=_BlitzSteamDouble_EqualsP@8")
-#pragma comment(linker, "/EXPORT:BlitzSteamDouble_EqualsF=_BlitzSteamDouble_EqualsF@8")
-
-DLL_EXPORT uint32_t BlitzSteamDouble_GEqualsP(double_t* pthis, double_t* other) { return *pthis >= *other; }
-DLL_EXPORT uint32_t BlitzSteamDouble_GEqualsF(double_t* pthis, float_t other) { return *pthis >= other; }
-#pragma comment(linker, "/EXPORT:BlitzSteamDouble_GEqualsP=_BlitzSteamDouble_GEqualsP@8")
-#pragma comment(linker, "/EXPORT:BlitzSteamDouble_GEqualsF=_BlitzSteamDouble_GEqualsF@8")
-
-DLL_EXPORT uint32_t BlitzSteamDouble_SEqualsP(double_t* pthis, double_t* other) { return *pthis <= *other; }
-DLL_EXPORT uint32_t BlitzSteamDouble_SEqualsF(double_t* pthis, float_t other) { return *pthis <= other; }
-#pragma comment(linker, "/EXPORT:BlitzSteamDouble_SEqualsP=_BlitzSteamDouble_SEqualsP@8")
-#pragma comment(linker, "/EXPORT:BlitzSteamDouble_SEqualsF=_BlitzSteamDouble_SEqualsF@8")
-
-DLL_EXPORT uint32_t BlitzSteamDouble_GreaterP(double_t* pthis, double_t* other) { return *pthis > *other; }
-DLL_EXPORT uint32_t BlitzSteamDouble_GreaterF(double_t* pthis, float_t other) { return *pthis > other; }
-#pragma comment(linker, "/EXPORT:BlitzSteamDouble_GreaterP=_BlitzSteamDouble_GreaterP@8")
-#pragma comment(linker, "/EXPORT:BlitzSteamDouble_GreaterF=_BlitzSteamDouble_GreaterF@8")
-
-DLL_EXPORT uint32_t BlitzSteamDouble_SmallerP(double_t* pthis, double_t* other) { return *pthis < *other; }
-DLL_EXPORT uint32_t BlitzSteamDouble_SmallerF(double_t* pthis, float_t other) { return *pthis < other; }
-#pragma comment(linker, "/EXPORT:BlitzSteamDouble_SmallerP=_BlitzSteamDouble_SmallerP@8")
-#pragma comment(linker, "/EXPORT:BlitzSteamDouble_SmallerF=_BlitzSteamDouble_SmallerF@8")
+DLL_EXPORT uint32_t BlitzSteamDouble_CompareP(double_t* pthis, double_t* other) {
+	return (*pthis == *other ? 1 : 0) + (*pthis < *other ? 2 : 0) + (*pthis > *other ? 4 : 0);
+}
+DLL_EXPORT uint32_t BlitzSteamDouble_CompareF(double_t* pthis, float_t other) {
+	return (*pthis == other ? 1 : 0) + (*pthis < other ? 2 : 0) + (*pthis > other ? 4 : 0);
+}
+#pragma comment(linker, "/EXPORT:BlitzSteamDouble_CompareP=_BlitzSteamDouble_CompareP@8")
+#pragma comment(linker, "/EXPORT:BlitzSteamDouble_CompareF=_BlitzSteamDouble_CompareF@8")
 #pragma endregion Comparison
 
 #pragma region Conversion
