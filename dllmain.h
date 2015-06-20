@@ -26,6 +26,7 @@
 
 // Macros
 #define DLL_EXPORT extern "C" //__declspec(dllexport)
+#define DLL_CALL __stdcall
 
 // Steam
 #include "steam/steam_api.h"

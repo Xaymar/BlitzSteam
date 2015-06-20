@@ -79,7 +79,7 @@
       <ForcedIncludeFiles>
       </ForcedIncludeFiles>
       <MinimalRebuild>false</MinimalRebuild>
-      <CallingConvention>StdCall</CallingConvention>
+      <CallingConvention>Cdecl</CallingConvention>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -119,7 +119,7 @@
       </ForcedIncludeFiles>
       <BasicRuntimeChecks>Default</BasicRuntimeChecks>
       <MinimalRebuild>false</MinimalRebuild>
-      <CallingConvention>StdCall</CallingConvention>
+      <CallingConvention>Cdecl</CallingConvention>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>false</GenerateDebugInformation>
@@ -139,8 +139,6 @@
     <ClCompile Include="dllmain.cpp" />
     <ClCompile Include="Helpers\CSteamID.cpp" />
     <ClCompile Include="Helpers\Callbacks.cpp" />
-    <ClCompile Include="Helpers\Double.cpp" />
-    <ClCompile Include="Helpers\Int64.cpp" />
     <ClCompile Include="Libraries\BlitzPointer.cpp" />
     <ClCompile Include="Wrapper\Steam.cpp" />
     <ClCompile Include="Wrapper\SteamAppList.cpp" />
@@ -169,6 +167,8 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="dllmain.h" />
+    <ClInclude Include="Helpers\Callbacks.h" />
+    <ClInclude Include="Helpers\CSteamID.h" />
     <ClInclude Include="Libraries\BlitzPointer.h" />
   </ItemGroup>
   <ItemGroup>

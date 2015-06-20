@@ -36,14 +36,14 @@ class BlitzSteamCallback : CCallbackBase {
 	}
 };
 
-DLL_EXPORT void* BlitzSteamHelper_CreateCallback(uint32_t fpFunctionPointer) {
+DLL_EXPORT void* DLL_CALL BlitzSteamHelper_CreateCallback(uint32_t fpFunctionPointer) {
 	BlitzSteamCallback* lpBSCallback = new BlitzSteamCallback();
 	lpBSCallback->blitzFunctionPointer = fpFunctionPointer;
 	return lpBSCallback;
 }
 #pragma comment(linker, "/EXPORT:BlitzSteamHelper_CreateCallback=_BlitzSteamHelper_CreateCallback@4")
 
-DLL_EXPORT void BlitzSteamHelper_DestroyCallback(uint32_t lpCallback) {
+DLL_EXPORT void DLL_CALL BlitzSteamHelper_DestroyCallback(uint32_t lpCallback) {
 	BlitzSteamCallback* lpBSCallback = (BlitzSteamCallback*)lpCallback;
 	if (lpBSCallback != nullptr) {
 		delete lpBSCallback;
@@ -51,7 +51,7 @@ DLL_EXPORT void BlitzSteamHelper_DestroyCallback(uint32_t lpCallback) {
 }
 #pragma comment(linker, "/EXPORT:BlitzSteamHelper_DestroyCallback=_BlitzSteamHelper_DestroyCallback@4")
 
-DLL_EXPORT const char* BlitzSteamHelper_FormatUnixTime(uint32_t unTime, const char* pchFormat) {
+DLL_EXPORT const char* DLL_CALL BlitzSteamHelper_FormatUnixTime(uint32_t unTime, const char* pchFormat) {
 	char* output = new char[strlen(pchFormat) * 4];
 	time_t t = unTime;
 	struct tm *tm = localtime(&t);

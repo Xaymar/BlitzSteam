@@ -46,12 +46,6 @@
     <ClCompile Include="Wrapper\SteamController.cpp">
       <Filter>Source Files\Wrapper</Filter>
     </ClCompile>
-    <ClCompile Include="Helpers\Int64.cpp">
-      <Filter>Source Files\Helpers</Filter>
-    </ClCompile>
-    <ClCompile Include="Helpers\Double.cpp">
-      <Filter>Source Files\Helpers</Filter>
-    </ClCompile>
     <ClCompile Include="Wrapper\SteamFriends.cpp">
       <Filter>Source Files\Wrapper</Filter>
     </ClCompile>
@@ -119,6 +113,12 @@
     </ClInclude>
     <ClInclude Include="Libraries\BlitzPointer.h">
       <Filter>Source Files\Libraries</Filter>
+    </ClInclude>
+    <ClInclude Include="Helpers\Callbacks.h">
+      <Filter>Source Files\Helpers</Filter>
+    </ClInclude>
+    <ClInclude Include="Helpers\CSteamID.h">
+      <Filter>Source Files\Helpers</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
