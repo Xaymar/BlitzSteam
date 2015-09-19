@@ -43,7 +43,7 @@
     <OutDir>$(SolutionDir)\#Build\$(ProjectName)\$(Configuration)\</OutDir>
     <IntDir>$(SolutionDir)\#Intermediate\$(ProjectName)\$(Configuration)\</IntDir>
     <TargetExt>.dll</TargetExt>
-    <LinkIncremental>false</LinkIncremental>
+    <LinkIncremental>true</LinkIncremental>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <OutDir>$(SolutionDir)\#Build\$(ProjectName)\$(Configuration)\</OutDir>
@@ -60,8 +60,7 @@
       <FavorSizeOrSpeed>Neither</FavorSizeOrSpeed>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <WholeProgramOptimization>false</WholeProgramOptimization>
-      <AdditionalIncludeDirectories>
-      </AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
       <BufferSecurityCheck>false</BufferSecurityCheck>
       <BasicRuntimeChecks>Default</BasicRuntimeChecks>
@@ -115,8 +114,7 @@
       </SDLCheck>
       <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
-      <AdditionalIncludeDirectories>
-      </AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <BufferSecurityCheck>false</BufferSecurityCheck>
       <StructMemberAlignment>4Bytes</StructMemberAlignment>
       <EnableParallelCodeGeneration>true</EnableParallelCodeGeneration>
@@ -160,7 +158,6 @@
     <ClCompile Include="dllmain.cpp" />
     <ClCompile Include="Helpers\CSteamID.cpp" />
     <ClCompile Include="Helpers\Callbacks.cpp" />
-    <ClCompile Include="Libraries\BlitzPointer.cpp" />
     <ClCompile Include="Wrapper\Steam.cpp" />
     <ClCompile Include="Wrapper\SteamAppList.cpp" />
     <ClCompile Include="Wrapper\SteamApps.cpp" />
@@ -190,7 +187,6 @@
     <ClInclude Include="dllmain.h" />
     <ClInclude Include="Helpers\Callbacks.h" />
     <ClInclude Include="Helpers\CSteamID.h" />
-    <ClInclude Include="Libraries\BlitzPointer.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="LICENSE">

@@ -15,7 +15,7 @@
 //	along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "dllmain.h"
-#include "steam\steam_gameserver.h"
+#include "SteamworksSDK/public/steam/steam_gameserver.h"
 
 DLL_EXPORT uint32_t DLL_CALL BlitzSteamGameServer_Init(uint32_t unIP, uint16_t usSteamPort, uint16_t usGamePort, uint16_t usQueryPort, EServerMode eServerMode, const char *pchVersionString) {
 	return SteamGameServer_Init(unIP, usSteamPort, usGamePort, usQueryPort, eServerMode, pchVersionString);

@@ -29,7 +29,7 @@
 #define DLL_CALL __stdcall
 
 // Steam
-#include "steam/steam_api.h"
+#include "SteamworksSDK/public/steam/steam_api.h"
 
 // Error Messages
 #define ERROR_TITLE_001	TEXT("Error 001")
