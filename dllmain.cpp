@@ -15,7 +15,7 @@
 //	along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "dllmain.h"
-#include "Libraries\BlitzPointer.h"
+#include "Libraries/BlitzPointer.h"
 
 bool WINAPI DllMain(HINSTANCE hinstDLL, DWORD fdwReason, LPVOID lpvReserved) {
 	switch (fdwReason) {

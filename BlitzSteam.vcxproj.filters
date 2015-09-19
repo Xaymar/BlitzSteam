@@ -18,6 +18,9 @@
     <Filter Include="Source Files\Helpers">
       <UniqueIdentifier>{a6fc08f6-97d9-4a53-a803-34b985d9ae7c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Libraries">
+      <UniqueIdentifier>{74b261a6-6880-4cd8-95af-bdc05dffde9d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dllmain.cpp">
@@ -101,6 +104,9 @@
     <ClCompile Include="Helpers\Callbacks.cpp">
       <Filter>Source Files\Helpers</Filter>
     </ClCompile>
+    <ClCompile Include="Libraries\BlitzPointer.cpp">
+      <Filter>Source Files\Libraries</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="dllmain.h">
@@ -111,6 +117,9 @@
     </ClInclude>
     <ClInclude Include="Helpers\CSteamID.h">
       <Filter>Source Files\Helpers</Filter>
+    </ClInclude>
+    <ClInclude Include="Libraries\BlitzPointer.h">
+      <Filter>Source Files\Libraries</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

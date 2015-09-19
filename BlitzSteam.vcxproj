@@ -88,7 +88,7 @@
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <Version>1.0</Version>
-      <AdditionalLibraryDirectories>D:\Projects\Cpp\#Libraries\Steamworks SDK\redistributable_bin</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(ProjectDir)\SteamworksSDK\redistributable_bin</AdditionalLibraryDirectories>
       <AdditionalDependencies>steam_api.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <LinkTimeCodeGeneration>
       </LinkTimeCodeGeneration>
@@ -101,7 +101,7 @@
       <FixedBaseAddress>false</FixedBaseAddress>
     </Link>
     <ProjectReference>
-      <LinkLibraryDependencies>false</LinkLibraryDependencies>
+      <LinkLibraryDependencies>true</LinkLibraryDependencies>
     </ProjectReference>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -142,7 +142,7 @@
       <OptimizeReferences>
       </OptimizeReferences>
       <Version>1.0</Version>
-      <AdditionalLibraryDirectories>D:\Projects\Cpp\#Libraries\Steamworks SDK\redistributable_bin</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(ProjectDir)\SteamworksSDK\redistributable_bin</AdditionalLibraryDirectories>
       <AdditionalDependencies>steam_api.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <LinkTimeCodeGeneration>Default</LinkTimeCodeGeneration>
       <LinkStatus>
@@ -151,13 +151,14 @@
       <FixedBaseAddress>false</FixedBaseAddress>
     </Link>
     <ProjectReference>
-      <LinkLibraryDependencies>false</LinkLibraryDependencies>
+      <LinkLibraryDependencies>true</LinkLibraryDependencies>
     </ProjectReference>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="dllmain.cpp" />
     <ClCompile Include="Helpers\CSteamID.cpp" />
     <ClCompile Include="Helpers\Callbacks.cpp" />
+    <ClCompile Include="Libraries\BlitzPointer.cpp" />
     <ClCompile Include="Wrapper\Steam.cpp" />
     <ClCompile Include="Wrapper\SteamAppList.cpp" />
     <ClCompile Include="Wrapper\SteamApps.cpp" />
@@ -187,6 +188,7 @@
     <ClInclude Include="dllmain.h" />
     <ClInclude Include="Helpers\Callbacks.h" />
     <ClInclude Include="Helpers\CSteamID.h" />
+    <ClInclude Include="Libraries\BlitzPointer.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="LICENSE">

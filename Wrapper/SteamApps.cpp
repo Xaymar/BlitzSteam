@@ -15,6 +15,7 @@
 //	along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "dllmain.h"
+#include "Helpers/CSteamID.h"
 
 DLL_EXPORT uint32_t DLL_CALL BlitzSteamApps_IsSubscribed(ISteamApps* lpSteamApps) {
 	return lpSteamApps->BIsSubscribed();
@@ -118,7 +119,7 @@ DLL_EXPORT uint32_t DLL_CALL BlitzSteamApps_IsAppInstalled(ISteamApps* lpSteamAp
 
 DLL_EXPORT CSteamID* DLL_CALL BlitzSteamApps_GetAppOwner(ISteamApps* lpSteamApps) {
 	CSteamID* steamID = new CSteamID(lpSteamApps->GetAppOwner());
-	return BlitzCSteamID_Copy(steamID);
+	return BlitzSteamCSteamID_Copy(steamID);
 }
 #pragma comment(linker, "/EXPORT:BlitzSteamApps_GetAppOwner=_BlitzSteamApps_GetAppOwner@4")
 
