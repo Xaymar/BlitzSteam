@@ -1,5 +1,5 @@
-//	BlitzSteam - Steam wrapper for Blitz.
-//	Copyright (C) 2015 Project Kube (Michael Fabian Dirks)
+//	BS_ - Steam wrapper for Blitz.
+//	Copyright (C) 2015 Xaymar (Michael Fabian Dirks)
 //
 //	This program is free software: you can redistribute it and/or modify
 //	it under the terms of the GNU Lesser General Public License as
@@ -16,27 +16,27 @@
 
 #include "dllmain.h"
 
-DLL_EXPORT uint32_t DLL_CALL BlitzSteamAppList_GetNumInstalledApps(ISteamAppList* lpSteamAppList) {
+DLL_EXPORT uint32_t DLL_CALL BS_AppList_GetNumInstalledApps(ISteamAppList* lpSteamAppList) {
 	return lpSteamAppList->GetNumInstalledApps();
 }
-#pragma comment(linker, "/EXPORT:BlitzSteamAppList_GetNumInstalledApps=_BlitzSteamAppList_GetNumInstalledApps@4")
+#pragma comment(linker, "/EXPORT:BS_AppList_GetNumInstalledApps=_BS_AppList_GetNumInstalledApps@4")
 
-DLL_EXPORT uint32_t DLL_CALL BlitzSteamAppList_GetInstalledApps(ISteamAppList* lpSteamAppList, AppId_t *pvecAppID, uint32 unMaxAppIDs) {
+DLL_EXPORT uint32_t DLL_CALL BS_AppList_GetInstalledApps(ISteamAppList* lpSteamAppList, AppId_t *pvecAppID, uint32 unMaxAppIDs) {
 	return lpSteamAppList->GetInstalledApps(pvecAppID, unMaxAppIDs);
 }
-#pragma comment(linker, "/EXPORT:BlitzSteamAppList_GetInstalledApps=_BlitzSteamAppList_GetInstalledApps@12")
+#pragma comment(linker, "/EXPORT:BS_AppList_GetInstalledApps=_BS_AppList_GetInstalledApps@12")
 
-DLL_EXPORT uint32_t DLL_CALL BlitzSteamAppList_GetAppName(ISteamAppList* lpSteamAppList, AppId_t nAppID, char* pchName, uint32_t cchNameMax) {
+DLL_EXPORT uint32_t DLL_CALL BS_AppList_GetAppName(ISteamAppList* lpSteamAppList, AppId_t nAppID, char* pchName, uint32_t cchNameMax) {
 	return lpSteamAppList->GetAppName(nAppID, pchName, cchNameMax);
 }
-#pragma comment(linker, "/EXPORT:BlitzSteamAppList_GetAppName=_BlitzSteamAppList_GetAppName@16")
+#pragma comment(linker, "/EXPORT:BS_AppList_GetAppName=_BS_AppList_GetAppName@16")
 
-DLL_EXPORT uint32_t DLL_CALL BlitzSteamAppList_GetAppInstallDir(ISteamAppList* lpSteamAppList, AppId_t nAppID, char* pchDirectory, uint32_t cchDirectoryMax) {
+DLL_EXPORT uint32_t DLL_CALL BS_AppList_GetAppInstallDir(ISteamAppList* lpSteamAppList, AppId_t nAppID, char* pchDirectory, uint32_t cchDirectoryMax) {
 	return lpSteamAppList->GetAppInstallDir(nAppID, pchDirectory, cchDirectoryMax);
 }
-#pragma comment(linker, "/EXPORT:BlitzSteamAppList_GetAppInstallDir=_BlitzSteamAppList_GetAppInstallDir@16")
+#pragma comment(linker, "/EXPORT:BS_AppList_GetAppInstallDir=_BS_AppList_GetAppInstallDir@16")
 
-DLL_EXPORT uint32_t DLL_CALL BlitzSteamAppList_GetAppBuildId(ISteamAppList* lpSteamAppList, AppId_t nAppID) {
+DLL_EXPORT uint32_t DLL_CALL BS_AppList_GetAppBuildId(ISteamAppList* lpSteamAppList, AppId_t nAppID) {
 	return lpSteamAppList->GetAppBuildId(nAppID);
 }
-#pragma comment(linker, "/EXPORT:BlitzSteamAppList_GetAppBuildId=_BlitzSteamAppList_GetAppBuildId@8")
+#pragma comment(linker, "/EXPORT:BS_AppList_GetAppBuildId=_BS_AppList_GetAppBuildId@8")

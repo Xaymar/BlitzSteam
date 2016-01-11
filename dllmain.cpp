@@ -1,5 +1,5 @@
-//	BlitzSteam - Steam wrapper for Blitz.
-//	Copyright (C) 2015 Project Kube (Michael Fabian Dirks)
+//	BS_ - Steam wrapper for Blitz.
+//	Copyright (C) 2015 Xaymar (Michael Fabian Dirks)
 //
 //	This program is free software: you can redistribute it and/or modify
 //	it under the terms of the GNU Lesser General Public License as
@@ -15,12 +15,10 @@
 //	along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "dllmain.h"
-#include "Libraries/BlitzPointer.h"
 
 bool WINAPI DllMain(HINSTANCE hinstDLL, DWORD fdwReason, LPVOID lpvReserved) {
 	switch (fdwReason) {
 		case DLL_PROCESS_ATTACH:
-			BlitzPointer_Initialize();
 			break;
 		case DLL_PROCESS_DETACH:
 			break;

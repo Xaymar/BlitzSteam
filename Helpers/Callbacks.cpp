@@ -1,5 +1,5 @@
-//	BlitzSteam - Steam wrapper for Blitz.
-//	Copyright (C) 2015 Project Kube (Michael Fabian Dirks)
+//	BS_ - Steam wrapper for Blitz.
+//	Copyright (C) 2015 Xaymar (Michael Fabian Dirks)
 //
 //	This program is free software: you can redistribute it and/or modify
 //	it under the terms of the GNU Lesser General Public License as
@@ -15,43 +15,43 @@
 //	along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "dllmain.h"
-#include "Libraries/BlitzPointer.h"
+#include "Helpers/BlitzPointer.h"
 #include <time.h>
 
 // Callbacks
-class BlitzSteamCallback : CCallbackBase {
+class BS_Callback : CCallbackBase {
 	public:
 	uint32_t blitzFunctionPointer;
 
 	virtual void Run(void *pvParam) {
-		BlitzPointer_CallFunction4((uint32_t)blitzFunctionPointer, (uint32_t)pvParam, 0, 0, 0);
+		BP_CallFunction4((uint32_t)blitzFunctionPointer, (uint32_t)pvParam, 0, 0, 0);
 	}
 
 	virtual void Run(void *pvParam, bool bIOFailure, SteamAPICall_t hSteamAPICall) {
-		BlitzPointer_CallFunction4((uint32_t)blitzFunctionPointer, (uint32_t)pvParam, bIOFailure, (uint32_t)(hSteamAPICall & 0xFFFFFFFF), (uint32_t)(hSteamAPICall >> 32));
+		BP_CallFunction4((uint32_t)blitzFunctionPointer, (uint32_t)pvParam, bIOFailure, (uint32_t)(hSteamAPICall & 0xFFFFFFFF), (uint32_t)(hSteamAPICall >> 32));
 	}
 
 	virtual int GetCallbackSizeBytes() {
-		return sizeof(BlitzSteamCallback);
+		return sizeof(BS_Callback);
 	}
 };
 
-DLL_EXPORT void* DLL_CALL BlitzSteamHelper_CreateCallback(uint32_t fpFunctionPointer) {
-	BlitzSteamCallback* lpBSCallback = new BlitzSteamCallback();
+DLL_EXPORT void* DLL_CALL BS_Helper_CreateCallback(uint32_t fpFunctionPointer) {
+	BS_Callback* lpBSCallback = new BS_Callback();
 	lpBSCallback->blitzFunctionPointer = fpFunctionPointer;
 	return lpBSCallback;
 }
-#pragma comment(linker, "/EXPORT:BlitzSteamHelper_CreateCallback=_BlitzSteamHelper_CreateCallback@4")
+#pragma comment(linker, "/EXPORT:BS_Helper_CreateCallback=_BS_Helper_CreateCallback@4")
 
-DLL_EXPORT void DLL_CALL BlitzSteamHelper_DestroyCallback(uint32_t lpCallback) {
-	BlitzSteamCallback* lpBSCallback = (BlitzSteamCallback*)lpCallback;
+DLL_EXPORT void DLL_CALL BS_Helper_DestroyCallback(uint32_t lpCallback) {
+	BS_Callback* lpBSCallback = (BS_Callback*)lpCallback;
 	if (lpBSCallback != nullptr) {
 		delete lpBSCallback;
 	}
 }
-#pragma comment(linker, "/EXPORT:BlitzSteamHelper_DestroyCallback=_BlitzSteamHelper_DestroyCallback@4")
+#pragma comment(linker, "/EXPORT:BS_Helper_DestroyCallback=_BS_Helper_DestroyCallback@4")
 
-DLL_EXPORT const char* DLL_CALL BlitzSteamHelper_FormatUnixTime(uint32_t unTime, const char* pchFormat) {
+DLL_EXPORT const char* DLL_CALL BS_Helper_FormatUnixTime(uint32_t unTime, const char* pchFormat) {
 	char* output = new char[strlen(pchFormat) * 4];
 	time_t t = unTime;
 	struct tm *tm = localtime(&t);
@@ -59,4 +59,4 @@ DLL_EXPORT const char* DLL_CALL BlitzSteamHelper_FormatUnixTime(uint32_t unTime,
 	delete tm;
 	return output;
 }
-#pragma comment(linker, "/EXPORT:BlitzSteamHelper_FormatUnixTime=_BlitzSteamHelper_FormatUnixTime@8")
+#pragma comment(linker, "/EXPORT:BS_Helper_FormatUnixTime=_BS_Helper_FormatUnixTime@8")

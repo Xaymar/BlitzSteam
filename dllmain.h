@@ -1,5 +1,5 @@
-//	BlitzSteam - Steam wrapper for Blitz.
-//	Copyright (C) 2015 Project Kube (Michael Fabian Dirks)
+//	BS_ - Steam wrapper for Blitz.
+//	Copyright (C) 2015 Xaymar (Michael Fabian Dirks)
 //
 //	This program is free software: you can redistribute it and/or modify
 //	it under the terms of the GNU Lesser General Public License as
@@ -26,13 +26,8 @@
 
 // Macros
 #define DLL_EXPORT extern "C" //__declspec(dllexport)
+#define DLL_METHOD extern "C"
 #define DLL_CALL __stdcall
 
 // Steam
 #include "SteamworksSDK/public/steam/steam_api.h"
-
-// Error Messages
-#define ERROR_TITLE_001	TEXT("Error 001")
-#define ERROR_TEXT_001	TEXT("E001: Could not load 'BlitzPointer.dll'.")
-#define ERROR_TITLE_002 TEXT("Error 002")
-#define ERROR_TEXT_002	TEXT("E002: Unable to find one or multiple function addresses in 'BlitzPointer.dll'.")

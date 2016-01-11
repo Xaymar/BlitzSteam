@@ -1,5 +1,5 @@
-;	BlitzSteam - Steam wrapper for Blitz.
-;	Copyright (C) 2015 Project Kube (Michael Fabian Dirks)
+;	BS_ - Steam wrapper for Blitz.
+;	Copyright (C) 2015 Xaymar (Michael Fabian Dirks)
 ;
 ;	This program is free software: you can redistribute it and/or modify
 ;	it under the terms of the GNU Lesser General Public License as
@@ -25,15 +25,15 @@ Const BSU_INSTALLEDDEPOTS_COUNT			= 4096
 ;----------------------------------------------------------------
 ; -- Globals
 ;----------------------------------------------------------------
-Global BSUInitialized = False
-Global BSUIsSteamRunning% = False
+Global BSU_Initialized = False
+Global BSU_IsSteamRunning% = False
 ; -- Interfaces
-Global BSUAppList%, BSUApps%, BSUClient%, BSUController%
-Global BSUFriends%, BSUHTTP%, BSUHTMLSurface%, BSUInventory%
-Global BSUMatchmaking%, BSUMatchmakingServers%, BSUMusic%
-Global BSUMusicRemote%, BSUNetworking%, BSURemoteStorage%
-Global BSUScreenshots%, BSUUGC%, BSUUnifiedMessages%, BSUUser%
-Global BSUUserStats%, BSUUtils%, BSUVideo%
+Global BSU_AppList%, BSU_Apps%, BSU_Client%, BSU_Controller%
+Global BSU_Friends%, BSU_HTTP%, BSU_HTMLSurface%, BSU_Inventory%
+Global BSU_Matchmaking%, BSU_MatchmakingServers%, BSU_Music%
+Global BSU_MusicRemote%, BSU_Networking%, BSU_RemoteStorage%
+Global BSU_Screenshots%, BSU_UGC%, BSU_UnifiedMessages%, BSU_User%
+Global BSU_UserStats%, BSU_Utils%, BSU_Video%
 
 ;----------------------------------------------------------------
 ; -- Types
@@ -127,78 +127,78 @@ End Function
 
 ; -- Steam
 Function BSU_Init()
-	BSUIsSteamRunning = BlitzSteam_IsSteamRunning()
-	If BSUIsSteamRunning Then
-		BlitzSteam_Init()
+	BSU_IsSteamRunning = BS_IsSteamRunning()
+	If BSU_IsSteamRunning Then
+		BS_Init()
 		
-		BSUAppList				= BlitzSteamAppList()
-		BSUApps					= BlitzSteamApps()
-		BSUClient				= BlitzSteamClient()
-		BSUController			= BlitzSteamController()
-		BSUFriends				= BlitzSteamFriends()
-		BSUHTTP					= BlitzSteamHTTP()
-		BSUHTMLSurface			= BlitzSteamHTMLSurface()
-		BSUInventory			= BlitzSteamInventory()
-		BSUMatchmaking			= BlitzSteamMatchmaking()
-		BSUMatchmakingServers	= BlitzSteamMatchmakingServers()
-		BSUMusic				= BlitzSteamMusic()
-		BSUMusicRemote			= BlitzSteamMusicRemote()
-		BSUNetworking			= BlitzSteamNetworking()
-		BSURemoteStorage		= BlitzSteamRemoteStorage()
-		BSUScreenshots			= BlitzSteamScreenshots()
-		BSUUGC					= BlitzSteamUGC()
-		BSUUnifiedMessages		= BlitzSteamUnifiedMessages()
-		BSUUser					= BlitzSteamUser()
-		BSUUserStats			= BlitzSteamUserStats()
-		BSUUtils				= BlitzSteamUtils()
-		BSUVideo				= BlitzSteamVideo()
+		BSU_AppList				= BS_AppList()
+		BSU_Apps					= BS_Apps()
+		BSU_Client				= BS_Client()
+		BSU_Controller			= BS_Controller()
+		BSU_Friends				= BS_Friends()
+		BSU_HTTP					= BS_HTTP()
+		BSU_HTMLSurface			= BS_HTMLSurface()
+		BSU_Inventory			= BS_Inventory()
+		BSU_Matchmaking			= BS_Matchmaking()
+		BSU_MatchmakingServers	= BS_MatchmakingServers()
+		BSU_Music				= BS_Music()
+		BSU_MusicRemote			= BS_MusicRemote()
+		BSU_Networking			= BS_Networking()
+		BSU_RemoteStorage		= BS_RemoteStorage()
+		BSU_Screenshots			= BS_Screenshots()
+		BSU_UGC					= BS_UGC()
+		BSU_UnifiedMessages		= BS_UnifiedMessages()
+		BSU_User					= BS_User()
+		BSU_UserStats			= BS_UserStats()
+		BSU_Utils				= BS_Utils()
+		BSU_Video				= BS_Video()
 		
-		BSUInitialized = True
+		BSU_Initialized = True
 	EndIf
 End Function
 
 Function BSU_Shutdown()
-	If BSUIsSteamRunning
-		BlitzSteam_Shutdown()
-		BSUAppList=0
-		BSUApps=0
-		BSUClient=0
-		BSUController=0
-		BSUFriends=0
-		BSUHTTP=0
-		BSUHTMLSurface=0
-		BSUInitialized=0
-		BSUMatchmaking=0
-		BSUMatchmakingServers=0
-		BSUMusic=0
-		BSUMusicRemote=0
-		BSUNetworking=0
-		BSURemoteStorage=0
-		BSUScreenshots=0
-		BSUUGC=0
-		BSUUnifiedMessages=0
-		BSUUser=0
-		BSUUserStats=0
-		BSUUtils=0
-		BSUVideo=0
+	If BSU_IsSteamRunning
+		BS_Shutdown()
+		BSU_AppList=0
+		BSU_Apps=0
+		BSU_Client=0
+		BSU_Controller=0
+		BSU_Friends=0
+		BSU_HTTP=0
+		BSU_HTMLSurface=0
+		BSU_Initialized=0
+		BSU_Matchmaking=0
+		BSU_MatchmakingServers=0
+		BSU_Music=0
+		BSU_MusicRemote=0
+		BSU_Networking=0
+		BSU_RemoteStorage=0
+		BSU_Screenshots=0
+		BSU_UGC=0
+		BSU_UnifiedMessages=0
+		BSU_User=0
+		BSU_UserStats=0
+		BSU_Utils=0
+		BSU_Video=0
 		
-		BSUInitialized = False
+		BSU_Initialized = False
 	EndIf
 End Function
 
 ; -- SteamAppList
-Function BSUAppList_GetInstalledApps(BankAppIdsStorage=0, BankAppNameStorage=0, BankAppInstallDirStorage=0)
+Function BSU_AppList_GetInstalledApps(BankAppIdsStorage=0, BankAppNameStorage=0, BankAppInstallDirStorage=0)
 	Local BankAppIds, BankAppIdsSz = BSU_APPID_COUNT
 	Local BankAppName, BankAppNameSz = BSU_NAME_LENGTH
 	Local BankAppInstallDir, BankAppInstallDirSz = BSU_INSTALLDIR_LENGTH
 	Local AppCount%, InstalledApp.BSU_App
 	
-	If BSUInitialized Then
+	If BSU_Initialized Then
 		; Clear Installed App List
 		Delete Each BSU_App
 		
 		; Early-Exit to not waste time.
-		If BlitzSteamAppList_GetNumInstalledApps(BSUApps) = 0 Then Return
+		If BS_AppList_GetNumInstalledApps(BSU_Apps) = 0 Then Return
 		
 		If BankAppIdsStorage = 0
 			; Create Temporary storage for AppIds.
@@ -210,7 +210,7 @@ Function BSUAppList_GetInstalledApps(BankAppIdsStorage=0, BankAppNameStorage=0, 
 		EndIf
 		
 		; Request installed apps from Steam.
-		BSU_AppCount = BlitzSteamAppList_GetInstalledApps(BSUAppList, BankAppIds, BankAppIdsSz)
+		BSU_AppCount = BS_AppList_GetInstalledApps(BSU_AppList, BankAppIds, BankAppIdsSz)
 		
 		; We don't need to do this if we don't actually have any apps returned.
 		If BSU_AppCount > 0 Then
@@ -234,8 +234,8 @@ Function BSUAppList_GetInstalledApps(BankAppIdsStorage=0, BankAppNameStorage=0, 
 			For AppIndex = 0 To BSU_AppCount - 1
 				InstalledApp.BSU_App = New BSU_App
 				InstalledApp\AppId = PeekInt(BankAppIds, AppIndex * 4)
-				InstalledApp\Name = BSUAppList_GetAppName(InstalledApp\AppId, BankAppName)
-				InstalledApp\InstallDir = BSUAppList_GetInstallDir(InstalledApp\AppId, BankAppInstallDir)
+				InstalledApp\Name = BSU_AppList_GetAppName(InstalledApp\AppId, BankAppName)
+				InstalledApp\InstallDir = BSU_AppList_GetInstallDir(InstalledApp\AppId, BankAppInstallDir)
 			Next
 			
 			; Free temporary storage for name and installdir.
@@ -248,11 +248,11 @@ Function BSUAppList_GetInstalledApps(BankAppIdsStorage=0, BankAppNameStorage=0, 
 	EndIf
 End Function
 
-Function BSUAppList_GetAppName$(AppID%, BankStorage=0)
+Function BSU_AppList_GetAppName$(AppID%, BankStorage=0)
 	Local Bank, BankSz = BSU_NAME_LENGTH
 	Local AppName$
 	
-	If BSUInitialized Then
+	If BSU_Initialized Then
 		If BankStorage = 0 Then
 			; Create temporary storage.
 			Bank = CreateBank(BankSz)
@@ -263,7 +263,7 @@ Function BSUAppList_GetAppName$(AppID%, BankStorage=0)
 		EndIf
 		
 		; Request App name from Steam.
-		BlitzSteamAppList_GetAppName(BSUAppList, AppID, Bank, BankSz)
+		BS_AppList_GetAppName(BSU_AppList, AppID, Bank, BankSz)
 		
 		; Read returned C-String from Bank.
 		AppName$ = BSU_PeekCString(Bank, 0)
@@ -276,11 +276,11 @@ Function BSUAppList_GetAppName$(AppID%, BankStorage=0)
 	Return AppName
 End Function
 
-Function BSUAppList_GetInstallDir$(AppID%, BankStorage=0)
+Function BSU_AppList_GetInstallDir$(AppID%, BankStorage=0)
 	Local Bank, BankSz = BSU_INSTALLDIR_LENGTH
 	Local AppInstallDir$
 	
-	If BSUInitialized Then
+	If BSU_Initialized Then
 		If BankStorage = 0 Then
 			; Create temporary storage.
 			Bank = CreateBank(BankSz)
@@ -291,7 +291,7 @@ Function BSUAppList_GetInstallDir$(AppID%, BankStorage=0)
 		EndIf
 		
 		; Request App name from Steam.
-		BlitzSteamAppList_GetAppInstallDir(BSUAppList, AppID, Bank, BankSz)
+		BS_AppList_GetAppInstallDir(BSU_AppList, AppID, Bank, BankSz)
 		
 		; Read returned C-String from Bank.
 		AppInstallDir$ = BSU_PeekCString(Bank, 0)
@@ -305,15 +305,15 @@ Function BSUAppList_GetInstallDir$(AppID%, BankStorage=0)
 End Function
 
 ; -- SteamApps
-Function BSUApps_GetDLCData(BankAppIdStorage=0, BankAvailableStorage=0, BankNameStorage=0)
+Function BSU_Apps_GetDLCData(BankAppIdStorage=0, BankAvailableStorage=0, BankNameStorage=0)
 	Local BankAppId%, BankAvailable%
 	Local BankName%, BankNameSz% = BSU_NAME_LENGTH
 	Local DLCCount% = 0
 	
-	If BSUInitialized Then
+	If BSU_Initialized Then
 		Delete Each BSU_DLC
 		
-		BSU_DLCCount = BlitzSteamApps_GetDLCCount(BSUApps)
+		BSU_DLCCount = BS_Apps_GetDLCCount(BSU_Apps)
 		If BSU_DLCCount > 0
 			If BankAppIdStorage = 0 Then
 				; Create temporary storage for AppId.
@@ -342,7 +342,7 @@ Function BSUApps_GetDLCData(BankAppIdStorage=0, BankAvailableStorage=0, BankName
 			
 			Local DLCIndex%
 			For DLCIndex = 0 To BSU_DLCCount - 1
-				BSUApps_GetDLCDataByIndex(DLCIndex, BankAppId, BankAvailable, BankName)
+				BSU_Apps_GetDLCDataByIndex(DLCIndex, BankAppId, BankAvailable, BankName)
 			Next
 			
 			; Free temporary storages.
@@ -353,12 +353,12 @@ Function BSUApps_GetDLCData(BankAppIdStorage=0, BankAvailableStorage=0, BankName
 	EndIf
 End Function
 
-Function BSUApps_GetDLCDataByIndex.BSU_DLC(iDLC%, BankAppIdStorage=0, BankAvailableStorage=0, BankNameStorage=0)
+Function BSU_Apps_GetDLCDataByIndex.BSU_DLC(iDLC%, BankAppIdStorage=0, BankAvailableStorage=0, BankNameStorage=0)
 	Local BankAppId%, BankAvailable%
 	Local BankName%, BankNameSz% = BSU_NAME_LENGTH
 	Local DLC.BSU_DLC
 	
-	If BSUInitialized Then
+	If BSU_Initialized Then
 		If BankAppIdStorage = 0 Then
 			; Create temporary storage for AppId.
 			BankAppId = CreateBank(4)
@@ -385,7 +385,7 @@ Function BSUApps_GetDLCDataByIndex.BSU_DLC(iDLC%, BankAppIdStorage=0, BankAvaila
 		EndIf
 		
 		; Request DLC Data from Steam.
-		If BlitzSteamApps_GetDLCDataByIndex(BSUApps, iDLC, BankAppId, BankAvailable, BankName, BankNameSz)
+		If BS_Apps_GetDLCDataByIndex(BSU_Apps, iDLC, BankAppId, BankAvailable, BankName, BankNameSz)
 			; Create a result DLC object.
 			DLC.BSU_DLC = New BSU_DLC
 			DLC\AppId = PeekInt(BankAppId, 0)
@@ -403,11 +403,11 @@ Function BSUApps_GetDLCDataByIndex.BSU_DLC(iDLC%, BankAppIdStorage=0, BankAvaila
 	Return DLC
 End Function
 
-Function BSUApps_GetCurrentBetaName$(BankNameStorage=0)
+Function BSU_Apps_GetCurrentBetaName$(BankNameStorage=0)
 	Local BankName, BankNameSz = BSU_NAME_LENGTH
 	Local BetaName$ = ""
 	
-	If BSUInitialized Then
+	If BSU_Initialized Then
 		If BankNameStorage = 0 Then
 			; Create temporary storage for name.
 			BankName = CreateBank(BankNameSz)
@@ -418,7 +418,7 @@ Function BSUApps_GetCurrentBetaName$(BankNameStorage=0)
 		EndIf
 		
 		; Request beta name from Steam.
-		BlitzSteamApps_GetCurrentBetaName(BSUApps, BankName, BankNameSz)
+		BS_Apps_GetCurrentBetaName(BSU_Apps, BankName, BankNameSz)
 		
 		; Read returned name.
 		BetaName = BSU_PeekCString(BankName, 0)
@@ -431,11 +431,11 @@ Function BSUApps_GetCurrentBetaName$(BankNameStorage=0)
 	Return BetaName
 End Function
 
-Function BSUApps_GetInstalledDepots(nAppID%, BankDepotStorage=0)
+Function BSU_Apps_GetInstalledDepots(nAppID%, BankDepotStorage=0)
 	Local BankDepot, BankDepotSz = BSU_INSTALLEDDEPOTS_COUNT
 	Local DepotCount
 	
-	If BSUInitialized Then
+	If BSU_Initialized Then
 		Delete Each BSU_Depot
 		
 		If BankDepotStorage = 0 Then
@@ -448,7 +448,7 @@ Function BSUApps_GetInstalledDepots(nAppID%, BankDepotStorage=0)
 		EndIf
 		
 		; Request depots from Steam.
-		BSU_DepotCount = BlitzSteamApps_GetInstalledDepots(BSUApps, nAppID, BankDepot, BankDepotSz)
+		BSU_DepotCount = BS_Apps_GetInstalledDepots(BSU_Apps, nAppID, BankDepot, BankDepotSz)
 		
 		; Read returned depots into objects.
 		Local DepotIndex
@@ -462,11 +462,11 @@ Function BSUApps_GetInstalledDepots(nAppID%, BankDepotStorage=0)
 	EndIf
 End Function
 
-Function BSUApps_GetAppInstallDir$(nAppID%, BankInstallDirStorage=0)
+Function BSU_Apps_GetAppInstallDir$(nAppID%, BankInstallDirStorage=0)
 	Local BankInstallDir, BankInstallDirSz = BSU_INSTALLDIR_LENGTH
 	Local InstallDir$
 	
-	If BSUInitialized Then
+	If BSU_Initialized Then
 		If BankInstallDirStorage = 0 Then
 			; Create temporary storage.
 			BankInstallDir = CreateBank(BankInstallDirSz)
@@ -477,7 +477,7 @@ Function BSUApps_GetAppInstallDir$(nAppID%, BankInstallDirStorage=0)
 		EndIf
 		
 		; Request install dir from Steam.
-		Local InstallDirLen% = BlitzSteamApps_GetAppInstallDir(BSUApps, nAppID, BankInstallDir, BankInstallDirSz)
+		Local InstallDirLen% = BS_Apps_GetAppInstallDir(BSU_Apps, nAppID, BankInstallDir, BankInstallDirSz)
 		
 		; Read returned value.
 		InstallDir = BSU_PeekCString(BankInstallDir, 0)
@@ -489,68 +489,68 @@ Function BSUApps_GetAppInstallDir$(nAppID%, BankInstallDirStorage=0)
 	Return InstallDir$
 End Function
 
-Function BSUApps_GetDLCDownloadProgress#(nAppID%)
+Function BSU_Apps_GetDLCDownloadProgress#(nAppID%)
 	Local Progress# = 1.0
-	If BSUInitialized
+	If BSU_Initialized
 		; Create temporary storage.
 		Local i64_Downloaded, i64_Total
-		i64_Downloaded	= BlitzSteamInt64_New()
-		i64_Total		= BlitzSteamInt64_New()
+		i64_Downloaded	= BU_LongLong_Create()
+		i64_Total		= BU_LongLong_Create()
 		
 		; Request download progress from Steam.
-		If BlitzSteamApps_GetDlcDownloadProgressEx(BSUApps, nAppID, i64_Downloaded, i64_Total) Then
+		If BS_Apps_GetDlcDownloadProgressEx(BSU_Apps, nAppID, i64_Downloaded, i64_Total) Then
 			Local dDownloaded, dTotal
-			dDownloaded = BlitzSteamInt64_ToDouble(i64_Downloaded)
-			dTotal = BlitzSteamInt64_ToDouble(i64_Total)
+			dDownloaded = BU_LongLong_ToDouble(i64_Downloaded)
+			dTotal = BU_LongLong_ToDouble(i64_Total)
 			
-			BlitzSteamDouble_DivP dDownloaded, dTotal
-			Progress = BlitzSteamDouble_ToFloat(dDownloaded)
+			BU_Double_Div(dDownloaded, dTotal)
+			Progress = BU_Double_ToFloat(dDownloaded)
 			
-			BlitzSteamDouble_Destroy dDownloaded
-			BlitzSteamDouble_Destroy dTotal
+			BU_Double_Destroy dDownloaded
+			BU_Double_Destroy dTotal
 		EndIf
 		
 		; Free temporary storage.
-		BlitzSteamInt64_Destroy i64_Downloaded
-		BlitzSteamInt64_Destroy i64_Total
+		BU_LongLong_Destroy i64_Downloaded
+		BU_LongLong_Destroy i64_Total
 	EndIf
 	Return Progress
 End Function
 
 ; -- SteamFriends
-Function BSUFriends_GetFriends(iFriendFlags=BLITZSTEAM_EFriendFlags_All)
-	If BSUInitialized Then
+Function BSU_Friends_GetFriends(iFriendFlags=BS_EFriendFlags_All)
+	If BSU_Initialized Then
 		Delete Each BSU_Friend
 		
-		BSU_FriendCount = BlitzSteamFriends_GetFriendCount(BSUFriends, iFriendFlags)
+		BSU_FriendCount = BS_Friends_GetFriendCount(BSU_Friends, iFriendFlags)
 		If BSU_FriendCount > 0 Then
 			Local FriendIndex
 			For FriendIndex = 0 To BSU_FriendCount - 1
-				Local CSteamID = BlitzSteamFriends_GetFriendByIndex(BSUFriends, FriendIndex, iFriendFlags)
+				Local CSteamID = BS_Friends_GetFriendByIndex(BSU_Friends, FriendIndex, iFriendFlags)
 				Local Friend.BSU_Friend = New BSU_Friend
 				
 				; Store a 'native' version of the SteamID
-				Local SteamID64 = BlitzSteamCSteamID_ConvertToUInt64(CSteamID)
-				Friend\SteamID_L = BlitzSteamInt64_ValueL(SteamID64)
-				Friend\SteamID_R = BlitzSteamInt64_ValueR(SteamID64)
-				BlitzSteamInt64_Destroy(SteamID64)
+				Local SteamID64 = BS_CSteamID_ConvertToUInt64(CSteamID)
+				Friend\SteamID_L = BU_LongLong_ToLongHigh(SteamID64)
+				Friend\SteamID_R = BU_LongLong_ToLongLow(SteamID64)
+				BU_LongLong_Destroy(SteamID64)
 				
 				; Names
-				Friend\Name = BlitzSteamFriends_GetFriendPersonaName(BSUFriends, CSteamID)
-				Friend\NickName = BlitzSteamFriends_GetPlayerNickname(BSUFriends, CSteamID)
+				Friend\Name = BS_Friends_GetFriendPersonaName(BSU_Friends, CSteamID)
+				Friend\NickName = BS_Friends_GetPlayerNickname(BSU_Friends, CSteamID)
 				
 				; Other Stuff
 				Friend\Index = FriendIndex
-				Friend\Relationship = BlitzSteamFriends_GetFriendRelationship(BSUFriends, CSteamID)
-				Friend\State = BlitzSteamFriends_GetFriendPersonaState(BSUFriends, CSteamID)
-				Friend\SteamLevel = BlitzSteamFriends_GetFriendSteamLevel(BSUFriends, CSteamID)
+				Friend\Relationship = BS_Friends_GetFriendRelationship(BSU_Friends, CSteamID)
+				Friend\State = BS_Friends_GetFriendPersonaState(BSU_Friends, CSteamID)
+				Friend\SteamLevel = BS_Friends_GetFriendSteamLevel(BSU_Friends, CSteamID)
 				
-				BlitzSteamCSteamID_Destroy(CSteamID)
+				BS_CSteamID_Destroy(CSteamID)
 			Next
 		EndIf
 	EndIf
 End Function
 
 ;~IDEal Editor Parameters:
-;~F#52#67#80#9F#BD#FA#116#133#163#195#1B1#1D0#1EB
+;~F#52#67#80#9F#BD#FA#116#133#163#195#1B1#1D0
 ;~C#Blitz3D

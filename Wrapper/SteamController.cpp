@@ -1,5 +1,5 @@
-//	BlitzSteam - Steam wrapper for Blitz.
-//	Copyright (C) 2015 Project Kube (Michael Fabian Dirks)
+//	BS_ - Steam wrapper for Blitz.
+//	Copyright (C) 2015 Xaymar (Michael Fabian Dirks)
 //
 //	This program is free software: you can redistribute it and/or modify
 //	it under the terms of the GNU Lesser General Public License as
@@ -16,32 +16,34 @@
 
 #include "dllmain.h"
 
-DLL_EXPORT uint32_t DLL_CALL BlitzSteamController_Init(ISteamController* lpSteamController, const char* pchAbsolutePathToControllerConfigVDF) {
-	return lpSteamController->Init(pchAbsolutePathToControllerConfigVDF);
+DLL_EXPORT uint32_t DLL_CALL BS_Controller_Init(ISteamController* lpSteamController) {
+	return lpSteamController->Init();
 }
-#pragma comment(linker, "/EXPORT:BlitzSteamController_Init=_BlitzSteamController_Init@8")
+#pragma comment(linker, "/EXPORT:BS_Controller_Init=_BS_Controller_Init@4")
 
-DLL_EXPORT uint32_t DLL_CALL BlitzSteamController_Shutdown(ISteamController* lpSteamController) {
+DLL_EXPORT uint32_t DLL_CALL BS_Controller_Shutdown(ISteamController* lpSteamController) {
 	return lpSteamController->Shutdown();
 }
-#pragma comment(linker, "/EXPORT:BlitzSteamController_Shutdown=_BlitzSteamController_Shutdown@4")
+#pragma comment(linker, "/EXPORT:BS_Controller_Shutdown=_BS_Controller_Shutdown@4")
 
-DLL_EXPORT void DLL_CALL BlitzSteamController_RunFrame(ISteamController* lpSteamController) {
+DLL_EXPORT void DLL_CALL BS_Controller_RunFrame(ISteamController* lpSteamController) {
 	lpSteamController->RunFrame();
 }
-#pragma comment(linker, "/EXPORT:BlitzSteamController_RunFrame=_BlitzSteamController_RunFrame@4")
+#pragma comment(linker, "/EXPORT:BS_Controller_RunFrame=_BS_Controller_RunFrame@4")
 
-DLL_EXPORT uint32_t DLL_CALL BlitzSteamController_GetControllerState(ISteamController* lpSteamController, uint32_t unControllerIndex, SteamControllerState_t *pState) {
-	return lpSteamController->GetControllerState(unControllerIndex, pState);
+#if 0
+DLL_EXPORT uint32_t DLL_CALL BS_Controller_GetControllerState( ISteamController* lpSteamController, uint32_t unControllerIndex, SteamControllerState_t *pState ) {
+	return lpSteamController->GetControllerState( unControllerIndex, pState );
 }
-#pragma comment(linker, "/EXPORT:BlitzSteamController_GetControllerState=_BlitzSteamController_GetControllerState@12")
+#pragma comment(linker, "/EXPORT:BS_Controller_GetControllerState=_BS_Controller_GetControllerState@12")
 
-DLL_EXPORT void DLL_CALL BlitzSteamController_TriggerHapticPulse(ISteamController* lpSteamController, uint32_t unControllerIndex, ESteamControllerPad eTargetPad, uint32_t usDurationMicroSec) {
-	lpSteamController->TriggerHapticPulse(unControllerIndex, eTargetPad, usDurationMicroSec);
+DLL_EXPORT void DLL_CALL BS_Controller_TriggerHapticPulse( ISteamController* lpSteamController, uint32_t unControllerIndex, ESteamControllerPad eTargetPad, uint32_t usDurationMicroSec ) {
+	lpSteamController->TriggerHapticPulse( unControllerIndex, eTargetPad, usDurationMicroSec );
 }
-#pragma comment(linker, "/EXPORT:BlitzSteamController_TriggerHapticPulse=_BlitzSteamController_TriggerHapticPulse@16")
+#pragma comment(linker, "/EXPORT:BS_Controller_TriggerHapticPulse=_BS_Controller_TriggerHapticPulse@16")
 
-DLL_EXPORT void DLL_CALL BlitzSteamController_SetOverrideMode(ISteamController* lpSteamController, const char *pchMode) {
-	lpSteamController->SetOverrideMode(pchMode);
+DLL_EXPORT void DLL_CALL BS_Controller_SetOverrideMode( ISteamController* lpSteamController, const char *pchMode ) {
+	lpSteamController->SetOverrideMode( pchMode );
 }
-#pragma comment(linker, "/EXPORT:BlitzSteamController_SetOverrideMode=_BlitzSteamController_SetOverrideMode@8")
+#pragma comment(linker, "/EXPORT:BS_Controller_SetOverrideMode=_BS_Controller_SetOverrideMode@8")  
+#endif // 0
