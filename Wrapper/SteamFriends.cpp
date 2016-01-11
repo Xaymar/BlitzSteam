@@ -1,4 +1,4 @@
-//	BS_ - Steam wrapper for Blitz.
+//	BlitzSteam - Steam wrapper for Blitz
 //	Copyright (C) 2015 Xaymar (Michael Fabian Dirks)
 //
 //	This program is free software: you can redistribute it and/or modify
@@ -158,8 +158,8 @@ DLL_EXPORT uint32_t DLL_CALL BS_Friends_IsUserInSource(ISteamFriends* lpSteamFri
 }
 #pragma comment(linker, "/EXPORT:BS_Friends_IsUserInSource=_BS_Friends_IsUserInSource@12")
 
-DLL_EXPORT void DLL_CALL BS_Friends_SetInGameVoiceSpeaking(ISteamFriends* lpSteamFriends, CSteamID* steamIDUser, bool bSpeaking) {
-	lpSteamFriends->SetInGameVoiceSpeaking(*steamIDUser, bSpeaking);
+DLL_EXPORT void DLL_CALL BS_Friends_SetInGameVoiceSpeaking(ISteamFriends* lpSteamFriends, CSteamID* steamIDUser, uint32_t bSpeaking) {
+	lpSteamFriends->SetInGameVoiceSpeaking(*steamIDUser, bSpeaking != 0);
 }
 #pragma comment(linker, "/EXPORT:BS_Friends_SetInGameVoiceSpeaking=_BS_Friends_SetInGameVoiceSpeaking@12")
 
@@ -208,8 +208,8 @@ DLL_EXPORT int32_t DLL_CALL BS_Friends_GetLargeFriendAvatar(ISteamFriends* lpSte
 }
 #pragma comment(linker, "/EXPORT:BS_Friends_GetLargeFriendAvatar=_BS_Friends_GetLargeFriendAvatar@8")
 
-DLL_EXPORT uint32_t DLL_CALL BS_Friends_RequestUserInformation(ISteamFriends* lpSteamFriends, CSteamID* steamIDUser, bool bRequireNameOnly) {
-	return lpSteamFriends->RequestUserInformation(*steamIDUser, bRequireNameOnly);
+DLL_EXPORT uint32_t DLL_CALL BS_Friends_RequestUserInformation(ISteamFriends* lpSteamFriends, CSteamID* steamIDUser, uint32_t bRequireNameOnly) {
+	return lpSteamFriends->RequestUserInformation(*steamIDUser, bRequireNameOnly != 0);
 }
 #pragma comment(linker, "/EXPORT:BS_Friends_RequestUserInformation=_BS_Friends_RequestUserInformation@12")
 
@@ -347,8 +347,8 @@ DLL_EXPORT uint32_t DLL_CALL BS_Friends_CloseClanChatWindowInSteam(ISteamFriends
 }
 #pragma comment(linker, "/EXPORT:BS_Friends_CloseClanChatWindowInSteam=_BS_Friends_CloseClanChatWindowInSteam@8")
 
-DLL_EXPORT uint32_t DLL_CALL BS_Friends_SetListenForFriendsMessages(ISteamFriends* lpSteamFriends, bool bInterceptEnabled) {
-	return lpSteamFriends->SetListenForFriendsMessages(bInterceptEnabled);
+DLL_EXPORT uint32_t DLL_CALL BS_Friends_SetListenForFriendsMessages(ISteamFriends* lpSteamFriends, uint32_t bInterceptEnabled) {
+	return lpSteamFriends->SetListenForFriendsMessages(bInterceptEnabled != 0);
 }
 #pragma comment(linker, "/EXPORT:BS_Friends_SetListenForFriendsMessages=_BS_Friends_SetListenForFriendsMessages@8")
 

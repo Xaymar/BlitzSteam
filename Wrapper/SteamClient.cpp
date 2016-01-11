@@ -1,4 +1,4 @@
-//	BS_ - Steam wrapper for Blitz.
+//	BlitzSteam - Steam wrapper for Blitz
 //	Copyright (C) 2015 Xaymar (Michael Fabian Dirks)
 //
 //	This program is free software: you can redistribute it and/or modify
@@ -21,7 +21,7 @@ DLL_EXPORT HSteamPipe DLL_CALL BS_Client_CreateSteamPipe(ISteamClient* lpSteamCl
 }
 #pragma comment(linker, "/EXPORT:BS_Client_CreateSteamPipe=_BS_Client_CreateSteamPipe@4")
 
-DLL_EXPORT bool DLL_CALL BS_Client_ReleaseSteamPipe(ISteamClient* lpSteamClient, HSteamPipe hSteamPipe) {
+DLL_EXPORT uint32_t DLL_CALL BS_Client_ReleaseSteamPipe(ISteamClient* lpSteamClient, HSteamPipe hSteamPipe) {
 	return lpSteamClient->BReleaseSteamPipe(hSteamPipe);
 }
 #pragma comment(linker, "/EXPORT:BS_Client_ReleaseSteamPipe=_BS_Client_ReleaseSteamPipe@8")

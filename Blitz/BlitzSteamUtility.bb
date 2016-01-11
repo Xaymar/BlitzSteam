@@ -1,4 +1,4 @@
-;	BS_ - Steam wrapper for Blitz.
+;	BlitzSteam - Steam wrapper for Blitz
 ;	Copyright (C) 2015 Xaymar (Michael Fabian Dirks)
 ;
 ;	This program is free software: you can redistribute it and/or modify

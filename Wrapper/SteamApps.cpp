@@ -1,4 +1,4 @@
-//	BS_ - Steam wrapper for Blitz.
+//	BlitzSteam - Steam wrapper for Blitz
 //	Copyright (C) 2015 Xaymar (Michael Fabian Dirks)
 //
 //	This program is free software: you can redistribute it and/or modify
@@ -72,8 +72,8 @@ DLL_EXPORT uint32_t DLL_CALL BS_Apps_GetDLCCount(ISteamApps* lpSteamApps) {
 }
 #pragma comment(linker, "/EXPORT:BS_Apps_GetDLCCount=_BS_Apps_GetDLCCount@4")
 
-DLL_EXPORT uint32_t DLL_CALL BS_Apps_GetDLCDataByIndex(ISteamApps* lpSteamApps, uint32_t iDLC, AppId_t *pAppId, bool *pbAvailable, char *pchName, uint32_t cchNameBufferSize) {
-	return lpSteamApps->BGetDLCDataByIndex(iDLC, pAppId, pbAvailable, pchName, cchNameBufferSize);
+DLL_EXPORT uint32_t DLL_CALL BS_Apps_GetDLCDataByIndex(ISteamApps* lpSteamApps, uint32_t iDLC, AppId_t *pAppId, bool* pbAvailable, char *pchName, uint32_t cchNameBufferSize) {
+	return lpSteamApps->BGetDLCDataByIndex(iDLC, pAppId, (bool*)pbAvailable, pchName, cchNameBufferSize);
 }
 #pragma comment(linker, "/EXPORT:BS_Apps_GetDLCDataByIndex=_BS_Apps_GetDLCDataByIndex@24")
 
@@ -97,8 +97,8 @@ DLL_EXPORT uint32_t DLL_CALL BS_Apps_GetCurrentBetaName(ISteamApps* lpSteamApps,
 }
 #pragma comment(linker, "/EXPORT:BS_Apps_GetCurrentBetaName=_BS_Apps_GetCurrentBetaName@12")
 
-DLL_EXPORT uint32_t DLL_CALL BS_Apps_MarkContentCorrupt(ISteamApps* lpSteamApps, bool bMissingFilesOnly) {
-	return lpSteamApps->MarkContentCorrupt(bMissingFilesOnly);
+DLL_EXPORT uint32_t DLL_CALL BS_Apps_MarkContentCorrupt(ISteamApps* lpSteamApps, uint32_t bMissingFilesOnly) {
+	return lpSteamApps->MarkContentCorrupt(bMissingFilesOnly != 0);
 }
 #pragma comment(linker, "/EXPORT:BS_Apps_MarkContentCorrupt=_BS_Apps_MarkContentCorrupt@8")
 

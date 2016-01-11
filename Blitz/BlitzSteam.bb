@@ -1,4 +1,4 @@
-;	BS_ - Steam wrapper for Blitz.
+;	BlitzSteam - Steam wrapper for Blitz
 ;	Copyright (C) 2015 Xaymar (Michael Fabian Dirks)
 ;
 ;	This program is free software: you can redistribute it and/or modify
@@ -254,3 +254,115 @@ Const BS_EUserHasLicenseResult_HasLicense					= 0 ; User has a license for speci
 Const BS_EUserHasLicenseResult_DoesNotHaveLicense			= 1 ; User does not have a license for the specified app
 Const BS_EUserHasLicenseResult_NoAuth						= 2 ; User has not been authenticated
 
+; SteamUserStats ----------------------------------------------------------------
+Const BS_cchStatNameMax										= 128
+Const BS_cchLeaderboardNameMax								= 128
+Const BS_k_cLeaderboardDetailsMax							= 64
+
+Const BS_ELeaderboardDataRequest_Global						= 0
+Const BS_ELeaderboardDataRequest_GlobalAroundUser			= 1
+Const BS_ELeaderboardDataRequest_Friends					= 2
+Const BS_ELeaderboardDataRequest_Users						= 3
+
+Const BS_ELeaderboardSortMethod_None						= 0
+Const BS_ELeaderboardSortMethod_Ascending					= 1 ; top-score is lowest number
+Const BS_ELeaderboardSortMethod_Descending					= 2	; top-score is highest number
+
+Const BS_ELeaderboardDisplayType_None						= 0
+Const BS_ELeaderboardDisplayType_Numeric					= 1 ; simple numerical score
+Const BS_ELeaderboardDisplayType_TimeSeconds				= 2 ; the score represents a time, in seconds
+Const BS_ELeaderboardDisplayType_TimeMilliSeconds			= 3 ; the score represents a time, in milliseconds
+
+Const BS_ELeaderboardUploadScoreMethod_None					= 0
+Const BS_ELeaderboardUploadScoreMethod_KeepBest				= 1 ; Leaderboard will keep user's best score
+Const BS_ELeaderboardUploadScoreMethod_ForceUpdate			= 2 ; Leaderboard will always replace score with specified
+
+Type BS_LeaderboardEntry
+	Field SteamId_High%, SteamId_Low%
+	Field nGlobalRank%
+	Field nScore%
+	Field cDetails%
+	Field hUGC_High%, hUGC_Low%
+End Type
+
+Const BS_CALLBACK_UserStatsReceived							= BS_ECallback_SteamUserStatsCallbacks + 1
+Type BS_UserStatsReceived
+	Field nGameId_High%, nGameId_Low%						; Game these stats are for
+	Field eResult%											; Success / error fetching the stats
+	Field steamIDUser_High%, steamIDUser_Low%				; The user for whom the stats are retrieved for
+End Type
+
+Const BS_CALLBACK_UserStatsStored							= BS_ECallback_SteamUserStatsCallbacks + 2
+Type BS_UserStatsStored
+	Field nGameId_High%, nGameId_Low%						; Game these stats are for
+	Field eResult%											; Success / error 
+End Type
+
+Const BS_CALLBACK_UserAchievementStored						= BS_ECallback_SteamUserStatsCallbacks + 3
+Type BS_UserAchievementStored
+	Field nGameId_High%, nGameId_Low%						; Game this is for
+	Field bGroupAchievement%								; if this is a "group" achievement
+	Field rgchAchievementName[BS_cchStatNameMax]			; name of the achievement
+	Field nCurProgress										; current progress towards the achievement
+	Field nMaxProgress										; "out of" this many
+End Type
+
+Const BS_CALLBACK_LeaderboardFindResult						= BS_ECallback_SteamUserStatsCallbacks + 4
+Type BS_LeaderboardFindResult
+	Field hSteamLeaderboard_High%, hSteamLeaderboard_Low%	;	// handle to the leaderboard serarched for, 0 if no leaderboard found
+	Field bLeaderboardFound%								;				// 0 if no leaderboard found
+End Type
+
+Const BS_CALLBACK_LeaderboardScoresDownloaded				= BS_ECallback_SteamUserStatsCallbacks + 5
+Type BS_LeaderboardScoresDownloaded
+	Field hSteamLeaderboard_High, hSteamLeaderboard_Low		;
+	Field hSteamLeaderboardEntries_High, hSteamLeaderboardEntries_Low; the handle to pass into GetDownloadedLeaderboardEntries()
+	Field cEntryCount										; the number of entries downloaded
+End Type
+
+Const BS_CALLBACK_LeaderboardScoreUploaded					= BS_ECallback_SteamUserStatsCallbacks + 6
+Type BS_LeaderboardScoreUploaded
+	Field bSuccess											; 1 if the call was successful
+	Field hSteamLeaderboard_High, hSteamLeaderboard_Low		; the leaderboard handle that was
+	Field nScore											; the score that was attempted to set
+	Field bScoreChanged										; true if the score in the leaderboard change, false if the existing score was better
+	Field nGlobalRankNew									; the new global rank of the user in this leaderboard
+	Field nGlobalRankPrevious								; the previous global rank of the user in this leaderboard; 0 if the user had no existing entry in the leaderboard
+End Type
+
+Const BS_CALLBACK_NumberOfCurrentPlayers					= BS_ECallback_SteamUserStatsCallbacks + 7
+Type BS_NumberOfCurrentPlayers
+	Field bSuccess											; 1 if the call was successful
+	Field cPlayers											; Number of players currently playing
+End Type
+
+Const BS_CALLBACK_UserStatsUnloaded							= BS_ECallback_SteamUserStatsCallback + 8
+Type BS_UserStatsUnloaded
+	Field steamIDUser_High, steamIDUser_Low					; User whose stats have been unloaded
+End Type
+
+Const BS_CALLBACK_UserAchievementIconFetched				= BS_ECallback_SteamUserStatsCallback + 9
+Type BS_UserAchievementIconFetched
+	Field nGameID_High, nGameID_Low							; Game this is for
+	Field rgchAchievementName[BS_cchStatNameMax]			; name of the achievement
+	Field bAchieved											; Is the icon for the achieved or not achieved version?
+	Field nIconHandle										; Handle to the image, which can be used in SteamUtils()->GetImageRGBA(), 0 means no image is set for the achievement
+End Type
+
+Const BS_CALLBACK_GlobalAchievementPercentagesReady			= BS_ECallback_SteamUserStatsCallback + 10
+Type BS_GlobalAchievementPercentagesReady
+	Field nGameID_High, nGameID_Low							; Game this is for
+	Field eResult											; Result of the operation
+End Type
+
+Const BS_CALLBACK_LeaderboardUGCSet							= BS_ECallback_SteamUserStatsCallback + 11
+Type BS_LeaderboardUGCSet
+	Field eResult											; The result of the operation
+	Field hSteamLeaderboard_High, hSteamLeaderboard_Low		; the leaderboard handle that was
+End Type
+
+Const BS_CALLBACK_GlobalStatsReceived						= BS_ECallback_SteamUserStatsCallback + 12
+Type BS_GlobalStatsReceived
+	Field nGameID_High, nGameId_Low							; Game global stats were requested for
+	Field eResult											; The result of the request
+End Type

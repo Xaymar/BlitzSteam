@@ -1,4 +1,4 @@
-//	BS_ - Steam wrapper for Blitz.
+//	BlitzSteam - Steam wrapper for Blitz
 //	Copyright (C) 2015 Xaymar (Michael Fabian Dirks)
 //
 //	This program is free software: you can redistribute it and/or modify
@@ -16,7 +16,7 @@
 
 #include "dllmain.h"
 
-bool WINAPI DllMain(HINSTANCE hinstDLL, DWORD fdwReason, LPVOID lpvReserved) {
+uint32_t WINAPI DllMain(HINSTANCE hinstDLL, DWORD fdwReason, LPVOID lpvReserved) {
 	switch (fdwReason) {
 		case DLL_PROCESS_ATTACH:
 			break;
