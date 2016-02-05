@@ -14,20 +14,19 @@
 //	You should have received a copy of the GNU Lesser General Public License
 //	along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-// STL Exceptions
-#include <exception>
-#include <stdexcept>
+#include "BlitzSteam.h"
 
-// Memory Management
-#include <memory>
+uint32_t WINAPI DllMain(HINSTANCE hinstDLL, DWORD fdwReason, LPVOID lpvReserved) {
+	switch (fdwReason) {
+		case DLL_PROCESS_ATTACH:
+			break;
+		case DLL_PROCESS_DETACH:
+			break;
+		case DLL_THREAD_ATTACH:
+			break;
+		case DLL_THREAD_DETACH:
+			break;
+	}
 
-// Platform specific: Windows
-#include <windows.h>
-
-// Macros
-#define DLL_EXPORT extern "C" //__declspec(dllexport)
-#define DLL_METHOD extern "C"
-#define DLL_CALL __stdcall
-
-// Steam
-#include "SteamworksSDK/public/steam/steam_api.h"
+	return true;
+}

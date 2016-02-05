@@ -14,15 +14,14 @@
 //	You should have received a copy of the GNU Lesser General Public License
 //	along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-#include "BlitzSteam.h"
+#include "Helper.h"
 
-DLL_FUNCTION(ISteamInventory*) BS_Inventory() {
-	return SteamInventory();
+DLL_FUNCTION(const char*) BS_Helper_FormatUnixTime(uint32_t unTime, const char* pchFormat) {
+	char* output = new char[strlen(pchFormat) * 4];
+	time_t t = unTime;
+	struct tm *tm = localtime(&t);
+	strftime(output, sizeof(output), pchFormat, tm);
+	delete tm;
+	return output;
 }
-#pragma comment(linker, "/EXPORT:BS_Inventory=_BS_Inventory@0")
-
-DLL_FUNCTION(ISteamInventory*) BS_GameServerInventory() {
-#pragma comment(linker, "/EXPORT:BS_GameServerInventory=_BS_GameServerInventory@0")
-	return SteamGameServerInventory();
-}
-
+#pragma comment(linker, "/EXPORT:BS_Helper_FormatUnixTime=_BS_Helper_FormatUnixTime@8")

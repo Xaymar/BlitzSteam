@@ -14,13 +14,13 @@
 //	You should have received a copy of the GNU Lesser General Public License
 //	along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-#include "dllmain.h"
+#pragma once
 
-typedef uint32_t(__stdcall *BP_Function0_t)();
-typedef uint32_t(__stdcall *BP_Function1_t)(uint32_t);
-typedef uint32_t(__stdcall *BP_Function2_t)(uint32_t, uint32_t);
-typedef uint32_t(__stdcall *BP_Function3_t)(uint32_t, uint32_t, uint32_t);
-typedef uint32_t(__stdcall *BP_Function4_t)(uint32_t, uint32_t, uint32_t, uint32_t);
+typedef void*(__stdcall *BP_Function0_t)();
+typedef void*(__stdcall *BP_Function1_t)(uint32_t);
+typedef void*(__stdcall *BP_Function2_t)(uint32_t, uint32_t);
+typedef void*(__stdcall *BP_Function3_t)(uint32_t, uint32_t, uint32_t);
+typedef void*(__stdcall *BP_Function4_t)(uint32_t, uint32_t, uint32_t, uint32_t);
 
 #define BP_CallFunction0(ptr) ((BP_Function0_t)ptr)()
 #define BP_CallFunction1(ptr, p1) ((BP_Function1_t)ptr)(p1)

@@ -14,43 +14,44 @@
 //	You should have received a copy of the GNU Lesser General Public License
 //	along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-#include "dllmain.h"
+#pragma once
+#include "BlitzSteam.h"
 
-DLL_EXPORT CSteamID* DLL_CALL BS_CSteamID_New();
-DLL_EXPORT CSteamID* DLL_CALL BS_CSteamID_FromID(uint32_t unAccountID, EUniverse eUniverse, EAccountType eAccountType);
-DLL_EXPORT CSteamID* DLL_CALL BS_CSteamID_FromIDInstance(uint32_t unAccountID, uint32_t unInstance, EUniverse eUniverse, EAccountType eAccountType);
-DLL_EXPORT CSteamID* DLL_CALL BS_CSteamID_FromSteamID(uint64_t* ulSteamID);
-DLL_EXPORT CSteamID* DLL_CALL BS_CSteamID_Copy(CSteamID* pSteamID);
-DLL_EXPORT void DLL_CALL BS_CSteamID_Destroy(CSteamID* pSteamID);
-DLL_EXPORT void DLL_CALL BS_CSteamID_Set(CSteamID* pSteamID, uint32_t unAccountID, EUniverse eUniverse, EAccountType eAccountType);
-DLL_EXPORT void DLL_CALL BS_CSteamID_InstancedSet(CSteamID* pSteamID, uint32_t unAccountID, uint32_t unInstance, EUniverse eUniverse, EAccountType eAccountType);
-DLL_EXPORT void DLL_CALL BS_CSteamID_FullSet(CSteamID* pSteamID, uint64_t* ulIdentifier, EUniverse eUniverse, EAccountType eAccountType);
-DLL_EXPORT void DLL_CALL BS_CSteamID_SetFromUInt64(CSteamID* pSteamID, uint64_t* ulSteamID);
-DLL_EXPORT void DLL_CALL BS_CSteamID_Clear(CSteamID* pSteamID);
-DLL_EXPORT uint64_t* DLL_CALL BS_CSteamID_ConvertToUInt64(CSteamID* pSteamID);
-DLL_EXPORT uint64_t* DLL_CALL BS_CSteamID_GetStaticAccountKey(CSteamID* pSteamID);
-DLL_EXPORT void DLL_CALL BS_CSteamID_CreateBlankAnonLogon(CSteamID* pSteamID, EUniverse eUniverse);
-DLL_EXPORT void DLL_CALL BS_CSteamID_CreateBlankAnonUserLogon(CSteamID* pSteamID, EUniverse eUniverse);
-DLL_EXPORT uint32_t DLL_CALL BS_CSteamID_BlankAnonAccount(CSteamID* pSteamID);
-DLL_EXPORT uint32_t DLL_CALL BS_CSteamID_GameServerAccount(CSteamID* pSteamID);
-DLL_EXPORT uint32_t DLL_CALL BS_CSteamID_PersistentGameServerAccount(CSteamID* pSteamID);
-DLL_EXPORT uint32_t DLL_CALL BS_CSteamID_AnonGameServerAccount(CSteamID* pSteamID);
-DLL_EXPORT uint32_t DLL_CALL BS_CSteamID_ContentServerAccount(CSteamID* pSteamID);
-DLL_EXPORT uint32_t DLL_CALL BS_CSteamID_ClanAccount(CSteamID* pSteamID);
-DLL_EXPORT uint32_t DLL_CALL BS_CSteamID_ChatAccount(CSteamID* pSteamID);
-DLL_EXPORT uint32_t DLL_CALL BS_CSteamID_IsLobby(CSteamID* pSteamID);
-DLL_EXPORT uint32_t DLL_CALL BS_CSteamID_IndividualAccount(CSteamID* pSteamID);
-DLL_EXPORT uint32_t DLL_CALL BS_CSteamID_AnonAccount(CSteamID* pSteamID);
-DLL_EXPORT uint32_t DLL_CALL BS_CSteamID_AnonUserAccount(CSteamID* pSteamID);
-DLL_EXPORT uint32_t DLL_CALL BS_CSteamID_ConsoleUserAccount(CSteamID* pSteamID);
-DLL_EXPORT void DLL_CALL BS_CSteamID_SetAccountID(CSteamID* pSteamID, AccountID_t unAccountID);
-DLL_EXPORT void DLL_CALL BS_CSteamID_SetAccountInstance(CSteamID* pSteamID, uint32_t unInstance);
-DLL_EXPORT void DLL_CALL BS_CSteamID_ClearIndividualInstance(CSteamID* pSteamID);
-DLL_EXPORT uint32_t DLL_CALL BS_CSteamID_HasNoIndividualInstance(CSteamID* pSteamID);
-DLL_EXPORT AccountID_t DLL_CALL BS_CSteamID_GetAccountID(CSteamID* pSteamID);
-DLL_EXPORT uint32_t DLL_CALL BS_CSteamID_GetAccountInstance(CSteamID* pSteamID);
-DLL_EXPORT EAccountType DLL_CALL BS_CSteamID_GetEAccountType(CSteamID* pSteamID);
-DLL_EXPORT EUniverse DLL_CALL BS_CSteamID_GetEUniverse(CSteamID* pSteamID);
-DLL_EXPORT void DLL_CALL BS_CSteamID_SetEUniverse(CSteamID* pSteamID, EUniverse eUniverse);
-DLL_EXPORT uint32_t DLL_CALL BS_CSteamID_IsValid(CSteamID* pSteamID);
-DLL_EXPORT uint32_t DLL_CALL BS_CSteamID_Compare(CSteamID* pSteamID, CSteamID* pSteamIDOther);
+DLL_FUNCTION(CSteamID*) BS_CSteamID_New();
+DLL_FUNCTION(CSteamID*) BS_CSteamID_FromID(uint32_t unAccountID, EUniverse eUniverse, EAccountType eAccountType);
+DLL_FUNCTION(CSteamID*) BS_CSteamID_FromIDInstance(uint32_t unAccountID, uint32_t unInstance, EUniverse eUniverse, EAccountType eAccountType);
+DLL_FUNCTION(CSteamID*) BS_CSteamID_FromSteamID(uint64_t* ulSteamID);
+DLL_FUNCTION(CSteamID*) BS_CSteamID_Copy(CSteamID* pSteamID);
+DLL_FUNCTION(void) BS_CSteamID_Destroy(CSteamID* pSteamID);
+DLL_FUNCTION(void) BS_CSteamID_Set(CSteamID* pSteamID, uint32_t unAccountID, EUniverse eUniverse, EAccountType eAccountType);
+DLL_FUNCTION(void) BS_CSteamID_InstancedSet(CSteamID* pSteamID, uint32_t unAccountID, uint32_t unInstance, EUniverse eUniverse, EAccountType eAccountType);
+DLL_FUNCTION(void) BS_CSteamID_FullSet(CSteamID* pSteamID, uint64_t* ulIdentifier, EUniverse eUniverse, EAccountType eAccountType);
+DLL_FUNCTION(void) BS_CSteamID_SetFromUInt64(CSteamID* pSteamID, uint64_t* ulSteamID);
+DLL_FUNCTION(void) BS_CSteamID_Clear(CSteamID* pSteamID);
+DLL_FUNCTION(uint64_t*) BS_CSteamID_ConvertToUInt64(CSteamID* pSteamID);
+DLL_FUNCTION(uint64_t*) BS_CSteamID_GetStaticAccountKey(CSteamID* pSteamID);
+DLL_FUNCTION(void) BS_CSteamID_CreateBlankAnonLogon(CSteamID* pSteamID, EUniverse eUniverse);
+DLL_FUNCTION(void) BS_CSteamID_CreateBlankAnonUserLogon(CSteamID* pSteamID, EUniverse eUniverse);
+DLL_FUNCTION(uint32_t) BS_CSteamID_BlankAnonAccount(CSteamID* pSteamID);
+DLL_FUNCTION(uint32_t) BS_CSteamID_GameServerAccount(CSteamID* pSteamID);
+DLL_FUNCTION(uint32_t) BS_CSteamID_PersistentGameServerAccount(CSteamID* pSteamID);
+DLL_FUNCTION(uint32_t) BS_CSteamID_AnonGameServerAccount(CSteamID* pSteamID);
+DLL_FUNCTION(uint32_t) BS_CSteamID_ContentServerAccount(CSteamID* pSteamID);
+DLL_FUNCTION(uint32_t) BS_CSteamID_ClanAccount(CSteamID* pSteamID);
+DLL_FUNCTION(uint32_t) BS_CSteamID_ChatAccount(CSteamID* pSteamID);
+DLL_FUNCTION(uint32_t) BS_CSteamID_IsLobby(CSteamID* pSteamID);
+DLL_FUNCTION(uint32_t) BS_CSteamID_IndividualAccount(CSteamID* pSteamID);
+DLL_FUNCTION(uint32_t) BS_CSteamID_AnonAccount(CSteamID* pSteamID);
+DLL_FUNCTION(uint32_t) BS_CSteamID_AnonUserAccount(CSteamID* pSteamID);
+DLL_FUNCTION(uint32_t) BS_CSteamID_ConsoleUserAccount(CSteamID* pSteamID);
+DLL_FUNCTION(void) BS_CSteamID_SetAccountID(CSteamID* pSteamID, AccountID_t unAccountID);
+DLL_FUNCTION(void) BS_CSteamID_SetAccountInstance(CSteamID* pSteamID, uint32_t unInstance);
+DLL_FUNCTION(void) BS_CSteamID_ClearIndividualInstance(CSteamID* pSteamID);
+DLL_FUNCTION(uint32_t) BS_CSteamID_HasNoIndividualInstance(CSteamID* pSteamID);
+DLL_FUNCTION(AccountID_t) BS_CSteamID_GetAccountID(CSteamID* pSteamID);
+DLL_FUNCTION(uint32_t) BS_CSteamID_GetAccountInstance(CSteamID* pSteamID);
+DLL_FUNCTION(EAccountType) BS_CSteamID_GetEAccountType(CSteamID* pSteamID);
+DLL_FUNCTION(EUniverse) BS_CSteamID_GetEUniverse(CSteamID* pSteamID);
+DLL_FUNCTION(void) BS_CSteamID_SetEUniverse(CSteamID* pSteamID, EUniverse eUniverse);
+DLL_FUNCTION(uint32_t) BS_CSteamID_IsValid(CSteamID* pSteamID);
+DLL_FUNCTION(uint32_t) BS_CSteamID_Compare(CSteamID* pSteamID, CSteamID* pSteamIDOther);

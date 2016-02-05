@@ -14,15 +14,27 @@
 //	You should have received a copy of the GNU Lesser General Public License
 //	along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-#include "BlitzSteam.h"
+#pragma once
 
-DLL_FUNCTION(ISteamInventory*) BS_Inventory() {
-	return SteamInventory();
-}
-#pragma comment(linker, "/EXPORT:BS_Inventory=_BS_Inventory@0")
+// Macros
+#define DLL_FUNCTION(type) extern "C" type __stdcall
+//#define DLL_FUNCTION(type) extern "C" __declspec(dllexport) type __stdcall
 
-DLL_FUNCTION(ISteamInventory*) BS_GameServerInventory() {
-#pragma comment(linker, "/EXPORT:BS_GameServerInventory=_BS_GameServerInventory@0")
-	return SteamGameServerInventory();
-}
+// Standard Library
+#include <time.h>
+#include <exception>
+#include <stdexcept>
+#include <memory>
 
+// Platform specific: Windows
+#include <windows.h>
+
+// Steam
+#include "SteamworksSDK/public/steam/steam_api.h"
+#include "SteamworksSDK/public/steam/steam_gameserver.h"
+
+// Steam Helper Classes and Functions
+#include "Helpers/BlitzPointer.h"
+#include "Helpers/Callbacks.h"
+#include "Helpers/CSteamID.h"
+#include "Helpers/Helper.h"

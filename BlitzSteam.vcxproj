@@ -13,6 +13,7 @@
   <PropertyGroup Label="Globals">
     <ProjectGuid>{805CB1EB-82F0-405E-AC0B-03FBE82CC77D}</ProjectGuid>
     <RootNamespace>BlitzSteam</RootNamespace>
+    <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -40,14 +41,14 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <OutDir>$(SolutionDir)\#Build\$(ProjectName)\$(Configuration)\</OutDir>
-    <IntDir>$(SolutionDir)\#Intermediate\$(ProjectName)\$(Configuration)\</IntDir>
+    <OutDir>$(SolutionDir)#Build\$(ProjectName)\$(Configuration)\</OutDir>
+    <IntDir>$(SolutionDir)#Intermediate\$(ProjectName)\$(Configuration)\</IntDir>
     <TargetExt>.dll</TargetExt>
     <LinkIncremental>true</LinkIncremental>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <OutDir>$(SolutionDir)\#Build\$(ProjectName)\$(Configuration)\</OutDir>
-    <IntDir>$(SolutionDir)\#Intermediate\$(ProjectName)\$(Configuration)\</IntDir>
+    <OutDir>$(SolutionDir)#Build\$(ProjectName)\$(Configuration)\</OutDir>
+    <IntDir>$(SolutionDir)#Intermediate\$(ProjectName)\$(Configuration)\</IntDir>
     <TargetExt>.dll</TargetExt>
     <LinkIncremental>false</LinkIncremental>
   </PropertyGroup>
@@ -55,23 +56,21 @@
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <SDLCheck>
-      </SDLCheck>
       <FavorSizeOrSpeed>Neither</FavorSizeOrSpeed>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <WholeProgramOptimization>false</WholeProgramOptimization>
       <AdditionalIncludeDirectories>$(ProjectDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
       <BufferSecurityCheck>false</BufferSecurityCheck>
-      <BasicRuntimeChecks>Default</BasicRuntimeChecks>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <StructMemberAlignment>4Bytes</StructMemberAlignment>
       <EnableParallelCodeGeneration>true</EnableParallelCodeGeneration>
       <CompileAsManaged>false</CompileAsManaged>
       <CompileAsWinRT>false</CompileAsWinRT>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
-      <FunctionLevelLinking>false</FunctionLevelLinking>
-      <CreateHotpatchableImage>false</CreateHotpatchableImage>
-      <RuntimeTypeInfo>false</RuntimeTypeInfo>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <CreateHotpatchableImage>true</CreateHotpatchableImage>
+      <RuntimeTypeInfo>true</RuntimeTypeInfo>
       <OpenMPSupport>false</OpenMPSupport>
       <ForcedIncludeFiles>
       </ForcedIncludeFiles>
@@ -80,13 +79,13 @@
       <InlineFunctionExpansion>Disabled</InlineFunctionExpansion>
       <IntrinsicFunctions>false</IntrinsicFunctions>
       <StringPooling>true</StringPooling>
-      <EnableEnhancedInstructionSet>NoExtensions</EnableEnhancedInstructionSet>
-      <FloatingPointExceptions>false</FloatingPointExceptions>
+      <EnableEnhancedInstructionSet>NotSet</EnableEnhancedInstructionSet>
+      <FloatingPointExceptions>true</FloatingPointExceptions>
       <UseUnicodeForAssemblerListing>true</UseUnicodeForAssemblerListing>
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
-      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <GenerateDebugInformation>Debug</GenerateDebugInformation>
       <Version>1.0</Version>
       <AdditionalLibraryDirectories>$(ProjectDir)\SteamworksSDK\redistributable_bin</AdditionalLibraryDirectories>
       <AdditionalDependencies>steam_api.lib;%(AdditionalDependencies)</AdditionalDependencies>
@@ -108,10 +107,8 @@
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Full</Optimization>
-      <FunctionLevelLinking>false</FunctionLevelLinking>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
-      <SDLCheck>
-      </SDLCheck>
       <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <AdditionalIncludeDirectories>$(ProjectDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
@@ -129,12 +126,13 @@
       <BasicRuntimeChecks>Default</BasicRuntimeChecks>
       <MinimalRebuild>false</MinimalRebuild>
       <CallingConvention>Cdecl</CallingConvention>
-      <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
+      <InlineFunctionExpansion>Default</InlineFunctionExpansion>
       <StringPooling>true</StringPooling>
-      <EnableEnhancedInstructionSet>NoExtensions</EnableEnhancedInstructionSet>
-      <FloatingPointExceptions>false</FloatingPointExceptions>
+      <EnableEnhancedInstructionSet>NotSet</EnableEnhancedInstructionSet>
+      <FloatingPointExceptions>true</FloatingPointExceptions>
       <UseUnicodeForAssemblerListing>true</UseUnicodeForAssemblerListing>
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <DebugInformationFormat>None</DebugInformationFormat>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>false</GenerateDebugInformation>
@@ -155,9 +153,10 @@
     </ProjectReference>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="dllmain.cpp" />
+    <ClCompile Include="BlitzSteam.cpp" />
     <ClCompile Include="Helpers\CSteamID.cpp" />
     <ClCompile Include="Helpers\Callbacks.cpp" />
+    <ClCompile Include="Helpers\Helper.cpp" />
     <ClCompile Include="Wrapper\Steam.cpp" />
     <ClCompile Include="Wrapper\SteamAppList.cpp" />
     <ClCompile Include="Wrapper\SteamApps.cpp" />
@@ -184,18 +183,19 @@
     <ClCompile Include="Wrapper\SteamVideo.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="dllmain.h" />
+    <ClInclude Include="BlitzSteam.h" />
     <ClInclude Include="Helpers\BlitzPointer.h" />
     <ClInclude Include="Helpers\Callbacks.h" />
     <ClInclude Include="Helpers\CSteamID.h" />
+    <ClInclude Include="Helpers\Helper.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="LICENSE">
-      <Link>LICENSE</Link>
+      <Link>BlitzSteam.LICENSE</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="LICENSE.lesser">
-      <Link>LICENSE.lesser</Link>
+      <Link>BlitzSteam.LICENSE.lesser</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="Blitz\BlitzSteam.bb">

@@ -20,9 +20,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="dllmain.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Wrapper\Steam.cpp">
       <Filter>Source Files\Wrapper</Filter>
     </ClCompile>
@@ -101,11 +98,14 @@
     <ClCompile Include="Helpers\Callbacks.cpp">
       <Filter>Source Files\Helpers</Filter>
     </ClCompile>
+    <ClCompile Include="BlitzSteam.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Helpers\Helper.cpp">
+      <Filter>Source Files\Helpers</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="dllmain.h">
-      <Filter>Source Files</Filter>
-    </ClInclude>
     <ClInclude Include="Helpers\Callbacks.h">
       <Filter>Source Files\Helpers</Filter>
     </ClInclude>
@@ -113,6 +113,12 @@
       <Filter>Source Files\Helpers</Filter>
     </ClInclude>
     <ClInclude Include="Helpers\BlitzPointer.h">
+      <Filter>Source Files\Helpers</Filter>
+    </ClInclude>
+    <ClInclude Include="BlitzSteam.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Helpers\Helper.h">
       <Filter>Source Files\Helpers</Filter>
     </ClInclude>
   </ItemGroup>

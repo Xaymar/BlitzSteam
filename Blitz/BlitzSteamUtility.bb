@@ -101,7 +101,7 @@ End Function
 
 ; Reads a C-String value from a Bank.
 ; Returns read C-String
-Function BSU_PeekCString$(Bank%, Pos%)
+Function BSU_PeekCString$(Bank%, Pos%, Len%=-1)
 	If Bank Then
 		Local BankSz = BankSize(Bank)
 		
@@ -115,7 +115,7 @@ Function BSU_PeekCString$(Bank%, Pos%)
 			
 			Local Value = PeekByte(Bank, Pos + BankPos)
 			
-			If Value = 0 Then
+			If (Value = 0 And Len = -1) Or (Pos > Len) Then
 				Exit
 			Else
 				OutStr=OutStr+Chr(Value)
@@ -127,16 +127,16 @@ End Function
 
 ; -- Steam
 Function BSU_Init()
-	BSU_IsSteamRunning = BS_IsSteamRunning()
+	BSU_IsSteamRunning = BS_Steam_IsSteamRunning()
 	If BSU_IsSteamRunning Then
-		BS_Init()
+		BS_Steam_Init()
 		
 		BSU_AppList				= BS_AppList()
-		BSU_Apps					= BS_Apps()
+		BSU_Apps				= BS_Apps()
 		BSU_Client				= BS_Client()
 		BSU_Controller			= BS_Controller()
 		BSU_Friends				= BS_Friends()
-		BSU_HTTP					= BS_HTTP()
+		BSU_HTTP				= BS_HTTP()
 		BSU_HTMLSurface			= BS_HTMLSurface()
 		BSU_Inventory			= BS_Inventory()
 		BSU_Matchmaking			= BS_Matchmaking()
@@ -148,7 +148,7 @@ Function BSU_Init()
 		BSU_Screenshots			= BS_Screenshots()
 		BSU_UGC					= BS_UGC()
 		BSU_UnifiedMessages		= BS_UnifiedMessages()
-		BSU_User					= BS_User()
+		BSU_User				= BS_User()
 		BSU_UserStats			= BS_UserStats()
 		BSU_Utils				= BS_Utils()
 		BSU_Video				= BS_Video()
@@ -159,7 +159,7 @@ End Function
 
 Function BSU_Shutdown()
 	If BSU_IsSteamRunning
-		BS_Shutdown()
+		BS_Steam_Shutdown()
 		BSU_AppList=0
 		BSU_Apps=0
 		BSU_Client=0
@@ -186,7 +186,7 @@ Function BSU_Shutdown()
 	EndIf
 End Function
 
-; -- SteamAppList
+; -- AppList
 Function BSU_AppList_GetInstalledApps(BankAppIdsStorage=0, BankAppNameStorage=0, BankAppInstallDirStorage=0)
 	Local BankAppIds, BankAppIdsSz = BSU_APPID_COUNT
 	Local BankAppName, BankAppNameSz = BSU_NAME_LENGTH
@@ -552,5 +552,5 @@ Function BSU_Friends_GetFriends(iFriendFlags=BS_EFriendFlags_All)
 End Function
 
 ;~IDEal Editor Parameters:
-;~F#52#67#80#9F#BD#FA#116#133#163#195#1B1#1D0
+;~F#52#67#BD#FA#116#133#163#195#1B1#1D0
 ;~C#Blitz3D

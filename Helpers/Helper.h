@@ -14,19 +14,7 @@
 //	You should have received a copy of the GNU Lesser General Public License
 //	along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-#include "dllmain.h"
+#pragma once
+#include "BlitzSteam.h"
 
-uint32_t WINAPI DllMain(HINSTANCE hinstDLL, DWORD fdwReason, LPVOID lpvReserved) {
-	switch (fdwReason) {
-		case DLL_PROCESS_ATTACH:
-			break;
-		case DLL_PROCESS_DETACH:
-			break;
-		case DLL_THREAD_ATTACH:
-			break;
-		case DLL_THREAD_DETACH:
-			break;
-	}
-
-	return true;
-}
+DLL_FUNCTION(const char*) BS_Helper_FormatUnixTime(uint32_t unTime, const char* pchFormat);
