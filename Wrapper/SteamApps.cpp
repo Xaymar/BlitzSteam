@@ -17,127 +17,126 @@
 #include "BlitzSteam.h"
 
 DLL_FUNCTION(ISteamApps*) BS_Apps() {
+#pragma comment(linker, "/EXPORT:BS_Apps=_BS_Apps@0")
 	return SteamApps();
 }
-#pragma comment(linker, "/EXPORT:BS_Apps=_BS_Apps@0")
 
 DLL_FUNCTION(uint32_t) BS_Apps_IsSubscribed(ISteamApps* lpSteamApps) {
+#pragma comment(linker, "/EXPORT:BS_Apps_IsSubscribed=_BS_Apps_IsSubscribed@4")
 	return lpSteamApps->BIsSubscribed();
 }
-#pragma comment(linker, "/EXPORT:BS_Apps_IsSubscribed=_BS_Apps_IsSubscribed@4")
 
 DLL_FUNCTION(uint32_t) BS_Apps_IsLowViolence(ISteamApps* lpSteamApps) {
+#pragma comment(linker, "/EXPORT:BS_Apps_IsLowViolence=_BS_Apps_IsLowViolence@4")
 	return lpSteamApps->BIsLowViolence();
 }
-#pragma comment(linker, "/EXPORT:BS_Apps_IsLowViolence=_BS_Apps_IsLowViolence@4")
 
 DLL_FUNCTION(uint32_t) BS_Apps_IsCybercafe(ISteamApps* lpSteamApps) {
+#pragma comment(linker, "/EXPORT:BS_Apps_IsCybercafe=_BS_Apps_IsCybercafe@4")
 	return lpSteamApps->BIsCybercafe();
 }
-#pragma comment(linker, "/EXPORT:BS_Apps_IsCybercafe=_BS_Apps_IsCybercafe@4")
 
 DLL_FUNCTION(uint32_t) BS_Apps_IsVACBanned(ISteamApps* lpSteamApps) {
+#pragma comment(linker, "/EXPORT:BS_Apps_IsVACBanned=_BS_Apps_IsVACBanned@4")
 	return lpSteamApps->BIsVACBanned();
 }
-#pragma comment(linker, "/EXPORT:BS_Apps_IsVACBanned=_BS_Apps_IsVACBanned@4")
 
 DLL_FUNCTION(const char*) BS_Apps_GetCurrentGameLanguage(ISteamApps* lpSteamApps) {
+#pragma comment(linker, "/EXPORT:BS_Apps_GetCurrentGameLanguage=_BS_Apps_GetCurrentGameLanguage@4")
 	return lpSteamApps->GetCurrentGameLanguage();
 }
-#pragma comment(linker, "/EXPORT:BS_Apps_GetCurrentGameLanguage=_BS_Apps_GetCurrentGameLanguage@4")
 
 DLL_FUNCTION(const char*) BS_Apps_GetAvailableGameLanguages(ISteamApps* lpSteamApps) {
+#pragma comment(linker, "/EXPORT:BS_Apps_GetAvailableGameLanguages=_BS_Apps_GetAvailableGameLanguages@4")
 	return lpSteamApps->GetAvailableGameLanguages();
 }
-#pragma comment(linker, "/EXPORT:BS_Apps_GetAvailableGameLanguages=_BS_Apps_GetAvailableGameLanguages@4")
 
 DLL_FUNCTION(uint32_t) BS_Apps_IsSubscribedApp(ISteamApps* lpSteamApps, AppId_t appID) {
+#pragma comment(linker, "/EXPORT:BS_Apps_IsSubscribedApp=_BS_Apps_IsSubscribedApp@8")
 	return lpSteamApps->BIsSubscribedApp(appID);
 }
-#pragma comment(linker, "/EXPORT:BS_Apps_IsSubscribedApp=_BS_Apps_IsSubscribedApp@8")
 
 DLL_FUNCTION(uint32_t) BS_Apps_IsDlcInstalled(ISteamApps* lpSteamApps, AppId_t appID) {
+#pragma comment(linker, "/EXPORT:BS_Apps_IsDlcInstalled=_BS_Apps_IsDlcInstalled@8")
 	return lpSteamApps->BIsDlcInstalled(appID);
 }
-#pragma comment(linker, "/EXPORT:BS_Apps_IsDlcInstalled=_BS_Apps_IsDlcInstalled@8")
 
 DLL_FUNCTION(uint32_t) BS_Apps_GetEarliestPurchaseUnixTime(ISteamApps* lpSteamApps, AppId_t appID) {
+#pragma comment(linker, "/EXPORT:BS_Apps_GetEarliestPurchaseUnixTime=_BS_Apps_GetEarliestPurchaseUnixTime@8")
 	return lpSteamApps->GetEarliestPurchaseUnixTime(appID);
 }
-#pragma comment(linker, "/EXPORT:BS_Apps_GetEarliestPurchaseUnixTime=_BS_Apps_GetEarliestPurchaseUnixTime@8")
 
 DLL_FUNCTION(uint32_t) BS_Apps_IsSubscribedFromFreeWeekend(ISteamApps* lpSteamApps) {
+#pragma comment(linker, "/EXPORT:BS_Apps_IsSubscribedFromFreeWeekend=_BS_Apps_IsSubscribedFromFreeWeekend@4")
 	return lpSteamApps->BIsSubscribedFromFreeWeekend();
 }
-#pragma comment(linker, "/EXPORT:BS_Apps_IsSubscribedFromFreeWeekend=_BS_Apps_IsSubscribedFromFreeWeekend@4")
 
 DLL_FUNCTION(uint32_t) BS_Apps_GetDLCCount(ISteamApps* lpSteamApps) {
+#pragma comment(linker, "/EXPORT:BS_Apps_GetDLCCount=_BS_Apps_GetDLCCount@4")
 	return lpSteamApps->GetDLCCount();
 }
-#pragma comment(linker, "/EXPORT:BS_Apps_GetDLCCount=_BS_Apps_GetDLCCount@4")
 
-DLL_FUNCTION(uint32_t) BS_Apps_GetDLCDataByIndex(ISteamApps* lpSteamApps, uint32_t iDLC, AppId_t *pAppId, bool* pbAvailable, char *pchName, uint32_t cchNameBufferSize) {
-	return lpSteamApps->BGetDLCDataByIndex(iDLC, pAppId, (bool*)pbAvailable, pchName, cchNameBufferSize);
-}
+DLL_FUNCTION(uint32_t) BS_Apps_GetDLCDataByIndex(ISteamApps* lpSteamApps, uint32_t iDLC, AppId_t *pAppIdBuffer, bool* pbAvailableBuffer, char *pchNameBuffer, uint32_t cchNameBufferSize) {
 #pragma comment(linker, "/EXPORT:BS_Apps_GetDLCDataByIndex=_BS_Apps_GetDLCDataByIndex@24")
+	return lpSteamApps->BGetDLCDataByIndex(iDLC, pAppIdBuffer, (bool*)pbAvailableBuffer, pchNameBuffer, cchNameBufferSize);
+}
 
 DLL_FUNCTION(void) BS_Apps_InstallDLC(ISteamApps* lpSteamApps, AppId_t nAppID) {
+#pragma comment(linker, "/EXPORT:BS_Apps_InstallDLC=_BS_Apps_InstallDLC@8")
 	lpSteamApps->InstallDLC(nAppID);
 }
-#pragma comment(linker, "/EXPORT:BS_Apps_InstallDLC=_BS_Apps_InstallDLC@8")
 
 DLL_FUNCTION(void) BS_Apps_UninstallDLC(ISteamApps* lpSteamApps, AppId_t nAppID) {
+#pragma comment(linker, "/EXPORT:BS_Apps_UninstallDLC=_BS_Apps_UninstallDLC@8")
 	lpSteamApps->UninstallDLC(nAppID);
 }
-#pragma comment(linker, "/EXPORT:BS_Apps_UninstallDLC=_BS_Apps_UninstallDLC@8")
 
 DLL_FUNCTION(void) BS_Apps_RequestAppProofOfPurchaseKey(ISteamApps* lpSteamApps, AppId_t nAppID) {
+#pragma comment(linker, "/EXPORT:BS_Apps_RequestAppProofOfPurchaseKey=_BS_Apps_RequestAppProofOfPurchaseKey@8")
 	lpSteamApps->RequestAppProofOfPurchaseKey(nAppID);
 }
-#pragma comment(linker, "/EXPORT:BS_Apps_RequestAppProofOfPurchaseKey=_BS_Apps_RequestAppProofOfPurchaseKey@8")
 
-DLL_FUNCTION(uint32_t) BS_Apps_GetCurrentBetaName(ISteamApps* lpSteamApps, char *pchName, int cchNameBufferSize) {
-	return lpSteamApps->GetCurrentBetaName(pchName, cchNameBufferSize);
-}
+DLL_FUNCTION(uint32_t) BS_Apps_GetCurrentBetaName(ISteamApps* lpSteamApps, char* pchNameBuffer, int cchNameBufferSize) {
 #pragma comment(linker, "/EXPORT:BS_Apps_GetCurrentBetaName=_BS_Apps_GetCurrentBetaName@12")
+	return lpSteamApps->GetCurrentBetaName(pchNameBuffer, cchNameBufferSize);
+}
 
 DLL_FUNCTION(uint32_t) BS_Apps_MarkContentCorrupt(ISteamApps* lpSteamApps, uint32_t bMissingFilesOnly) {
+#pragma comment(linker, "/EXPORT:BS_Apps_MarkContentCorrupt=_BS_Apps_MarkContentCorrupt@8")
 	return lpSteamApps->MarkContentCorrupt(bMissingFilesOnly != 0);
 }
-#pragma comment(linker, "/EXPORT:BS_Apps_MarkContentCorrupt=_BS_Apps_MarkContentCorrupt@8")
 
-DLL_FUNCTION(uint32_t) BS_Apps_GetInstalledDepots(ISteamApps* lpSteamApps, AppId_t nAppID, DepotId_t *pvecDepots, uint32_t cMaxDepots) {
-	return lpSteamApps->GetInstalledDepots(nAppID, pvecDepots, cMaxDepots);
-}
+DLL_FUNCTION(uint32_t) BS_Apps_GetInstalledDepots(ISteamApps* lpSteamApps, AppId_t nAppID, DepotId_t *pDepotsBuffer, uint32_t cMaxDepots) {
 #pragma comment(linker, "/EXPORT:BS_Apps_GetInstalledDepots=_BS_Apps_GetInstalledDepots@16")
-
-DLL_FUNCTION(uint32_t) BS_Apps_GetAppInstallDir(ISteamApps* lpSteamApps, AppId_t appID, char *pchFolder, uint32_t cchFolderBufferSize) {
-	return lpSteamApps->GetAppInstallDir(appID, pchFolder, cchFolderBufferSize);
+	return lpSteamApps->GetInstalledDepots(nAppID, pDepotsBuffer, cMaxDepots);
 }
+
+DLL_FUNCTION(uint32_t) BS_Apps_GetAppInstallDir(ISteamApps* lpSteamApps, AppId_t appID, char *pchFolderBuffer, uint32_t cchFolderBufferSize) {
 #pragma comment(linker, "/EXPORT:BS_Apps_GetAppInstallDir=_BS_Apps_GetAppInstallDir@16")
+	return lpSteamApps->GetAppInstallDir(appID, pchFolderBuffer, cchFolderBufferSize);
+}
 
 DLL_FUNCTION(uint32_t) BS_Apps_IsAppInstalled(ISteamApps* lpSteamApps, AppId_t appID) {
+#pragma comment(linker, "/EXPORT:BS_Apps_IsAppInstalled=_BS_Apps_IsAppInstalled@8")
 	return lpSteamApps->BIsAppInstalled(appID);
 }
-#pragma comment(linker, "/EXPORT:BS_Apps_IsAppInstalled=_BS_Apps_IsAppInstalled@8")
 
 DLL_FUNCTION(CSteamID*) BS_Apps_GetAppOwner(ISteamApps* lpSteamApps) {
-	CSteamID* steamID = new CSteamID(lpSteamApps->GetAppOwner());
-	return BS_CSteamID_Copy(steamID);
-}
 #pragma comment(linker, "/EXPORT:BS_Apps_GetAppOwner=_BS_Apps_GetAppOwner@4")
+	return new CSteamID(lpSteamApps->GetAppOwner());
+}
 
 DLL_FUNCTION(const char*) BS_Apps_GetLaunchQueryParam(ISteamApps* lpSteamApps, const char *pchKey) {
+#pragma comment(linker, "/EXPORT:BS_Apps_GetLaunchQueryParam=_BS_Apps_GetLaunchQueryParam@8")
 	return lpSteamApps->GetLaunchQueryParam(pchKey);
 }
-#pragma comment(linker, "/EXPORT:BS_Apps_GetLaunchQueryParam=_BS_Apps_GetLaunchQueryParam@8")
 
-DLL_FUNCTION(uint32_t) BS_Apps_GetDlcDownloadProgress(ISteamApps* lpSteamApps, AppId_t nAppID, uint64_t* punBytesDownloaded, uint64_t* punBytesTotal) {
-	return lpSteamApps->GetDlcDownloadProgress(nAppID, punBytesDownloaded, punBytesTotal);
-}
+DLL_FUNCTION(uint32_t) BS_Apps_GetDlcDownloadProgress(ISteamApps* lpSteamApps, AppId_t nAppID, uint64_t* pLLBytesDownloaded, uint64_t* pLLBytesTotal) {
 #pragma comment(linker, "/EXPORT:BS_Apps_GetDlcDownloadProgress=_BS_Apps_GetDlcDownloadProgress@16")
+	return lpSteamApps->GetDlcDownloadProgress(nAppID, pLLBytesDownloaded, pLLBytesTotal);
+}
 
 DLL_FUNCTION(uint32_t) BS_Apps_GetAppBuildId(ISteamApps* lpSteamApps) {
+#pragma comment(linker, "/EXPORT:BS_Apps_GetAppBuildId=_BS_Apps_GetAppBuildId@4")
 	return lpSteamApps->GetAppBuildId();
 }
-#pragma comment(linker, "/EXPORT:BS_Apps_GetAppBuildId=_BS_Apps_GetAppBuildId@4")

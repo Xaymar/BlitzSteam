@@ -50,9 +50,6 @@
     <ClCompile Include="Wrapper\SteamMatchmaking.cpp">
       <Filter>Source Files\Wrapper</Filter>
     </ClCompile>
-    <ClCompile Include="Wrapper\SteamMatchmakingServer.cpp">
-      <Filter>Source Files\Wrapper</Filter>
-    </ClCompile>
     <ClCompile Include="Wrapper\SteamUserStats.cpp">
       <Filter>Source Files\Wrapper</Filter>
     </ClCompile>
@@ -95,20 +92,23 @@
     <ClCompile Include="Helpers\CSteamID.cpp">
       <Filter>Source Files\Helpers</Filter>
     </ClCompile>
-    <ClCompile Include="Helpers\Callbacks.cpp">
-      <Filter>Source Files\Helpers</Filter>
-    </ClCompile>
     <ClCompile Include="BlitzSteam.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Helpers\Helper.cpp">
       <Filter>Source Files\Helpers</Filter>
     </ClCompile>
+    <ClCompile Include="Wrapper\SteamMatchmakingServers.cpp">
+      <Filter>Source Files\Wrapper</Filter>
+    </ClCompile>
+    <ClCompile Include="Helpers\Memory.cpp">
+      <Filter>Source Files\Helpers</Filter>
+    </ClCompile>
+    <ClCompile Include="Helpers\BlitzCallback.cpp">
+      <Filter>Source Files\Helpers</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Helpers\Callbacks.h">
-      <Filter>Source Files\Helpers</Filter>
-    </ClInclude>
     <ClInclude Include="Helpers\CSteamID.h">
       <Filter>Source Files\Helpers</Filter>
     </ClInclude>
@@ -121,6 +121,12 @@
     <ClInclude Include="Helpers\Helper.h">
       <Filter>Source Files\Helpers</Filter>
     </ClInclude>
+    <ClInclude Include="Helpers\Memory.h">
+      <Filter>Source Files\Helpers</Filter>
+    </ClInclude>
+    <ClInclude Include="Helpers\BlitzCallback.h">
+      <Filter>Source Files\Helpers</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="SteamworksSDK\redistributable_bin\steam_api.dll">
@@ -129,13 +135,13 @@
     <None Include="Blitz\BlitzSteam.bb">
       <Filter>Blitz Files</Filter>
     </None>
-    <None Include="Blitz\BlitzSteam.decls">
-      <Filter>Blitz Files</Filter>
-    </None>
     <None Include="Blitz\BlitzSteamUtility.bb">
       <Filter>Blitz Files</Filter>
     </None>
     <None Include="LICENSE" />
     <None Include="LICENSE.lesser" />
+    <None Include="Blitz\BlitzSteam.decls">
+      <Filter>Blitz Files</Filter>
+    </None>
   </ItemGroup>
 </Project>

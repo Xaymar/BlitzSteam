@@ -14,130 +14,61 @@
 ;	You should have received a copy of the GNU Lesser General Public License
 ;	along with this program.  If not, see <http:;www.gnu.org/licenses/>.
 
-;----------------------------------------------------------------
-; -- Constants
-;----------------------------------------------------------------
+;------------------------------------------------------------------------------
+;! Constants
+;------------------------------------------------------------------------------
 Const BSU_NAME_LENGTH					= 4096
 Const BSU_INSTALLDIR_LENGTH				= 4096
 Const BSU_APPID_COUNT					= 4096
 Const BSU_INSTALLEDDEPOTS_COUNT			= 4096
 
-;----------------------------------------------------------------
-; -- Globals
-;----------------------------------------------------------------
+;------------------------------------------------------------------------------
+;! Globals
+;------------------------------------------------------------------------------
 Global BSU_Initialized = False
 Global BSU_IsSteamRunning% = False
 ; -- Interfaces
-Global BSU_AppList%, BSU_Apps%, BSU_Client%, BSU_Controller%
-Global BSU_Friends%, BSU_HTTP%, BSU_HTMLSurface%, BSU_Inventory%
-Global BSU_Matchmaking%, BSU_MatchmakingServers%, BSU_Music%
-Global BSU_MusicRemote%, BSU_Networking%, BSU_RemoteStorage%
-Global BSU_Screenshots%, BSU_UGC%, BSU_UnifiedMessages%, BSU_User%
-Global BSU_UserStats%, BSU_Utils%, BSU_Video%
+Global BSU_AppList%
+Global BSU_Apps%
+Global BSU_Client%
+Global BSU_Controller%
+Global BSU_Friends%
+Global BSU_GameServer%
+Global BSU_GameServerStats%
+Global BSU_HTMLSurface%
+Global BSU_HTTP%
+Global BSU_Inventory%
+Global BSU_Matchmaking%
+Global BSU_MatchmakingServers%
+Global BSU_Music%
+Global BSU_MusicRemote%
+Global BSU_Networking%
+Global BSU_RemoteStorage%
+Global BSU_Screenshots%
+Global BSU_UGC%
+Global BSU_UnifiedMessages%
+Global BSU_User%
+Global BSU_UserStats%
+Global BSU_Utils%
+Global BSU_Video%
 
-;----------------------------------------------------------------
-; -- Types
-;----------------------------------------------------------------
-Type BSU_App
-	Field AppId%
-	Field Name$
-	Field InstallDir$
-End Type
-
-Type BSU_DLC
-	Field AppId%
-	Field Available%
-	Field Name$
-End Type
-
-Type BSU_Depot
-	Field DepotId%
-End Type
-
-Type BSU_Friend
-	Field SteamID_L, SteamID_R
-	
-	Field Name$
-	Field NickName$
-	
-	Field Index%
-	Field Relationship%
-	Field State%
-	Field SteamLevel%
-End Type
-
-;----------------------------------------------------------------
-; -- Globals
-;----------------------------------------------------------------
-Global BSU_AppCount
-Global BSU_DLCCount
-Global BSU_DepotCount
-Global BSU_FriendCount
-
-;----------------------------------------------------------------
-; -- Functions
-;----------------------------------------------------------------
-; -- Utility
-; Writes a C-String value to a Bank.
-; Returns amount of bytes written.
-Function BSU_PokeCString%(Bank%, Pos%, Value$)
-	If Bank Then
-		Local BankSz = BankSize(Bank)
-		
-		If Pos < 0 Then Pos = 0
-		If Pos >= BankSz Then Pos = BankSz - 1
-		
-		Local ValuePos, ValueLen = Len(Value)
-		For ValuePos = 1 To ValueLen
-			; Don't write over the edge, we still need space for the 0-byte
-			If (Pos + ValuePos) >= (BankSz - 1) Then Exit
-			
-			PokeByte Bank, Pos + ValuePos, Asc(Mid(Value, ValuePos, 1))
-		Next
-		PokeByte Bank, Pos + ValuePos, 0
-		Return ValuePos
-	EndIf
-End Function
-
-; Reads a C-String value from a Bank.
-; Returns read C-String
-Function BSU_PeekCString$(Bank%, Pos%, Len%=-1)
-	If Bank Then
-		Local BankSz = BankSize(Bank)
-		
-		If Pos < 0 Then Pos = 0
-		If Pos >= BankSz Then Pos = BankSz - 1
-		
-		Local OutStr$, OutLen = (BankSz - Pos)
-		Local BankPos
-		For BankPos = 0 To OutLen
-			If (Pos + BankPos) >= BankSz Then Exit
-			
-			Local Value = PeekByte(Bank, Pos + BankPos)
-			
-			If (Value = 0 And Len = -1) Or (Pos > Len) Then
-				Exit
-			Else
-				OutStr=OutStr+Chr(Value)
-			EndIf
-		Next
-		Return OutStr
-	EndIf
-End Function
-
-; -- Steam
+;[Block] API: Steam
+;------------------------------------------------------------------------------
+;! API: Steam
+;------------------------------------------------------------------------------
 Function BSU_Init()
 	BSU_IsSteamRunning = BS_Steam_IsSteamRunning()
-	If BSU_IsSteamRunning Then
-		BS_Steam_Init()
+	If BSU_IsSteamRunning And BS_Steam_Init() Then
 		
 		BSU_AppList				= BS_AppList()
 		BSU_Apps				= BS_Apps()
 		BSU_Client				= BS_Client()
 		BSU_Controller			= BS_Controller()
 		BSU_Friends				= BS_Friends()
-		BSU_HTTP				= BS_HTTP()
+		BSU_GameServer			= BS_GameServer()
+		BSU_GameServerStats		= BS_GameServerStats()
 		BSU_HTMLSurface			= BS_HTMLSurface()
+		BSU_HTTP				= BS_HTTP()
 		BSU_Inventory			= BS_Inventory()
 		BSU_Matchmaking			= BS_Matchmaking()
 		BSU_MatchmakingServers	= BS_MatchmakingServers()
@@ -159,15 +90,18 @@ End Function
 
 Function BSU_Shutdown()
 	If BSU_IsSteamRunning
+		BS_GameServer_Shutdown()
 		BS_Steam_Shutdown()
+		
 		BSU_AppList=0
 		BSU_Apps=0
 		BSU_Client=0
 		BSU_Controller=0
 		BSU_Friends=0
+		BSU_GameServer=0
+		BSU_GameServerStats=0
 		BSU_HTTP=0
 		BSU_HTMLSurface=0
-		BSU_Initialized=0
 		BSU_Matchmaking=0
 		BSU_MatchmakingServers=0
 		BSU_Music=0
@@ -185,8 +119,19 @@ Function BSU_Shutdown()
 		BSU_Initialized = False
 	EndIf
 End Function
+;[End Block]
 
-; -- AppList
+;[Block] API: AppList
+;------------------------------------------------------------------------------
+;! API: AppList
+;------------------------------------------------------------------------------
+Type BSU_App
+	Field AppId%
+	Field Name$
+	Field InstallDir$
+End Type
+Global BSU_AppCount = 0
+
 Function BSU_AppList_GetInstalledApps(BankAppIdsStorage=0, BankAppNameStorage=0, BankAppInstallDirStorage=0)
 	Local BankAppIds, BankAppIdsSz = BSU_APPID_COUNT
 	Local BankAppName, BankAppNameSz = BSU_NAME_LENGTH
@@ -240,11 +185,11 @@ Function BSU_AppList_GetInstalledApps(BankAppIdsStorage=0, BankAppNameStorage=0,
 			
 			; Free temporary storage for name and installdir.
 			If BankAppInstallDirStorage = 0 Then FreeBank BankAppInstallDir
-			If BankAppNameStorage = 0 FreeBank BankAppName
+			If BankAppNameStorage = 0 Then FreeBank BankAppName
 		EndIf
-		
+			
 		; Free temporary storage for AppIds.
-		If BankAppIdsStorage = 0 FreeBank BankAppIds
+		If BankAppIdsStorage = 0 Then FreeBank BankAppIds
 	EndIf
 End Function
 
@@ -303,8 +248,24 @@ Function BSU_AppList_GetInstallDir$(AppID%, BankStorage=0)
 	; Return name read.
 	Return AppInstallDir
 End Function
+;[End Block]
 
-; -- SteamApps
+;[Block] API: Apps
+;------------------------------------------------------------------------------
+;! API: Apps
+;------------------------------------------------------------------------------
+Type BSU_DLC
+	Field AppId%
+	Field Available%
+	Field Name$
+End Type
+Global BSU_DLCCount
+
+Type BSU_Depot
+	Field DepotId%
+End Type
+Global BSU_DepotCount
+
 Function BSU_Apps_GetDLCData(BankAppIdStorage=0, BankAvailableStorage=0, BankNameStorage=0)
 	Local BankAppId%, BankAvailable%
 	Local BankName%, BankNameSz% = BSU_NAME_LENGTH
@@ -516,9 +477,26 @@ Function BSU_Apps_GetDLCDownloadProgress#(nAppID%)
 	EndIf
 	Return Progress
 End Function
+;[End Block]
 
-; -- SteamFriends
-Function BSU_Friends_GetFriends(iFriendFlags=BS_EFriendFlags_All)
+;[Block] API: Apps
+;------------------------------------------------------------------------------
+;! API: Friends
+;------------------------------------------------------------------------------
+Type BSU_Friend
+	Field SteamID_L, SteamID_R
+	
+	Field Name$
+	Field NickName$
+	
+	Field Index%
+	Field Relationship%
+	Field State%
+	Field SteamLevel%
+End Type
+Global BSU_FriendCount
+
+Function BSU_Friends_GetFriends(iFriendFlags = BS_EFriendFlags_All)
 	If BSU_Initialized Then
 		Delete Each BSU_Friend
 		
@@ -551,6 +529,100 @@ Function BSU_Friends_GetFriends(iFriendFlags=BS_EFriendFlags_All)
 	EndIf
 End Function
 
+;[Block] API: GameServer
+;------------------------------------------------------------------------------
+;! API: GameServer
+;------------------------------------------------------------------------------
+Function BSU_GameServer_Init(IPv4%=0, Port%=27015, SteamPort%=27016, QueryPort=27017, ServerMode=BS_EServerMode_AuthenticationAndSecure, Version$="1.0.0.0")
+	If BS_GameServer_Init(IPv4, SteamPort, Port, QueryPort, ServerMode, Version) Then
+		BSU_GameServer = BS_GameServer()
+		BSU_GameServerStats = BS_GameServerStats()
+		BSU_HTTP = BS_GameServerHTTP()
+		BSU_Inventory = BS_GameServerInventory()
+		BSU_Networking = BS_GameServerNetworking()
+		BSU_UGC = BS_GameServerUGC()
+		BSU_Utils = BS_GameServerUtils()
+		
+		BSU_Initialized = True
+	EndIf
+End Function
+
+Function BSU_GameServer_Shutdown()
+	If BSU_Initialized = True
+		BS_GameServer_Shutdown()
+		
+		BSU_GameServer=0
+		BSU_GameServerStats=0
+		BSU_HTTP=0
+		BSU_Inventory=0
+		BSU_Networking=0
+		BSU_UGC=0
+		BSU_Utils=0
+		
+		BSU_Initialized = False
+	EndIf
+End Function
+;[End Block]
+
+;------------------------------------------------------------------------------
+;! API: GameServerStats
+;------------------------------------------------------------------------------
+
+
+
+;[Block] Blitz Stuff
+;----------------------------------------------------------------
+;! Blitz Stuff
+;----------------------------------------------------------------
+; -- Utility
+; Writes a C-String value to a Bank.
+; Returns amount of bytes written.
+Function BSU_PokeCString%(Bank%, Pos%, Value$)
+	If Bank Then
+		Local BankSz = BankSize(Bank)
+		
+		If Pos < 0 Then Pos = 0
+		If Pos >= BankSz Then Pos = BankSz - 1
+		
+		Local ValuePos, ValueLen = Len(Value)
+		For ValuePos = 1 To ValueLen
+			; Don't write over the edge, we still need space for the 0-byte
+			If (Pos + ValuePos) >= (BankSz - 1) Then Exit
+			
+			PokeByte Bank, Pos + ValuePos, Asc(Mid(Value, ValuePos, 1))
+		Next
+		PokeByte Bank, Pos + ValuePos, 0
+		Return ValuePos
+	EndIf
+End Function
+
+; Reads a C-String value from a Bank.
+; Returns read C-String
+Function BSU_PeekCString$(Bank%, Pos%, Len%=-1)
+	If Bank Then
+		Local BankSz = BankSize(Bank)
+		
+		If Pos < 0 Then Pos = 0
+		If Pos >= BankSz Then Pos = BankSz - 1
+		
+		Local OutStr$, OutLen = (BankSz - Pos)
+		Local BankPos
+		For BankPos = 0 To OutLen
+			If (Pos + BankPos) >= BankSz Then Exit
+			
+			Local Value = PeekByte(Bank, Pos + BankPos)
+			
+			If (Value = 0 And Len = -1) Or (Pos > Len) Then
+				Exit
+			Else
+				OutStr=OutStr+Chr(Value)
+			EndIf
+		Next
+		Return OutStr
+	EndIf
+End Function
+;[End Block]
+
 ;~IDEal Editor Parameters:
-;~F#52#67#BD#FA#116#133#163#195#1B1#1D0
+;~F#3A#5A#7F#86#C3#DF#100#107#10C#13C#16E#18A#1A9#1C4
 ;~C#Blitz3D

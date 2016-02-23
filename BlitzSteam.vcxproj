@@ -135,7 +135,7 @@
       <DebugInformationFormat>None</DebugInformationFormat>
     </ClCompile>
     <Link>
-      <GenerateDebugInformation>false</GenerateDebugInformation>
+      <GenerateDebugInformation>No</GenerateDebugInformation>
       <EnableCOMDATFolding>false</EnableCOMDATFolding>
       <OptimizeReferences>
       </OptimizeReferences>
@@ -155,8 +155,9 @@
   <ItemGroup>
     <ClCompile Include="BlitzSteam.cpp" />
     <ClCompile Include="Helpers\CSteamID.cpp" />
-    <ClCompile Include="Helpers\Callbacks.cpp" />
+    <ClCompile Include="Helpers\BlitzCallback.cpp" />
     <ClCompile Include="Helpers\Helper.cpp" />
+    <ClCompile Include="Helpers\Memory.cpp" />
     <ClCompile Include="Wrapper\Steam.cpp" />
     <ClCompile Include="Wrapper\SteamAppList.cpp" />
     <ClCompile Include="Wrapper\SteamApps.cpp" />
@@ -169,7 +170,7 @@
     <ClCompile Include="Wrapper\SteamHTTP.cpp" />
     <ClCompile Include="Wrapper\SteamInventory.cpp" />
     <ClCompile Include="Wrapper\SteamMatchmaking.cpp" />
-    <ClCompile Include="Wrapper\SteamMatchmakingServer.cpp" />
+    <ClCompile Include="Wrapper\SteamMatchmakingServers.cpp" />
     <ClCompile Include="Wrapper\SteamMusic.cpp" />
     <ClCompile Include="Wrapper\SteamMusicRemote.cpp" />
     <ClCompile Include="Wrapper\SteamNetworking.cpp" />
@@ -185,9 +186,10 @@
   <ItemGroup>
     <ClInclude Include="BlitzSteam.h" />
     <ClInclude Include="Helpers\BlitzPointer.h" />
-    <ClInclude Include="Helpers\Callbacks.h" />
+    <ClInclude Include="Helpers\BlitzCallback.h" />
     <ClInclude Include="Helpers\CSteamID.h" />
     <ClInclude Include="Helpers\Helper.h" />
+    <ClInclude Include="Helpers\Memory.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="LICENSE">

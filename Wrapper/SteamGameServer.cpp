@@ -16,42 +16,42 @@
 
 #include "BlitzSteam.h"
 
+DLL_FUNCTION(uint32_t) BS_SteamGameServer_Init(uint32_t unIP, uint16_t usSteamPort, uint16_t usGamePort, uint16_t usQueryPort, EServerMode eServerMode, const char *pchVersionString) {
+#pragma comment(linker, "/EXPORT:BS_SteamGameServer_Init=_BS_SteamGameServer_Init@24")
+	return SteamGameServer_Init(unIP, usSteamPort, usGamePort, usQueryPort, eServerMode, pchVersionString);
+}
+
+DLL_FUNCTION(void) BS_SteamGameServer_Shutdown() {
+#pragma comment(linker, "/EXPORT:BS_SteamGameServer_Shutdown=_BS_SteamGameServer_Shutdown@0")
+	SteamGameServer_Shutdown();
+}
+
+DLL_FUNCTION(void) BS_SteamGameServer_RunCallbacks() {
+#pragma comment(linker, "/EXPORT:BS_SteamGameServer_RunCallbacks=_BS_SteamGameServer_RunCallbacks@0")
+	SteamGameServer_RunCallbacks();
+}
+
+DLL_FUNCTION(HSteamPipe) BS_SteamGameServer_GetHSteamPipe() {
+#pragma comment(linker, "/EXPORT:BS_SteamGameServer_GetHSteamPipe=_BS_SteamGameServer_GetHSteamPipe@0")
+	return SteamGameServer_GetHSteamPipe();
+}
+
+DLL_FUNCTION(uint32_t) BS_SteamGameServer_IsSecure() {
+#pragma comment(linker, "/EXPORT:BS_SteamGameServer_IsSecure=_BS_SteamGameServer_IsSecure@0")
+	return SteamGameServer_BSecure();
+}
+
+DLL_FUNCTION(CSteamID*) BS_SteamGameServer_GetSteamID() {
+#pragma comment(linker, "/EXPORT:BS_SteamGameServer_GetSteamID=_BS_SteamGameServer_GetSteamID@0")
+	return new CSteamID(SteamGameServer_GetSteamID());
+}
+
+// ISteamGameServer Stuff
 DLL_FUNCTION(ISteamGameServer*) BS_GameServer() {
 #pragma comment(linker, "/EXPORT:BS_GameServer=_BS_GameServer@0")
 	return SteamGameServer();
 }
 
-DLL_FUNCTION(uint32_t) BS_GameServer_Init(uint32_t unIP, uint16_t usSteamPort, uint16_t usGamePort, uint16_t usQueryPort, EServerMode eServerMode, const char *pchVersionString) {
-#pragma comment(linker, "/EXPORT:BS_GameServer_Init=_BS_GameServer_Init@24")
-	return SteamGameServer_Init(unIP, usSteamPort, usGamePort, usQueryPort, eServerMode, pchVersionString);
-}
-
-DLL_FUNCTION(void) BS_GameServer_Shutdown() {
-#pragma comment(linker, "/EXPORT:BS_GameServer_Shutdown=_BS_GameServer_Shutdown@0")
-	SteamGameServer_Shutdown();
-}
-
-DLL_FUNCTION(void) BS_GameServer_RunCallbacks() {
-#pragma comment(linker, "/EXPORT:BS_GameServer_RunCallbacks=_BS_GameServer_RunCallbacks@0")
-	SteamGameServer_RunCallbacks();
-}
-
-DLL_FUNCTION(HSteamPipe) BS_GameServer_GetHSteamPipe() {
-#pragma comment(linker, "/EXPORT:BS_GameServer_GetHSteamPipe=_BS_GameServer_GetHSteamPipe@0")
-	return SteamGameServer_GetHSteamPipe();
-}
-
-DLL_FUNCTION(uint32_t) BS_GameServer_IsSecureC() {
-#pragma comment(linker, "/EXPORT:BS_GameServer_IsSecureC=_BS_GameServer_IsSecureC@0")
-	return SteamGameServer_BSecure();
-}
-
-DLL_FUNCTION(CSteamID*) BS_GameServer_GetSteamIDC() {
-#pragma comment(linker, "/EXPORT:BS_GameServer_GetSteamIDC=_BS_GameServer_GetSteamIDC@0")
-	return new CSteamID(SteamGameServer_GetSteamID());
-}
-
-// ISteamGameServer Stuff
 DLL_FUNCTION(uint32_t) BS_GameServer_InitGameServer(ISteamGameServer* pSteamGameServer, uint32_t unIP, uint16_t usGamePort, uint16_t usQueryPort, uint32_t unFlags, AppId_t nGameAppId, const char *pchVersionString) {
 #pragma comment(linker, "/EXPORT:BS_GameServer_InitGameServer=_BS_GameServer_InitGameServer@28")
 	return pSteamGameServer->InitGameServer(unIP, usGamePort, usQueryPort, unFlags, nGameAppId, pchVersionString);
@@ -264,10 +264,10 @@ DLL_FUNCTION(void) BS_GameServer_ForceHeartbeat(ISteamGameServer* pSteamGameServ
 
 DLL_FUNCTION(SteamAPICall_t*) BS_GameServer_AssociateWithClan(ISteamGameServer* pSteamGameServer, CSteamID* pSteamIDClan) {
 #pragma comment(linker, "/EXPORT:BS_GameServer_AssociateWithClan=_BS_GameServer_AssociateWithClan@8")
-	return new uint64_t(pSteamGameServer->AssociateWithClan(*pSteamIDClan));
+	return new SteamAPICall_t(pSteamGameServer->AssociateWithClan(*pSteamIDClan));
 }
 
 DLL_FUNCTION(SteamAPICall_t*) BS_GameServer_ComputeNewPlayerCompatibility(ISteamGameServer* pSteamGameServer, CSteamID* pSteamIDNewPlayer) {
 #pragma comment(linker, "/EXPORT:BS_GameServer_ComputeNewPlayerCompatibility=_BS_GameServer_ComputeNewPlayerCompatibility@8")
-	return new uint64_t(pSteamGameServer->ComputeNewPlayerCompatibility(*pSteamIDNewPlayer));
+	return new SteamAPICall_t(pSteamGameServer->ComputeNewPlayerCompatibility(*pSteamIDNewPlayer));
 }

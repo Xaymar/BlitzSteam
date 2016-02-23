@@ -32,9 +32,3 @@
 // Steam
 #include "SteamworksSDK/public/steam/steam_api.h"
 #include "SteamworksSDK/public/steam/steam_gameserver.h"
-
-// Steam Helper Classes and Functions
-#include "Helpers/BlitzPointer.h"
-#include "Helpers/Callbacks.h"
-#include "Helpers/CSteamID.h"
-#include "Helpers/Helper.h"

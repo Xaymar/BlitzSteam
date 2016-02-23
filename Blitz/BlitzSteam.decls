@@ -27,8 +27,8 @@ BS_Steam_WriteMiniDumpEx(uStructuredExceptionCode%, pvExceptionInfo%, uBuildID%)
 BS_Steam_RunCallbacks()
 BS_Steam_RegisterCallback(pCallback%, iCallback%)
 BS_Steam_UnregisterCallback(pCallback%)
-BS_Steam_RegisterCallResult(pCallback%, hAPICall_L%, hAPICall_R%)
-BS_Steam_UnregisterCallResult(pCallback%, hAPICall_L%, hAPICall_R%)
+BS_Steam_RegisterCallResult(pCallback%, hAPICall%)
+BS_Steam_UnregisterCallResult(pCallback%, hAPICall%)
 
 ; AppList ---------------------------------------------------------------------
 BS_AppList%()
@@ -37,8 +37,8 @@ BS_AppList_GetInstalledApps%(lpSteamAppList%, pvecAppID*, unMaxIDs%)
 BS_AppList_GetInstalledAppsEx%(lpSteamAppList%, pvecAppID%, unMaxIDs%) : "BS_AppList_GetInstalledApps"
 BS_AppList_GetAppNameEx%(lpSteamAppList%, nAppId%, pchName%, cchNameMax%) : "BS_AppList_GetAppName"
 BS_AppList_GetAppName%(lpSteamAppList%, nAppId%, pchName*, cchNameMax%)
-BS_AppList_GetAppInstallDir%(lpSteamAppList%, nAppId%, pchDirectory*, cchDirectoryMax%)
-BS_AppList_GetAppInstallDirEx%(lpSteamAppList%, nAppId%, pchDirectory%, cchDirectoryMax%) : "BS_AppList_GetAppInstallDir"
+BS_AppList_GetAppInstallDir%(lpSteamAppList%, nAppId%, pchDirectoryBuffer*, cchDirectoryMax%)
+BS_AppList_GetAppInstallDirEx%(lpSteamAppList%, nAppId%, pchDirectoryBuffer%, cchDirectoryMax%) : "BS_AppList_GetAppInstallDir"
 BS_AppList_GetAppBuildId%(lpSteamAppList%, nAppId%)
 
 ; Apps ------------------------------------------------------------------------
@@ -54,23 +54,23 @@ BS_Apps_IsDlcInstalled%(lpSteamApps%, appID%)
 BS_Apps_GetEarliestPurchaseUnixTime%(lpSteamApps%, appID%)
 BS_Apps_IsSubscribedFromFreeWeekend%(lpSteamApps%)
 BS_Apps_GetDLCCount%(lpSteamApps%)
-BS_Apps_GetDLCDataByIndex%(lpSteamApps%, iDLC%, pAppId*, pbAvailable*, pchName*, cchNameBufferSize%)
-BS_Apps_GetDLCDataByIndexEx%(lpSteamApps%, iDLC%, pAppId%, pbAvailable%, pchName%, cchNameBufferSize%) : "BS_Apps_GetDLCDataByIndex"
+BS_Apps_GetDLCDataByIndex%(lpSteamApps%, iDLC%, pAppIdBuffer*, pbAvailableBuffer*, pchNameBuffer*, cchNameBufferSize%)
+BS_Apps_GetDLCDataByIndexEx%(lpSteamApps%, iDLC%, pAppIdBuffer%, pbAvailableBuffer%, pchNameBuffer%, cchNameBufferSize%) : "BS_Apps_GetDLCDataByIndex"
 BS_Apps_InstallDLC(lpSteamApps%, nAppID%)
 BS_Apps_UninstallDLC(lpSteamApps%, nAppID%)
 BS_Apps_RequestAppProofOfPurchaseKey(lpSteamApps%, nAppID%)
-BS_Apps_GetCurrentBetaName%(lpSteamApps%, pchName*, cchNameBufferSize%)
-BS_Apps_GetCurrentBetaNameEx%(lpSteamApps%, pchName%, cchNameBufferSize%) : "BS_Apps_GetCurrentBetaName"
+BS_Apps_GetCurrentBetaName%(lpSteamApps%, pchNameBuffer*, cchNameBufferSize%)
+BS_Apps_GetCurrentBetaNameEx%(lpSteamApps%, pchNameBuffer%, cchNameBufferSize%) : "BS_Apps_GetCurrentBetaName"
 BS_Apps_MarkContentCorrupt%(lpSteamApps%, bMissingFilesOnly%)
-BS_Apps_GetInstalledDepots%(lpSteamApps%, nAppID%, pvecDepots*, cMaxDepots%)
-BS_Apps_GetInstalledDepotsEx%(lpSteamApps%, nAppID%, pvecDepots%, cMaxDepots%) : "BS_Apps_GetInstalledDepots"
-BS_Apps_GetAppInstallDir%(lpSteamApps%, nAppID%, pchFolder*, cchFolderBufferSize%)
-BS_Apps_GetAppInstallDirEx%(lpSteamApps%, nAppID%, pchFolder%, cchFolderBufferSize%) : "BS_Apps_GetAppInstallDir"
+BS_Apps_GetInstalledDepots%(lpSteamApps%, nAppID%, pDepotsBuffer*, cMaxDepots%)
+BS_Apps_GetInstalledDepotsEx%(lpSteamApps%, nAppID%, pDepotsBuffer%, cMaxDepots%) : "BS_Apps_GetInstalledDepots"
+BS_Apps_GetAppInstallDir%(lpSteamApps%, nAppID%, pchFolderBuffer*, cchFolderBufferSize%)
+BS_Apps_GetAppInstallDirEx%(lpSteamApps%, nAppID%, pchFolderBuffer%, cchFolderBufferSize%) : "BS_Apps_GetAppInstallDir"
 BS_Apps_IsAppInstalled%(lpSteamApps%, nAppID%)
 BS_Apps_GetAppOwner%(lpSteamApps%)
 BS_Apps_GetLaunchQueryParam$(lpSteamApps%, pchKey$)
-BS_Apps_GetDlcDownloadProgress%(lpSteamApps%, nAppID%, punBytesDownloaded*, punBytesTotal*)
-BS_Apps_GetDlcDownloadProgressEx%(lpSteamApps%, nAppID%, punBytesDownloaded%, punBytesTotal%) : "BS_Apps_GetDlcDownloadProgress"
+BS_Apps_GetDlcDownloadProgress%(lpSteamApps%, nAppID%, pLLBytesDownloaded*, pLLBytesTotal*)
+BS_Apps_GetDlcDownloadProgressEx%(lpSteamApps%, nAppID%, pLLBytesDownloaded%, pLLBytesTotal%) : "BS_Apps_GetDlcDownloadProgress"
 BS_Apps_GetAppBuildId%(lpSteamApps%)
 
 ; Client ----------------------------------------------------------------------
@@ -116,18 +116,40 @@ BS_Controller%()
 BS_Controller_Init%(lpSteamController%, pchAbsolutePathToControllerConfigVDF$)
 BS_Controller_Shutdown%(lpSteamController%)
 BS_Controller_RunFrame(lpSteamController%)
-BS_Controller_GetControllerStateEx%(lpSteamController%, unControllerIndex%, pState%) : "BS_Controller_GetControllerState"
-BS_Controller_GetControllerState%(lpSteamController%, unControllerIndex%, pState*)
-BS_Controller_TriggerHapticPulse(lpSteamController%, unControllerIndex%, eTargetPad%, usDurationMicroSec%)
-BS_Controller_SetOverrideMode(lpSteamController%, pchMode$)
+BS_Controller_GetConnectedControllersEx%(lpSteamController%, pHandlesOut*)
+BS_Controller_GetConnectedControllersExEx%(lpSteamController%, pHandlesOut%) : "BS_Controller_GetConnectedControllersEx"
+BS_Controller_GetConnectedControllers%(lpSteamController%)
+BS_Controller_GetConnectedControllers_Index%(index%)
+BS_Controller_ShowBindingPanel%(lpSteamController%, pControllerHandle%)
+BS_Controller_GetActionSetHandle%(lpSteamController%, pszActionSetName$)
+;! Function above returns a ControllerActionSetHandle_t*, clean it up afterwards!
+BS_Controller_ActivateActionSet(lpSteamController%, pControllerHandle%, pActionSetHandle%)
+BS_Controller_GetCurrentActionSet%(lpSteamController%, )
+;! Function above returns a ControllerActionSetHandle_t*, clean it up afterwards!
+BS_Controller_GetDigitalActionHandle%(lpSteamController%, pszActionName$)
+;! Function above returns a ControllerDigitalActionHandle_t*, clean it up afterwards!
+BS_Controller_GetDigitalActionData%(lpSteamController%, pControllerHandle%, pDigitalActionHandle%)
+;! Function above returns a ControllerDigitalActionData_t*, clean it up afterwards?
+BS_Controller_GetDigitalActionOrigins%(lpSteamController%, pControllerHandle%, pActionSetHandle%, pDigitalActionHandle%, pEControllerActionOrigin*)
+BS_Controller_GetDigitalActionOriginsEx%(lpSteamController%, pControllerHandle%, pActionSetHandle%, pDigitalActionHandle%, pEControllerActionOrigin%) : "BS_Controller_GetDigitalActionOrigins"
+BS_Controller_GetAnalogActionHandle%(lpSteamController%, pszActionName$)
+;! Function above returns a ControllerAnalogActionHandle_t*, clean it up afterwards!
+BS_Controller_GetAnalogActionData%(lpSteamController%, pControllerHandle%, pAnalogActionHandle%)
+;! Function above returns a ControllerAnalogActionData_t*, clean it up afterwards?
+BS_Controller_GetAnalogActionOrigins%(lpSteamController%, pControllerHandle%, pActionSetHandle%, pAnalogActionHandle%, pEControllerActionOrigin*)
+BS_Controller_GetAnalogActionOriginsEx%(lpSteamController%, pControllerHandle%, pActionSetHandle%, pAnalogActionHandle%, pEControllerActionOrigin*) : "BS_Controller_GetAnalogActionOrigins"
+BS_Controller_StopAnalogActionMomentum(lpSteamController%, pControllerHandle%, pAnalogActionHandle%)
+BS_Controller_TriggerHapticPulse(lpSteamController%, pControllerHandle%, ESteamControllerPad%, usDurationMicroSec%)
 
 ; Friends ---------------------------------------------------------------------
 BS_Friends%()
 BS_Friends_GetPersonaName$(lpSteamFriends%)
 BS_Friends_SetPersonaName%(lpSteamFriends%, pchPersonaName$)
+;! Function above returns a SteamAPICall_t*, clean it up afterwards!
 BS_Friends_GetPersonaState%(lpSteamFriends%)
 BS_Friends_GetFriendCount%(lpSteamFriends%, iFriendFlags%)
 BS_Friends_GetFriendByIndex%(lpSteamFriends%, iFriend%, iFriendFlags%)
+;! Function above returns a CSteamID*, clean it up afterwards!
 BS_Friends_GetFriendRelationship%(lpSteamFriends%, steamIDFriend%)
 BS_Friends_GetFriendPersonaState%(lpSteamFriends%, steamIDFriend%)
 BS_Friends_GetFriendPersonaName$(lpSteamFriends%, steamIDFriend%)
@@ -168,6 +190,7 @@ BS_Friends_RequestClanOfficerList%(lpSteamFriends%, steamIDClan%)
 BS_Friends_GetClanOwner%(lpSteamFriends%, steamIDClan%)
 BS_Friends_GetClanOfficerCount%(lpSteamFriends%, steamIDClan%)
 BS_Friends_GetClanOfficerByIndex%(lpSteamFriends%, steamIDClan%, iOfficer%)
+;! Function above returns a CSteamID*, clean it up afterwards!
 BS_Friends_GetUserRestrictions%(lpSteamFriends%)
 BS_Friends_SetRichPresence%(lpSteamFriends%, pchKey$, pchValue$)
 BS_Friends_ClearRichPresence(lpSteamFriends%)
@@ -178,12 +201,15 @@ BS_Friends_RequestFriendRichPresence(lpSteamFriends%, steamIDFriend%)
 BS_Friends_InviteUserToGame%(lpSteamFriends%, steamIDFriend%, pchConnectString%)
 BS_Friends_GetCoplayFriendCount%(lpSteamFriends%)
 BS_Friends_GetCoplayFriend%(lpSteamFriends%, iCoplayFriend%)
+;! Function above returns a CSteamID*, clean it up afterwards!
 BS_Friends_GetFriendCoplayTime%(lpSteamFriends%, steamIDFriend%)
 BS_Friends_GetFriendCoplayGame%(lpSteamFriends%, steamIDFriend%)
 BS_Friends_JoinClanChatRoom%(lpSteamFriends%, steamIDClan%)
+;! Function above returns a SteamAPICall_t*, clean it up afterwards!
 BS_Friends_LeaveClanChatRoom%(lpSteamFriends%, steamIDClan%)
 BS_Friends_GetClanChatMemberCount%(lpSteamFriends%, steamIDClan%)
 BS_Friends_GetChatMemberByIndex%(lpSteamFriends%, steamIDClan%, iUser%)
+;! Function above returns a CSteamID*, clean it up afterwards!
 BS_Friends_SendClanChatMessage%(lpSteamFriends%, steamIDClanChat%, pchText$)
 BS_Friends_GetClanChatMessage%(lpSteamFriends%, steamIDClanChat%, iMessage%, prgchText*, cchTextMax%, peChatEntryType*, psteamidChatter*)
 BS_Friends_GetClanChatMessageEx%(lpSteamFriends%, steamIDClanChat%, iMessage%, prgchText%, cchTextMax%, peChatEntryType%, psteamidChatter%) : "BS_Friends_GetClanChatMessage"
@@ -196,17 +222,21 @@ BS_Friends_ReplyToFriendMessage%(lpSteamFriends%, steamIDFriend%, pchMsgToSend$)
 BS_Friends_GetFriendMessage%(lpSteamFriends%, steamIDFriend%, iMessageID%, pvData*, cubData%, peChatEntryType*)
 BS_Friends_GetFriendMessageEx%(lpSteamFriends%, steamIDFriend%, iMessageID%, pvData%, cubData%, peChatEntryType%) : "BS_Friends_GetFriendMessage"
 BS_Friends_GetFollowerCount%(lpSteamFriends%, steamID%)
+;! Function above returns a SteamAPICall_t*, clean it up afterwards!
 BS_Friends_IsFollowing%(lpSteamFriends%, steamID%)
+;! Function above returns a SteamAPICall_t*, clean it up afterwards!
 BS_Friends_EnumerateFollowingList%(lpSteamFriends%, unStartIndex%)
+;! Function above returns a SteamAPICall_t*, clean it up afterwards!
 
 ; GameServer ------------------------------------------------------------------
+BS_SteamGameServer_Init%(unIP%, usSteamPort%, usGamePort%, usQueryPort%, eServerMode%, pchVersionString$)
+BS_SteamGameServer_Shutdown()
+BS_SteamGameServer_RunCallbacks()
+BS_SteamGameServer_GetHSteamPipe%()
+BS_SteamGameServer_IsSecure%()
+BS_SteamGameServer_GetSteamID%()
+;! Function above returns a CSteamID*, clean it up afterwards!
 BS_GameServer%()
-BS_GameServer_Init%(unIP%, usSteamPort%, usGamePort%, usQueryPort%, eServerMode%, pchVersionString%)
-BS_GameServer_Shutdown()
-BS_GameServer_RunCallbacks()
-BS_GameServer_GetHSteamPipe%()
-BS_GameServer_IsSecureC%()
-BS_GameServer_GetSteamIDC%()
 BS_GameServer_InitGameServer%(pSteamGameServer%, unIP%, usGamePort%, usQueryPort%, unFlags%, nGameAppId%, pchVersionString$)
 BS_GameServer_SetProduct(pSteamGameServer%, pszProduct$)
 BS_GameServer_SetGameDescription(pSteamGameServer%, pszGameDescription$)
@@ -234,6 +264,7 @@ BS_GameServer_SetRegion(pSteamGameServer%, pszRegion$)
 BS_GameServer_SendUserConnectAndAuthenticate%(pSteamGameServer%, unIPClient%, pvAuthBlob*, cubAuthBlobSize%, pSteamIDUser%)
 BS_GameServer_SendUserConnectAndAuthenticateEx%(pSteamGameServer%, unIPClient%, pvAuthBlob%, cubAuthBlobSize%, pSteamIDUser%) : "BS_GameServer_SendUserConnectAndAuthenticate"
 BS_GameServer_CreateUnauthenticatedUserConnection%(pSteamGameServer%)
+;! Function above returns a CSteamID*, clean it up afterwards!
 BS_GameServer_SendUserDisconnect(pSteamGameServer%, pSteamIDUser%)
 BS_GameServer_UpdateUserData%(pSteamGameServer%, pSteamIDUser%, pchPlayerName$, uScore%)
 BS_GameServer_GetAuthSessionTicket%(pSteamGameServer%, pTicket*, cbMaxTicket%, pcbTicket%)
@@ -246,6 +277,7 @@ BS_GameServer_UserHasLicenseForApp%(pSteamGameServer%, pSteamID%, appID%)
 BS_GameServer_RequestUserGroupStatus%(pSteamGameServer%, pSteamIDUser%, pSteamIDGroup%)
 BS_GameServer_GetGameplayStats(pSteamGameServer%)
 BS_GameServer_GetServerReputation%(pSteamGameServer%)
+;! Function above returns a SteamAPICall_t*, clean it up afterwards!
 BS_GameServer_GetPublicIP%(pSteamGameServer%)
 BS_GameServer_HandleIncomingPacket%(pSteamGameServer%, pData*, cbData%, srvIP%, srvPort%)
 BS_GameServer_HandleIncomingPacketEx%(pSteamGameServer%, pData%, cbData%, srvIP%, srvPort%) : "BS_GameServer_HandleIncomingPacket"
@@ -255,12 +287,16 @@ BS_GameServer_EnableHeartbeats(pSteamGameServer%, bActive%)
 BS_GameServer_SetHeartbeatInterval(pSteamGameServer%, iHeartbeatInterval%)
 BS_GameServer_ForceHeartbeat(pSteamGameServer%)
 BS_GameServer_AssociateWithClan%(pSteamGameServer%, pSteamIDClan%)
+;! Function above returns a SteamAPICall_t*, clean it up afterwards!
 BS_GameServer_ComputeNewPlayerCompatibility%(pSteamGameServer%, pSteamIDNewPlayer%)
+;! Function above returns a SteamAPICall_t*, clean it up afterwards!
 
 ; GameServerStats -------------------------------------------------------------
 BS_GameServerStats%()
 BS_GameServerStats_RequestUserStats%(pSteamGameServerStats%, steamIDUser%)
+;! Function above returns a SteamAPICall_t*, clean it up afterwards!
 BS_GameServerStats_StoreUserStats%(pSteamGameServerStats%, steamIDUser%)
+;! Function above returns a SteamAPICall_t*, clean it up afterwards!
 BS_GameServerStats_GetUserStat%(pSteamGameServerStats%, steamIDUser%, pchName$, pData*)
 BS_GameServerStats_GetUserStatEx%(pSteamGameServerStats%, steamIDUser%, pchName$, pData%) : "BS_GameServerStats_GetUserStat"
 BS_GameServerStats_GetUserStatF%(pSteamGameServerStats%, steamIDUser%, pchName$, pData*)
@@ -270,8 +306,48 @@ BS_GameServerStats_GetUserAchievementEx%(pSteamGameServerStats%, steamIDUser%, p
 BS_GameServerStats_SetUserStat%(pSteamGameServerStats%, steamIDUser%, pchName%, nData%)
 BS_GameServerStats_SetUserStatF%(pSteamGameServerStats%, steamIDUser%, pchName%, fData#)
 BS_GameServerStats_UpdateUserAvgRateStat%(pSteamGameServerStats%, steamIDUser%, pchName$, flCountThisSession#, pdSessionLength%)
+;! Function above takes a Double* as last parameter.
 BS_GameServerStats_SetUserAchievement%(pSteamGameServerStats%, steamIDUser%, pchName$)
 BS_GameServerStats_ClearUserAchievement%(pSteamGameServerStats%, steamIDUser%, pchName$)
+
+; HTMLSurface -----------------------------------------------------------------
+BS_HTMLSurface%()
+BS_HTMLSurface_Init%(pSteamHTMLSurface%)
+BS_HTMLSurface_Shutdown%(pSteamHTMLSurface%)
+BS_HTMLSurface_CreateBrowser%(pSteamHTMLSurface%, pchUserAgent$, pchUserCSS$)
+;! Function above returns a SteamAPICall_t*, clean it up afterwards!
+BS_HTMLSurface_RemoveBrowser(pSteamHTMLSurface%, unBrowserHandle%)
+BS_HTMLSurface_LoadURL(pSteamHTMLSurface%, unBrowserHandle%, pchURL$, pchPostData$)
+BS_HTMLSurface_SetSize(pSteamHTMLSurface%, unBrowserHandle%, unWidth%, unHeight%)
+BS_HTMLSurface_StopLoad(pSteamHTMLSurface%, unBrowserHandle%)
+BS_HTMLSurface_Reload(pSteamHTMLSurface%, unBrowserHandle%)
+BS_HTMLSurface_GoBack(pSteamHTMLSurface%, unBrowserHandle%)
+BS_HTMLSurface_GoForward(pSteamHTMLSurface%, unBrowserHandle%)
+BS_HTMLSurface_AddHeader(pSteamHTMLSurface%, unBrowserHandle%, pchKey$, pchValue$)
+BS_HTMLSurface_ExecuteJavascript(pSteamHTMLSurface%, unBrowserHandle%, pchScript$)
+BS_HTMLSurface_MouseUp(pSteamHTMLSurface%, unBrowserHandle%, EMouseButton%)
+BS_HTMLSurface_MouseDown(pSteamHTMLSurface%, unBrowserHandle%, EMouseButton%)
+BS_HTMLSurface_MouseDoubleClick(pSteamHTMLSurface%, unBrowserHandle%, EMouseButton%)
+BS_HTMLSurface_MouseMove(pSteamHTMLSurface%, unBrowserHandle%, X%, Y%)
+BS_HTMLSurface_MouseWheel(pSteamHTMLSurface%, unBrowserHandle%, nDelta%)
+BS_HTMLSurface_KeyDown(pSteamHTMLSurface%, unBrowserHandle%, nNativeKeyCode%, EHTMLKeyModifiers%)
+BS_HTMLSurface_KeyUp(pSteamHTMLSurface%, unBrowserHandle%, nNativeKeyCode%, EHTMLKeyModifiers%)
+BS_HTMLSurface_KeyChar(pSteamHTMLSurface%, unBrowserHandle%, cUnicodeChar%, EHTMLKeyModifiers%)
+BS_HTMLSurface_SetHorizontalScroll(pSteamHTMLSurface%, unBrowserHandle%, nAbsolutePixelScroll%)
+BS_HTMLSurface_SetVerticalScroll(pSteamHTMLSurface%, unBrowserHandle%, nAbsolutePixelScroll%)
+BS_HTMLSurface_SetKeyFocus(pSteamHTMLSurface%, unBrowserHandle%, bHasKeyFocus%)
+BS_HTMLSurface_ViewSource(pSteamHTMLSurface%, unBrowserHandle%)
+BS_HTMLSurface_CopyToClipboard(pSteamHTMLSurface%, unBrowserHandle%)
+BS_HTMLSurface_PasteFromClipboard(pSteamHTMLSurface%, unBrowserHandle%)
+BS_HTMLSurface_Find(pSteamHTMLSurface%, unBrowserHandle%, pchSearchStr$, bCurrentlyInFind%, bReverse%)
+BS_HTMLSurface_StopFind(pSteamHTMLSurface%, unBrowserHandle%)
+BS_HTMLSurface_GetLinkAtPosition(pSteamHTMLSurface%, unBrowserHandle%, X%, Y%)
+BS_HTMLSurface_SetCookie(pSteamHTMLSurface%, unBrowserHandle%, pchHostname$, pchKey$, pchValue$, pchPath$, nExpires%, bSecure%, bHTTPOnly%)
+BS_HTMLSurface_SetPageScaleFactor(pSteamHTMLSurface%, unBrowserHandle%, flZoom#, nPointX%, nPointY%)
+BS_HTMLSurface_SetBackgroundMode(pSteamHTMLSurface%, unBrowserHandle%, bBackgroundMode%)
+BS_HTMLSurface_AllowStartRequest(pSteamHTMLSurface%, unBrowserHandle%, bAllowed%)
+BS_HTMLSurface_JSDialogResponse(pSteamHTMLSurface%, unBrowserHandle%, bResult%)
+BS_HTMLSurface_FileLoadDialogResponse(pSteamHTMLSurface%, unBrowserHandle%, pchSelectedFiles%)
 
 ; Networking ------------------------------------------------------------------
 BS_Networking%()
@@ -383,8 +459,30 @@ BS_UserStats_GetGlobalStatHistoryLLEx%(lpSteamUserStats, pchStatName$, pData%, c
 BS_UserStats_GetGlobalStatHistoryD%(lpSteamUserStats, pchStatName$, pData*, cubData%)
 BS_UserStats_GetGlobalStatHistoryDEx%(lpSteamUserStats, pchStatName$, pData%, cubData%) : "BS_UserStats_GetGlobalStatHistoryD"
 
+; -- Interfaces
+BS_HTTP%()
+BS_GameServerHTTP%()
+BS_Inventory%()
+BS_GameServerInventory%()
+BS_Matchmaking%()
+BS_MatchmakingServers%()
+BS_Music%()
+BS_MusicRemote%()
+BS_RemoteStorage%()
+BS_Screenshots%()
+BS_UGC%()
+BS_GameServerUGC%()
+BS_UnifiedMessages%()
+BS_Utils%()
+BS_GameServerUtils%()
+BS_Video%()
+
 ; Helpers ---------------------------------------------------------------------
+; -- Generic
 BS_Helper_FormatUnixTime$(unixTime%, pchFormat$)
+BS_Helper_DeleteLong(longlong%)
+BS_Helper_CreateDouble%(value#)
+BS_Helper_DeleteDouble(pDouble%)
 ; -- CSteamID
 BS_CSteamID_New%()
 BS_CSteamID_FromID%(unAccountID%, eUniverse%, eAccountType%)
@@ -425,21 +523,24 @@ BS_CSteamID_SetEUniverse(pSteamID%, eUniverse%)
 BS_CSteamID_IsValid%(pSteamID%)
 BS_CSteamID_Compare%(pSteamID%, pSteamIDOther%)
 ; -- Callbacks
-BS_Callback_Create%(pFunction%)
+BS_Callback_Create%(pFunctionPointer%)
 BS_Callback_Destroy%(pCallback%)
-
-
-; -- Interfaces
-BS_HTTP%()
-BS_HTMLSurface%()
-BS_Inventory%()
-BS_Matchmaking%()
-BS_MatchmakingServers%()
-BS_Music%()
-BS_MusicRemote%()
-BS_RemoteStorage%()
-BS_Screenshots%()
-BS_UGC%()
-BS_UnifiedMessages%()
-BS_Utils%()
-BS_Video%()
+BS_Callback_IsRegistered%(pCallback%)
+BS_Callback_IsGameServer%(pCallback%)
+BS_Callback_SetGameServerFlag%(pCallback%, bIsGameServer%)
+BS_Callback_Register(pCallback%, iCallback%)
+BS_Callback_Unregister(pCallback%)
+BS_Callback_RegisterResult(pCallback%, pSteamAPICall%)
+BS_Callback_UnregisterResult(pCallback%)
+; -- Memory
+BS_Memory_Alloc%(iSize%)
+BS_Memory_ReAlloc%(pMemory%, iSize%)
+BS_Memory_Free(pMemory%)
+BS_Memory_PeekByte%(pMemory%, offset%)
+BS_Memory_PeekShort%(pMemory%, offset%)
+BS_Memory_PeekInt%(pMemory%, offset%)
+BS_Memory_PeekFloat#(pMemory%, offset%)
+BS_Memory_PokeByte(pMemory%, offset%, value%)
+BS_Memory_PokeShort(pMemory%, offset%, value%)
+BS_Memory_PokeInt(pMemory%, offset%, value%)
+BS_Memory_PokeFloat(pMemory%, offset%, value#)
