@@ -191,32 +191,20 @@
     <ClInclude Include="Helpers\Helper.h" />
     <ClInclude Include="Helpers\Memory.h" />
   </ItemGroup>
-  <ItemGroup>
-    <None Include="LICENSE">
-      <Link>BlitzSteam.LICENSE</Link>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="LICENSE.lesser">
-      <Link>BlitzSteam.LICENSE.lesser</Link>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Blitz\BlitzSteam.bb">
-      <Link>BlitzSteam.bb</Link>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Blitz\BlitzSteamUtility.bb">
-      <Link>BlitzSteamUtility.bb</Link>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Blitz\BlitzSteam.decls">
-      <Link>BlitzSteam.decls</Link>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="SteamworksSDK\redistributable_bin\steam_api.dll">
-      <Link>steam_api.dll</Link>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
+  <Target Name="CopyResources" AfterTargets="Build">
+	  <ItemGroup>
+		<Resources Include="LICENSE" />
+		<Resources Include="$(ProjectDir)\LICENSE.lesser" />
+		<Resources Include="$(ProjectDir)\Blitz\*.*" />
+		<Resources Include="$(ProjectDir)\Blitz\**\*.*" />
+		<Resources Include="$(ProjectDir)\SteamworksSDK\redistributable_bin\steam_api.dll" />
+	  </ItemGroup>
+	  <Copy 
+		SourceFiles="@(Resources)"
+		DestinationFiles="@(Resources->'$(TargetDir)%(RecursiveDir)\%(Filename)%(Extension)')" 
+		SkipUnchangedFiles="True"
+		UseHardlinksIfPossible="True" />
+  </Target>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

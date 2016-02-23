@@ -35,8 +35,8 @@ BS_AppList%()
 BS_AppList_GetNumInstalledApps%(lpSteamAppList%)
 BS_AppList_GetInstalledApps%(lpSteamAppList%, pvecAppID*, unMaxIDs%)
 BS_AppList_GetInstalledAppsEx%(lpSteamAppList%, pvecAppID%, unMaxIDs%) : "BS_AppList_GetInstalledApps"
-BS_AppList_GetAppNameEx%(lpSteamAppList%, nAppId%, pchName%, cchNameMax%) : "BS_AppList_GetAppName"
-BS_AppList_GetAppName%(lpSteamAppList%, nAppId%, pchName*, cchNameMax%)
+BS_AppList_GetAppName%(lpSteamAppList%, nAppId%, pchNameBuffer*, cchNameMax%)
+BS_AppList_GetAppNameEx%(lpSteamAppList%, nAppId%, pchNameBuffer%, cchNameMax%) : "BS_AppList_GetAppName"
 BS_AppList_GetAppInstallDir%(lpSteamAppList%, nAppId%, pchDirectoryBuffer*, cchDirectoryMax%)
 BS_AppList_GetAppInstallDirEx%(lpSteamAppList%, nAppId%, pchDirectoryBuffer%, cchDirectoryMax%) : "BS_AppList_GetAppInstallDir"
 BS_AppList_GetAppBuildId%(lpSteamAppList%, nAppId%)
@@ -81,7 +81,6 @@ BS_Client_ConnectToGlobalUser%(lpSteamClient%, hSteamPipe%)
 BS_Client_SetLocalIPBinding(lpSteamClient, unIP%, usPort%)
 BS_Client_CreateLocalUser%(lpSteamClient%, phSteamPipe%, eAccountType%)
 BS_Client_ReleaseUser(lpSteamClient%, hSteamPipe%, hSteamUser%)
-BS_Client_RunFrame(lpSteamClient%)
 BS_Client_GetIPCCallCount%(lpSteamClient%)
 BS_Client_ShutdownIfAllPipesClosed%(lpSteamClient%)
 BS_Client_GetSteamAppList%(lpSteamClient%, hSteamUser%, hSteamPipe%, pchVersion$)
@@ -107,19 +106,16 @@ BS_Client_GetSteamUserStats%(lpSteamClient%, hSteamUser%, hSteamPipe%, pchVersio
 BS_Client_GetSteamUtils%(lpSteamClient%, hSteamPipe%, pchVersion$)
 BS_Client_GetSteamVideo%(lpSteamClient%, hSteamUser%, hSteamPipe%, pchVersion$)
 BS_Client_SetWarningMessageHook(lpSteamClient%, fpFunction%)
-BS_Client_Set_SteamAPI_CPostAPIResultInProcess(lpSteamClient%, fpFunction%)
-BS_Client_Remove_SteamAPI_CPostAPIResultInProcess(lpSteamClient%, fpFunction%)
-BS_Client_Set_SteamAPI_CCheckCallbackRegisteredInProcess(lpSteamClient%, fpFunction%)
 
 ; Controller ------------------------------------------------------------------
 BS_Controller%()
 BS_Controller_Init%(lpSteamController%, pchAbsolutePathToControllerConfigVDF$)
 BS_Controller_Shutdown%(lpSteamController%)
 BS_Controller_RunFrame(lpSteamController%)
-BS_Controller_GetConnectedControllersEx%(lpSteamController%, pHandlesOut*)
-BS_Controller_GetConnectedControllersExEx%(lpSteamController%, pHandlesOut%) : "BS_Controller_GetConnectedControllersEx"
-BS_Controller_GetConnectedControllers%(lpSteamController%)
-BS_Controller_GetConnectedControllers_Index%(index%)
+BS_Controller_GetConnectedControllers%(lpSteamController%, pHandlesOut*)
+BS_Controller_GetConnectedControllersEx%(lpSteamController%, pHandlesOut%) : "BS_Controller_GetConnectedControllersEx"
+BS_Controller_GetConnectedControllersSimple%(lpSteamController%)
+BS_Controller_GetConnectedControllersSimple_Index%(index%)
 BS_Controller_ShowBindingPanel%(lpSteamController%, pControllerHandle%)
 BS_Controller_GetActionSetHandle%(lpSteamController%, pszActionSetName$)
 ;! Function above returns a ControllerActionSetHandle_t*, clean it up afterwards!
@@ -140,6 +136,7 @@ BS_Controller_GetAnalogActionOrigins%(lpSteamController%, pControllerHandle%, pA
 BS_Controller_GetAnalogActionOriginsEx%(lpSteamController%, pControllerHandle%, pActionSetHandle%, pAnalogActionHandle%, pEControllerActionOrigin*) : "BS_Controller_GetAnalogActionOrigins"
 BS_Controller_StopAnalogActionMomentum(lpSteamController%, pControllerHandle%, pAnalogActionHandle%)
 BS_Controller_TriggerHapticPulse(lpSteamController%, pControllerHandle%, ESteamControllerPad%, usDurationMicroSec%)
+BS_Controller_TriggerRepeatedHapticPulse(lpSteamController%, pControllerHandle%, ESteamControllerPad%, usDurationMicroSec%, osOffMicroSec%, unRepeat%, nFlags%)
 
 ; Friends ---------------------------------------------------------------------
 BS_Friends%()

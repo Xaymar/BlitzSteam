@@ -51,11 +51,6 @@ DLL_FUNCTION(void) BS_Client_ReleaseUser(ISteamClient* lpSteamClient, HSteamPipe
 	return lpSteamClient->ReleaseUser(hSteamPipe, hSteamUser);
 }
 
-DLL_FUNCTION(void) BS_Client_RunFrame(ISteamClient* lpSteamClient) {
-#pragma comment(linker, "/EXPORT:BS_Client_RunFrame=_BS_Client_RunFrame@4")
-	lpSteamClient->RunFrame();
-}
-
 DLL_FUNCTION(uint32_t) BS_Client_GetIPCCallCount(ISteamClient* lpSteamClient) {
 #pragma comment(linker, "/EXPORT:BS_Client_GetIPCCallCount=_BS_Client_GetIPCCallCount@4")
 	return lpSteamClient->GetIPCCallCount();
@@ -181,19 +176,4 @@ DLL_FUNCTION(ISteamVideo*) BS_Client_GetSteamVideo(ISteamClient* lpSteamClient, 
 DLL_FUNCTION(void) BS_Client_SetWarningMessageHook(ISteamClient* lpSteamClient, SteamAPIWarningMessageHook_t fpfunction) {
 #pragma comment(linker, "/EXPORT:BS_Client_SetWarningMessageHook=_BS_Client_SetWarningMessageHook@8")
 	lpSteamClient->SetWarningMessageHook(fpfunction);
-}
-
-DLL_FUNCTION(void) BS_Client_Set_SteamAPI_CPostAPIResultInProcess(ISteamClient* lpSteamClient, SteamAPI_PostAPIResultInProcess_t fpFunction) {
-#pragma comment(linker, "/EXPORT:BS_Client_Set_SteamAPI_CPostAPIResultInProcess=_BS_Client_Set_SteamAPI_CPostAPIResultInProcess@8")
-	lpSteamClient->Set_SteamAPI_CPostAPIResultInProcess(fpFunction);
-}
-
-DLL_FUNCTION(void) BS_Client_Remove_SteamAPI_CPostAPIResultInProcess(ISteamClient* lpSteamClient, SteamAPI_PostAPIResultInProcess_t fpFunction) {
-#pragma comment(linker, "/EXPORT:BS_Client_Remove_SteamAPI_CPostAPIResultInProcess=_BS_Client_Remove_SteamAPI_CPostAPIResultInProcess@8")
-	lpSteamClient->Remove_SteamAPI_CPostAPIResultInProcess(fpFunction);
-}
-
-DLL_FUNCTION(void) BS_Client_Set_SteamAPI_CCheckCallbackRegisteredInProcess(ISteamClient* lpSteamClient, SteamAPI_CheckCallbackRegistered_t fpFunction) {
-#pragma comment(linker, "/EXPORT:BS_Client_Set_SteamAPI_CCheckCallbackRegisteredInProcess=_BS_Client_Set_SteamAPI_CCheckCallbackRegisteredInProcess@8")
-	lpSteamClient->Set_SteamAPI_CCheckCallbackRegisteredInProcess(fpFunction);
 }

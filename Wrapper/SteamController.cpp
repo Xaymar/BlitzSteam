@@ -43,19 +43,19 @@ DLL_FUNCTION(void) BS_Controller_RunFrame(ISteamController* lpSteamController) {
 // Enumerate currently connected controllers
 // handlesOut should point to a STEAM_CONTROLLER_MAX_COUNT sized array of ControllerHandle_t handles
 // Returns the number of handles written to handlesOut
-DLL_FUNCTION(uint32_t) BS_Controller_GetConnectedControllersEx(ISteamController* lpSteamController, ControllerHandle_t* pHandlesOut) {
-#pragma comment(linker, "/EXPORT:BS_Controller_GetConnectedControllersEx=_BS_Controller_GetConnectedControllersEx@8")
+DLL_FUNCTION(uint32_t) BS_Controller_GetConnectedControllers(ISteamController* lpSteamController, ControllerHandle_t* pHandlesOut) {
+#pragma comment(linker, "/EXPORT:BS_Controller_GetConnectedControllers=_BS_Controller_GetConnectedControllers@8")
 	return lpSteamController->GetConnectedControllers(pHandlesOut);
 }
 
 ControllerHandle_t* pControllerHandles = new ControllerHandle_t[STEAM_CONTROLLER_MAX_COUNT];
-DLL_FUNCTION(uint32_t) BS_Controller_GetConnectedControllers(ISteamController* lpSteamController) {
-#pragma comment(linker, "/EXPORT:BS_Controller_GetConnectedControllers=_BS_Controller_GetConnectedControllers@4")
+DLL_FUNCTION(uint32_t) BS_Controller_GetConnectedControllersSimple(ISteamController* lpSteamController) {
+#pragma comment(linker, "/EXPORT:BS_Controller_GetConnectedControllersSimple=_BS_Controller_GetConnectedControllersSimple@4")
 	return lpSteamController->GetConnectedControllers(pControllerHandles);
 }
 
-DLL_FUNCTION(ControllerHandle_t*) BS_Controller_GetConnectedControllers_Index(uint32_t index) {
-#pragma comment(linker, "/EXPORT:BS_Controller_GetConnectedControllers_Index=_BS_Controller_GetConnectedControllers_Index@4")
+DLL_FUNCTION(ControllerHandle_t*) BS_Controller_GetConnectedControllersSimple_Index(uint32_t index) {
+#pragma comment(linker, "/EXPORT:BS_Controller_GetConnectedControllersSimple_Index=_BS_Controller_GetConnectedControllersSimple_Index@4")
 	if (index >= STEAM_CONTROLLER_MAX_COUNT)
 		index = STEAM_CONTROLLER_MAX_COUNT - 1;
 	return &(pControllerHandles[index]);
@@ -136,4 +136,9 @@ DLL_FUNCTION(void) BS_Controller_StopAnalogActionMomentum(ISteamController* lpSt
 DLL_FUNCTION(void) BS_Controller_TriggerHapticPulse(ISteamController* lpSteamController, ControllerHandle_t* pControllerHandle, ESteamControllerPad eTargetPad, uint32_t usDurationMicroSec) {
 #pragma comment(linker, "/EXPORT:BS_Controller_TriggerHapticPulse=_BS_Controller_TriggerHapticPulse@16")
 	lpSteamController->TriggerHapticPulse(*pControllerHandle, eTargetPad, (uint16_t)usDurationMicroSec);
+}
+
+DLL_FUNCTION(void) BS_Controller_TriggerRepeatedHapticPulse(ISteamController* lpSteamController, ControllerHandle_t* pControllerHandle, ESteamControllerPad eTargetPad, uint32_t usDurationMicroSec, uint32_t usOffMicroSec, uint32_t unRepeat, uint32_t nFlags) {
+#pragma comment(linker, "/EXPORT:BS_Controller_TriggerRepeatedHapticPulse=_BS_Controller_TriggerRepeatedHapticPulse@28")
+	lpSteamController->TriggerRepeatedHapticPulse(*pControllerHandle, eTargetPad, usDurationMicroSec, usOffMicroSec, unRepeat, nFlags);
 }

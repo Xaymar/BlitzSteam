@@ -8,15 +8,15 @@
     <Filter Include="Source Files\Wrapper">
       <UniqueIdentifier>{8f00e86e-e1bc-499e-8b2c-da93e9e8f287}</UniqueIdentifier>
     </Filter>
-    <Filter Include="SteamworksSDK">
-      <UniqueIdentifier>{14616756-e67f-4b1c-ac90-776c00a0271d}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Blitz Files">
-      <UniqueIdentifier>{3072c53c-2be5-4712-b853-1bc1438cdc6e}</UniqueIdentifier>
-      <Extensions>bb;decls;ipf</Extensions>
-    </Filter>
     <Filter Include="Source Files\Helpers">
       <UniqueIdentifier>{a6fc08f6-97d9-4a53-a803-34b985d9ae7c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{a799678b-8efc-42a0-97b2-f3a23da99e17}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Header Files\Helpers">
+      <UniqueIdentifier>{6cebc940-92bb-4a55-a125-ec97956636f2}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -109,39 +109,39 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Helpers\CSteamID.h">
-      <Filter>Source Files\Helpers</Filter>
-    </ClInclude>
-    <ClInclude Include="Helpers\BlitzPointer.h">
-      <Filter>Source Files\Helpers</Filter>
-    </ClInclude>
     <ClInclude Include="BlitzSteam.h">
-      <Filter>Source Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Helpers\Helper.h">
-      <Filter>Source Files\Helpers</Filter>
-    </ClInclude>
-    <ClInclude Include="Helpers\Memory.h">
-      <Filter>Source Files\Helpers</Filter>
+      <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Helpers\BlitzCallback.h">
-      <Filter>Source Files\Helpers</Filter>
+      <Filter>Header Files\Helpers</Filter>
+    </ClInclude>
+    <ClInclude Include="Helpers\BlitzPointer.h">
+      <Filter>Header Files\Helpers</Filter>
+    </ClInclude>
+    <ClInclude Include="Helpers\CSteamID.h">
+      <Filter>Header Files\Helpers</Filter>
+    </ClInclude>
+    <ClInclude Include="Helpers\Helper.h">
+      <Filter>Header Files\Helpers</Filter>
+    </ClInclude>
+    <ClInclude Include="Helpers\Memory.h">
+      <Filter>Header Files\Helpers</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="SteamworksSDK\redistributable_bin\steam_api.dll">
-      <Filter>SteamworksSDK</Filter>
-    </None>
-    <None Include="Blitz\BlitzSteam.bb">
-      <Filter>Blitz Files</Filter>
-    </None>
-    <None Include="Blitz\BlitzSteamUtility.bb">
-      <Filter>Blitz Files</Filter>
-    </None>
-    <None Include="LICENSE" />
-    <None Include="LICENSE.lesser" />
-    <None Include="Blitz\BlitzSteam.decls">
-      <Filter>Blitz Files</Filter>
-    </None>
+    <None Include="$(ProjectDir)\Blitz\*.*" />
+    <None Include="$(ProjectDir)\Blitz\*.*" />
+    <None Include="$(ProjectDir)\Blitz\*.*" />
+    <None Include="$(ProjectDir)\Blitz\*.*" />
+    <None Include="$(ProjectDir)\Blitz\**\*.*" />
+    <None Include="$(ProjectDir)\Blitz\**\*.*" />
+    <None Include="$(ProjectDir)\Blitz\**\*.*" />
+    <None Include="$(ProjectDir)\Blitz\**\*.*" />
+    <None Include="$(ProjectDir)\Blitz\**\*.*" />
+    <None Include="$(ProjectDir)\Blitz\**\*.*" />
+    <None Include="$(ProjectDir)\Blitz\**\*.*" />
+    <None Include="$(ProjectDir)\Blitz\**\*.*" />
+    <None Include="$(ProjectDir)\Blitz\**\*.*" />
+    <None Include="$(ProjectDir)\Blitz\**\*.*" />
   </ItemGroup>
 </Project>

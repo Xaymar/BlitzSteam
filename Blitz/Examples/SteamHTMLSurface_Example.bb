@@ -1,4 +1,4 @@
-Include "BlitzSteam.bb"
+Include "../BlitzSteam.bb"
 
 ;----------------------------------------------------------------
 ;! Steam Stuff
@@ -118,7 +118,6 @@ Function Browser_HTMLSurface_StartRequest(pvParam%)
 	; Default to allow all requests. (Why not? For an Example, this is good enough.)
 	BS_HTMLSurface_AllowStartRequest BS_HTMLSurface(), PeekMemoryInt(pvParam), True
 End Function:Browser_HTMLSurface_StartRequest(0)
-
 
 Function Browser_Create.Browser(Width%, Height, UserAgent$="BlitzSteam", UserCSS$="")
 	DebugLog "[Browser::Create] Creating with UserAgent '"+UserAgent+"' and CSS '"+UserCSS+"'."
@@ -264,5 +263,4 @@ EndGraphics
 End
 
 ;~IDEal Editor Parameters:
-;~F#8#19#3C#50
 ;~C#Blitz3D
