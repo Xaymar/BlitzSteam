@@ -19,10 +19,11 @@
 DLL_FUNCTION(ISteamHTTP*) BS_HTTP() {
 	return SteamHTTP();
 }
-#pragma comment(linker, "/EXPORT:BS_HTTP=_BS_HTTP@0")
 
 DLL_FUNCTION(ISteamHTTP*) BS_GameServerHTTP() {
-#pragma comment(linker, "/EXPORT:BS_GameServerHTTP=_BS_GameServerHTTP@0")
 	return SteamGameServerHTTP();
 }
 
+DLL_FUNCTION(HTTPRequestHandle) BS_ISteamHTTP_CreateHTTPRequest(ISteamHTTP* pThis, EHTTPMethod eHTTPRequestMethod, const char* cAbsoluteUrl) {
+	return pThis->CreateHTTPRequest(eHTTPRequestMethod, cAbsoluteUrl);
+}

@@ -16,8 +16,76 @@
 
 #include "BlitzCallback.h"
 
-BlitzCallback::BlitzCallback(BP_Function3_t pFunctionPointer) {
+std::map<uint32_t, size_t>* BlitzCallback_Sizes;
+#define BlitzCallback_Sizes_Add(T) BlitzCallback_Sizes->emplace(T::k_iCallback, sizeof(T))
+
+void BlitzCallback_Init() {
+	BlitzCallback_Sizes = new std::map<uint32_t, size_t>();
+	BlitzCallback_Sizes->emplace(0, sizeof(BlitzCallback));
+
+	// SteamAPI
+
+	// SteamAppList
+	BlitzCallback_Sizes_Add(SteamAppInstalled_t);
+	BlitzCallback_Sizes_Add(SteamAppUninstalled_t);
+
+	// SteamApps
+	BlitzCallback_Sizes_Add(DlcInstalled_t);
+	BlitzCallback_Sizes_Add(RegisterActivationCodeResponse_t);
+	BlitzCallback_Sizes_Add(AppProofOfPurchaseKeyResponse_t);
+	BlitzCallback_Sizes_Add(NewLaunchQueryParameters_t);
+
+	// SteamController
+	
+	// SteamFriends
+	BlitzCallback_Sizes_Add(PersonaStateChange_t);
+	BlitzCallback_Sizes_Add(GameOverlayActivated_t);
+	BlitzCallback_Sizes_Add(GameServerChangeRequested_t);
+	BlitzCallback_Sizes_Add(GameLobbyJoinRequested_t);
+	BlitzCallback_Sizes_Add(AvatarImageLoaded_t);
+	BlitzCallback_Sizes_Add(ClanOfficerListResponse_t);
+	BlitzCallback_Sizes_Add(FriendRichPresenceUpdate_t);
+	BlitzCallback_Sizes_Add(GameRichPresenceJoinRequested_t);
+	BlitzCallback_Sizes_Add(GameConnectedClanChatMsg_t);
+	BlitzCallback_Sizes_Add(GameConnectedChatJoin_t);
+	BlitzCallback_Sizes_Add(GameConnectedChatLeave_t);
+	BlitzCallback_Sizes_Add(DownloadClanActivityCountsResult_t);
+	BlitzCallback_Sizes_Add(JoinClanChatRoomCompletionResult_t);
+	BlitzCallback_Sizes_Add(GameConnectedFriendChatMsg_t);
+	BlitzCallback_Sizes_Add(FriendsGetFollowerCount_t);
+	BlitzCallback_Sizes_Add(FriendsIsFollowing_t);
+	BlitzCallback_Sizes_Add(FriendsEnumerateFollowingList_t);
+	BlitzCallback_Sizes_Add(SetPersonaNameResponse_t);
+
+	// SteamGameServer
+	BlitzCallback_Sizes_Add(GSClientApprove_t);
+	BlitzCallback_Sizes_Add(GSClientDeny_t);
+	BlitzCallback_Sizes_Add(GSClientKick_t);
+	BlitzCallback_Sizes_Add(GSClientAchievementStatus_t);
+	BlitzCallback_Sizes_Add(GSPolicyResponse_t);
+	BlitzCallback_Sizes_Add(GSGameplayStats_t);
+	BlitzCallback_Sizes_Add(GSClientGroupStatus_t);
+	BlitzCallback_Sizes_Add(GSReputation_t);
+	BlitzCallback_Sizes_Add(AssociateWithClanResult_t);
+	BlitzCallback_Sizes_Add(ComputeNewPlayerCompatibilityResult_t);
+
+	// SteamGameServerStats
+	BlitzCallback_Sizes_Add(GSStatsReceived_t);
+	BlitzCallback_Sizes_Add(GSStatsStored_t);
+	BlitzCallback_Sizes_Add(GSStatsUnloaded_t);
+
+	// SteamHTMLSurface
+	BlitzCallback_Sizes_Add(HTML_BrowserReady_t);
+}
+
+BlitzCallback::BlitzCallback(BP_BlitzFunction3_t pFunctionPointer) {
 	this->m_pFunctionPointer = pFunctionPointer;
+	this->m_hSteamAPICall = 0;
+	this->m_iCallback = 0;
+
+	// Initialize BlitzCallback_Sizes
+	if (BlitzCallback_Sizes == 0)
+		BlitzCallback_Init();
 }
 
 BlitzCallback::~BlitzCallback() {
@@ -26,21 +94,21 @@ BlitzCallback::~BlitzCallback() {
 }
 
 int BlitzCallback::GetCallbackSizeBytes() {
-	return sizeof(BlitzCallback);
+	return (BlitzCallback_Sizes->find(this->m_iCallback)->second);
 }
 
 void BlitzCallback::Run(void *pvParam) {
-	if (this->m_hSteamAPICall != 0)
-		this->m_hSteamAPICall = 0; // Caller unregisters for us.
+	if (m_hSteamAPICall != 0)
+		m_hSteamAPICall = 0; // Caller unregisters for us.
 
-	BP_CallFunction3(m_pFunctionPointer, reinterpret_cast<uint32_t>(pvParam), 0, 0);
+	BP_CallFunction3(m_pFunctionPointer, reinterpret_cast<int32_t>(pvParam), 0, 0);
 }
 
 void BlitzCallback::Run(void *pvParam, bool bIOFailure, SteamAPICall_t hSteamAPICall) {
-	if (this->m_hSteamAPICall != 0)
-		this->m_hSteamAPICall = 0; // Caller unregisters for us.
+	if (m_hSteamAPICall != 0)
+		m_hSteamAPICall = 0; // Caller unregisters for us.
 
-	BP_CallFunction3(m_pFunctionPointer, reinterpret_cast<uint32_t>(pvParam), (uint32_t)bIOFailure, (uint32_t)&hSteamAPICall);
+	BP_CallFunction3(m_pFunctionPointer, reinterpret_cast<int32_t>(pvParam), (bIOFailure ? 0 : 1), reinterpret_cast<int32_t>(&hSteamAPICall));
 }
 
 bool BlitzCallback::IsRegistered() {
@@ -48,8 +116,10 @@ bool BlitzCallback::IsRegistered() {
 }
 
 void BlitzCallback::Register(uint32_t iCallback) {
-	if (!this->IsRegistered())
-		SteamAPI_RegisterCallback(this, iCallback);
+	if (this->IsRegistered())
+		this->Unregister();
+
+	SteamAPI_RegisterCallback(this, iCallback);
 }
 
 void BlitzCallback::Unregister() {
@@ -57,19 +127,22 @@ void BlitzCallback::Unregister() {
 		SteamAPI_UnregisterCallback(this);
 }
 
-void BlitzCallback::RegisterResult(SteamAPICall_t hSteamAPICall) {
-	if (this->m_hSteamAPICall == 0) {
-		SteamAPI_RegisterCallResult(this, hSteamAPICall);
-		this->m_hSteamAPICall = hSteamAPICall;
-	}
+void BlitzCallback::RegisterResult(SteamAPICall_t hSteamAPICall, uint32_t iCallback) {
+	if (this->m_hSteamAPICall == 0)
+		this->UnregisterResult();
+
+	this->m_hSteamAPICall = hSteamAPICall;
+	this->m_iCallback = iCallback;
+
+	SteamAPI_RegisterCallResult(this, hSteamAPICall);
 }
 
-void BlitzCallback::UnregisterResult()
-{
-	if (this->m_hSteamAPICall != 0) {
+void BlitzCallback::UnregisterResult() {
+	if (this->m_hSteamAPICall != 0)
 		SteamAPI_UnregisterCallResult(this, this->m_hSteamAPICall);
-		this->m_hSteamAPICall = 0;
-	}
+
+	this->m_hSteamAPICall = 0;
+	this->m_iCallback = 0;
 }
 
 bool BlitzCallback::IsGameServer() {
@@ -83,49 +156,40 @@ void BlitzCallback::SetGameServer(bool bIsGameServer) {
 }
 
 // DLL-Callables
-DLL_FUNCTION(BlitzCallback*) BS_Callback_Create(BP_Function3_t pFunctionPointer) {
-#pragma comment(linker, "/EXPORT:BS_Callback_Create=_BS_Callback_Create@4")
+DLL_FUNCTION(BlitzCallback*) BS_Callback_Create(BP_BlitzFunction3_t pFunctionPointer) {
 	return new BlitzCallback(pFunctionPointer);
 }
 
 DLL_FUNCTION(void) BS_Callback_Destroy(BlitzCallback* pCallback) {
-#pragma comment(linker, "/EXPORT:BS_Callback_Destroy=_BS_Callback_Destroy@4")
 	delete pCallback;
 }
 
 DLL_FUNCTION(int32_t) BS_Callback_IsRegistered(BlitzCallback* pCallback) {
-#pragma comment(linker, "/EXPORT:BS_Callback_IsRegistered=_BS_Callback_IsRegistered@4")
 	return pCallback->IsRegistered();
 }
 
 DLL_FUNCTION(int32_t) BS_Callback_IsGameServer(BlitzCallback* pCallback) {
-#pragma comment(linker, "/EXPORT:BS_Callback_IsGameServer=_BS_Callback_IsGameServer@4")
 	return pCallback->IsGameServer();
 }
 
 DLL_FUNCTION(int32_t) BS_Callback_SetGameServerFlag(BlitzCallback* pCallback, int32_t bIsGameServer) {
-#pragma comment(linker, "/EXPORT:BS_Callback_SetGameServerFlag=_BS_Callback_SetGameServerFlag@8")
 	bool isGameServer = pCallback->IsGameServer();
 	pCallback->SetGameServer(!!bIsGameServer);
 	return isGameServer;
 }
 
 DLL_FUNCTION(void) BS_Callback_Register(BlitzCallback* pCallback, uint32_t iCallback) {
-#pragma comment(linker, "/EXPORT:BS_Callback_Register=_BS_Callback_Register@8")
 	pCallback->Register(iCallback);
 }
 
 DLL_FUNCTION(void) BS_Callback_Unregister(BlitzCallback* pCallback) {
-#pragma comment(linker, "/EXPORT:BS_Callback_Unregister=_BS_Callback_Unregister@4")
 	pCallback->Unregister();
 }
 
-DLL_FUNCTION(void) BS_Callback_RegisterResult(BlitzCallback* pCallback, SteamAPICall_t* pSteamAPICall) {
-#pragma comment(linker, "/EXPORT:BS_Callback_RegisterResult=_BS_Callback_RegisterResult@8")
-	pCallback->RegisterResult(*pSteamAPICall);
+DLL_FUNCTION(void) BS_Callback_RegisterResult(BlitzCallback* pCallback, SteamAPICall_t* pSteamAPICall, uint32_t iCallback) {
+	pCallback->RegisterResult(*pSteamAPICall, iCallback);
 }
 
 DLL_FUNCTION(void) BS_Callback_UnregisterResult(BlitzCallback* pCallback) {
-#pragma comment(linker, "/EXPORT:BS_Callback_UnregisterResult=_BS_Callback_UnregisterResult@4")
 	pCallback->UnregisterResult();
 }

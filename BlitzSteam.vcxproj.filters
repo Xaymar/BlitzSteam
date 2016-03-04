@@ -18,11 +18,14 @@
     <Filter Include="Header Files\Helpers">
       <UniqueIdentifier>{6cebc940-92bb-4a55-a125-ec97956636f2}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Types">
+      <UniqueIdentifier>{f9d810ff-605b-4b00-a607-4b7f1d918286}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Types">
+      <UniqueIdentifier>{812e0ab3-866c-4b15-ae9d-a24d92b05c9a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Wrapper\Steam.cpp">
-      <Filter>Source Files\Wrapper</Filter>
-    </ClCompile>
     <ClCompile Include="Wrapper\SteamClient.cpp">
       <Filter>Source Files\Wrapper</Filter>
     </ClCompile>
@@ -89,9 +92,6 @@
     <ClCompile Include="Wrapper\SteamVideo.cpp">
       <Filter>Source Files\Wrapper</Filter>
     </ClCompile>
-    <ClCompile Include="Helpers\CSteamID.cpp">
-      <Filter>Source Files\Helpers</Filter>
-    </ClCompile>
     <ClCompile Include="BlitzSteam.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -107,6 +107,18 @@
     <ClCompile Include="Helpers\BlitzCallback.cpp">
       <Filter>Source Files\Helpers</Filter>
     </ClCompile>
+    <ClCompile Include="Types\Long.cpp">
+      <Filter>Source Files\Types</Filter>
+    </ClCompile>
+    <ClCompile Include="Types\Double.cpp">
+      <Filter>Source Files\Types</Filter>
+    </ClCompile>
+    <ClCompile Include="Types\CSteamID.cpp">
+      <Filter>Source Files\Types</Filter>
+    </ClCompile>
+    <ClCompile Include="Wrapper\Steam.cpp">
+      <Filter>Source Files\Wrapper</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BlitzSteam.h">
@@ -118,14 +130,20 @@
     <ClInclude Include="Helpers\BlitzPointer.h">
       <Filter>Header Files\Helpers</Filter>
     </ClInclude>
-    <ClInclude Include="Helpers\CSteamID.h">
-      <Filter>Header Files\Helpers</Filter>
-    </ClInclude>
     <ClInclude Include="Helpers\Helper.h">
       <Filter>Header Files\Helpers</Filter>
     </ClInclude>
     <ClInclude Include="Helpers\Memory.h">
       <Filter>Header Files\Helpers</Filter>
+    </ClInclude>
+    <ClInclude Include="Types\Long.h">
+      <Filter>Header Files\Types</Filter>
+    </ClInclude>
+    <ClInclude Include="Types\Double.h">
+      <Filter>Header Files\Types</Filter>
+    </ClInclude>
+    <ClInclude Include="Types\CSteamID.h">
+      <Filter>Header Files\Types</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

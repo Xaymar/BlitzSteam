@@ -3,67 +3,146 @@
 ;
 ;	This program is free software: you can redistribute it and/or modify
 ;	it under the terms of the GNU Lesser General Public License as
-;	published by the Free Software Foundation, either version 3 of the 
-;	License, or (at your option) any later version.
+;	published by the Free Software Foundation either version 3 of the 
+;	License or (at your option) any later version.
 ;
-;	This program is distributed in the hope that it will be useful,
+;	This program is distributed in the hope that it will be useful
 ;	but WITHOUT ANY WARRANTY; without even the implied warranty of
 ;	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 ;	GNU General Public License for more details.
 ;
 ;	You should have received a copy of the GNU Lesser General Public License
-;	along with this program.  If not, see <http://www.gnu.org/licenses/>.
+;	along with this program.  If not see <http://www.gnu.org/licenses/>.
 
-;[Block] Enumeration: EDenyReason
 ;------------------------------------------------------------------------------
-;! Enumeration - EDenyReason
+;! Enumerations
 ;------------------------------------------------------------------------------
-; Result codes to GSHandleClientDeny/Kick
-Const BS_EDenyReason_Invalid								= 0
-Const BS_EDenyReason_InvalidVersion							= 1
-Const BS_EDenyReason_Generic								= 2
-Const BS_EDenyReason_NotLoggedOn							= 3
-Const BS_EDenyReason_NoLicense								= 4
-Const BS_EDenyReason_Cheater								= 5
-Const BS_EDenyReason_LoggedInElseWhere						= 6
-Const BS_EDenyReason_UnknownText							= 7
-Const BS_EDenyReason_IncompatibleAnticheat					= 8
-Const BS_EDenyReason_MemoryCorruption						= 9
-Const BS_EDenyReason_IncompatibleSoftware					= 10
-Const BS_EDenyReason_SteamConnectionLost					= 11
-Const BS_EDenyReason_SteamConnectionError					= 12
-Const BS_EDenyReason_SteamResponseTimedOut					= 13
-Const BS_EDenyReason_SteamValidationStalled					= 14
-Const BS_EDenyReason_SteamOwnerLeftGuestUser				= 15
-;[End Block]
-
 ;[Block] Enumeration: EAccountType
 ;------------------------------------------------------------------------------
 ;! Enumeration - EAccountType
 ;------------------------------------------------------------------------------
+;// Steam account types
 Const BS_EAccountType_Invalid								= 0
-Const BS_EAccountType_Individual							= 1
-Const BS_EAccountType_Multiseat								= 2
-Const BS_EAccountType_Gameserver							= 3
-Const BS_EAccountType_AnonGamerserver						= 4
-Const BS_EAccountType_Pending								= 5
-Const BS_EAccountType_ContentServer							= 6
+Const BS_EAccountType_Individual							= 1 ;// single user account
+Const BS_EAccountType_Multiseat								= 2 ;// multiseat (e.g. cybercafe) account
+Const BS_EAccountType_Gameserver							= 3 ;// game server account
+Const BS_EAccountType_AnonGamerserver						= 4 ;// anonymous game server account
+Const BS_EAccountType_Pending								= 5 ;// pending
+Const BS_EAccountType_ContentServer							= 6 ;// content server
 Const BS_EAccountType_Clan									= 7
 Const BS_EAccountType_Chat									= 8
-Const BS_EAccountType_ConsoleUser							= 9
+Const BS_EAccountType_ConsoleUser							= 9 ;// Fake SteamID for local PSN account on PS3 or Live account on 360 etc.
 Const BS_EAccountType_AnonUser								= 10
+Const BS_EaccountType_Max									= 16 ;// Max of 16 items in this field
+;[End Block]
+
+;[Block] Enumeration: EAppReleaseState
+;------------------------------------------------------------------------------
+;! Enumeration - EAppReleaseState
+;------------------------------------------------------------------------------
+Const BS_EAppReleaseState_Unknown							= 0 ;// unknown required appinfo or license info is missing
+Const BS_EAppReleaseState_Unavailable						= 1 ;// even if user 'just' owns it can see game at all
+Const BS_EAppReleaseState_Prerelease						= 2 ;// can be purchased and is visible in games list nothing else. Common appInfo section released
+Const BS_EAppReleaseState_PreloadOnly						= 3 ;// owners can preload app not play it. AppInfo fully released.
+Const BS_EAppReleaseState_Release							= 4 ;// owners can download and play app.
+;[End Block]
+
+;[Block] Enumeration: EAppOwnershipFlags
+;------------------------------------------------------------------------------
+;! Enumeration - EAppOwnershipFlags
+;------------------------------------------------------------------------------
+Const BS_EAppOwnershipFlags_None							= $0000	; unknown
+Const BS_EAppOwnershipFlags_OwnsLicense						= $0001	; owns license for this game
+Const BS_EAppOwnershipFlags_FreeLicense						= $0002	; not paid for game
+Const BS_EAppOwnershipFlags_RegionRestricted				= $0004	; owns app but not allowed to play in current region
+Const BS_EAppOwnershipFlags_LowViolence						= $0008	; only low violence version
+Const BS_EAppOwnershipFlags_InvalidPlatform					= $0010	; app not supported on current platform
+Const BS_EAppOwnershipFlags_SharedLicense					= $0020	; license was granted by authorized local device
+Const BS_EAppOwnershipFlags_FreeWeekend						= $0040	; owned by a free weekend licenses
+Const BS_EAppOwnershipFlags_RetailLicense					= $0080	; has a retail license for game (CD-Key etc)
+Const BS_EAppOwnershipFlags_LicenseLocked					= $0100	; shared license is locked (in use) by other user
+Const BS_EAppOwnershipFlags_LicensePending					= $0200	; owns app but transaction is still pending. Can't install or play
+Const BS_EAppOwnershipFlags_LicenseExpired					= $0400	; doesn't own app anymore since license expired
+Const BS_EAppOwnershipFlags_LicensePermanent				= $0800	; permanent license not borrowed or guest or freeweekend etc
+Const BS_EAppOwnershipFlags_LicenseRecurring				= $1000	; Recurring license user is charged periodically
+Const BS_EAppOwnershipFlags_LicenseCanceled					= $2000	; Mark as canceled but might be still active if recurring
+Const BS_EAppOwnershipFlags_AutoGrant						= $4000	; Ownership is based on any kind of autogrant license
+Const BS_EAppOwnershipFlags_PendingGift						= $8000	; user has pending gift to redeem
+Const BS_EAppOwnershipFlags_RentalNotActivated				= $10000	; Rental hasn't been activated yet
+;[End Block]
+
+;[Block] Enumeration: EAppType
+;------------------------------------------------------------------------------
+;! Enumeration - EAppType
+;------------------------------------------------------------------------------
+; Purpose: designed as flags to allow filters masks
+Const BS_EAppType_Invalid									= $000	; unknown / invalid
+Const BS_EAppType_Game										= $001	; playable game default type
+Const BS_EAppType_Application								= $002	; software application
+Const BS_EAppType_Tool										= $004	; SDKs editors & dedicated servers
+Const BS_EAppType_Demo										= $008	; game demo
+Const BS_EAppType_Media_DEPRECATED							= $010	; legacy - was used for game trailers which are now just videos on the web
+Const BS_EAppType_DLC										= $020	; down loadable content
+Const BS_EAppType_Guide										= $040	; game guide PDF etc
+Const BS_EAppType_Driver									= $080	; hardware driver updater (ATI Razor etc)
+Const BS_EAppType_Config									= $100	; hidden app used to config Steam features (backpack sales etc)
+Const BS_EAppType_Hardware									= $200	; a hardware device (Steam Machine Steam Controller Steam Link etc.)
+Const BS_EAppType_Video										= $800	; A video component of either a Film or TVSeries (may be the feature an episode preview making-of etc)
+Const BS_EAppType_Plugin									= $1000	; Plug-in types for other Apps
+Const BS_EAppType_Music										= $2000	; Music files
+Const BS_EAppType_Shortcut									= $40000000	; just a shortcut client side only
+Const BS_EAppType_DepotOnly									= $80000000	; placeholder since depots and apps share the same namespace
+;[End Block]
+
+;[Block] Enumeration: EAuthSessionResponse
+;------------------------------------------------------------------------------
+;! Enumeration - EAuthSessionResponse
+;------------------------------------------------------------------------------
+;// Callback values for callback ValidateAuthTicketResponse_t which is a response to BeginAuthSession
+Const BS_EAuthSessionResponse_OK							= 0 ;// Steam has verified the user is online the ticket is valid and ticket has not been reused.
+Const BS_EAuthSessionResponse_UserNotConnectedToSteam		= 1 ;// The user in question is not connected to steam
+Const BS_EAuthSessionResponse_NoLicenseOrExpired			= 2 ;// The license has expired.
+Const BS_EAuthSessionResponse_VACBanned						= 3 ;// The user is VAC banned for this game.
+Const BS_EAuthSessionResponse_LoggedInElseWhere				= 4 ;// The user account has logged in elsewhere and the session containing the game instance has been disconnected.
+Const BS_EAuthSessionResponse_VACCheckTimedOut				= 5 ;// VAC has been unable to perform anti-cheat checks on this user
+Const BS_EAuthSessionResponse_AuthTicketCanceled			= 6 ;// The ticket has been canceled by the issuer
+Const BS_EAuthSessionResponse_AuthTicketInvalidAlreadyUsed	= 7 ;// This ticket has already been used it is not valid.
+Const BS_EAuthSessionResponse_AuthTicketInvalid				= 8 ;// This ticket is not from a user instance currently connected to steam.
+Const BS_EAuthSessionResponse_PublisherIssuesBan			= 9 ;// The user is banned for this game. The ban came via the web api and not VAC
 ;[End Block]
 
 ;[Block] Enumeration: EBeginAuthSessionResult
 ;------------------------------------------------------------------------------
 ;! Enumeration - EBeginAuthSessionResult
 ;------------------------------------------------------------------------------
-Const BS_EBeginAuthSessionResult_OK							= 0		; Ticket is valid for this game and this steamID.
-Const BS_EBeginAuthSessionResult_InvalidTicket				= 1		; Ticket is not valid.
-Const BS_EBeginAuthSessionResult_DuplicateRequest			= 2		; A ticket has already been submitted for this steamID
-Const BS_EBeginAuthSessionResult_InvalidVersion				= 3		; Ticket is from an incompatible interface version
-Const BS_EBeginAuthSessionResult_GameMismatch				= 4		; Ticket is not for this game
-Const BS_EBeginAuthSessionResult_ExpiredTicket				= 5		; Ticket has expired
+;// results from BeginAuthSession
+Const BS_EBeginAuthSessionResult_OK							= 0	; Ticket is valid for this game and this steamID.
+Const BS_EBeginAuthSessionResult_InvalidTicket				= 1	; Ticket is not valid.
+Const BS_EBeginAuthSessionResult_DuplicateRequest			= 2	; A ticket has already been submitted for this steamID
+Const BS_EBeginAuthSessionResult_InvalidVersion				= 3	; Ticket is from an incompatible interface version
+Const BS_EBeginAuthSessionResult_GameMismatch				= 4	; Ticket is not for this game
+Const BS_EBeginAuthSessionResult_ExpiredTicket				= 5	; Ticket has expired
+;[End Block]
+
+;[Block] Enumeration: EBroadcastUploadResult
+;------------------------------------------------------------------------------
+;! Enumeration - EBroadcastUploadResult
+;------------------------------------------------------------------------------
+; Purpose: Broadcast upload result details
+Const BS_EBroadcastUploadResult_None = 0	; broadcast state unknown
+Const BS_EBroadcastUploadResult_OK = 1		; broadcast was good no problems
+Const BS_EBroadcastUploadResult_InitFailed = 2	; broadcast init failed
+Const BS_EBroadcastUploadResult_FrameFailed = 3	; broadcast frame upload failed
+Const BS_EBroadcastUploadResult_Timeout = 4	; broadcast upload timed out
+Const BS_EBroadcastUploadResult_BandwidthExceeded = 5	; broadcast send too much data
+Const BS_EBroadcastUploadResult_LowFPS = 6	; broadcast FPS too low
+Const BS_EBroadcastUploadResult_MissingKeyFrames = 7	; broadcast sending not enough key frames
+Const BS_EBroadcastUploadResult_NoConnection = 8	; broadcast client failed to connect to relay
+Const BS_EBroadcastUploadResult_RelayFailed = 9	; relay dropped the upload
+Const BS_EBroadcastUploadResult_SettingsChanged = 10	; the client changed broadcast settings 
+Const BS_EBroadcastUploadResult_MissingAudio = 11	; client failed to send audio data
+Const BS_EBroadcastUploadResult_TooFarBehind = 12	; clients was too slow uploading
+Const BS_EBroadcastUploadResult_TranscodeBehind = 13	; server failed to keep up with transcode
 ;[End Block]
 
 ;[Block] Enumeration: ECallback
@@ -119,12 +198,61 @@ Const BS_ECallback_ClientVideoCallbacks						= 4600
 Const BS_ECallback_ClientVRCallbacks						= 4200
 ;[End Block]
 
-;[Block] Enumeration: ESteamControllerPad
+;[Block] Enumeration: EChatEntryType
 ;------------------------------------------------------------------------------
-;! Enumeration - ESteamControllerPad
+;! Enumeration - EChatEntryType
 ;------------------------------------------------------------------------------
-Const BS_ESteamControllerPad_Left							= 0
-Const BS_ESteamControllerPad_Right							= 1
+;//-----------------------------------------------------------------------------
+;// Purpose: Chat Entry Types (previously was only friend-to-friend message types)
+;//-----------------------------------------------------------------------------
+Const BS_EChatEntryType_Invalid								= 0
+Const BS_EChatEntryType_ChatMsg								= 1		;// Normal text message from another user
+Const BS_EChatEntryType_Typing								= 2		;// Another user is typing (not used in multi-user chat)
+Const BS_EChatEntryType_InviteGame							= 3		;// Invite from other user into that users current game
+Const BS_EChatEntryType_Emote								= 4		;// text emote message (deprecated should be treated as ChatMsg)
+Const BS_EChatEntryType_LobbyGameStart						= 5		;// lobby game is starting (dead - listen for LobbyGameCreated_t callback instead)
+Const BS_EChatEntryType_LeftConversation					= 6		;// user has left the conversation ( closed chat window )
+Const BS_EChatEntryType_Entered								= 7		;// user has entered the conversation (used in multi-user chat and group chat)
+Const BS_EChatEntryType_WasKicked							= 8		;// user was kicked (data: 64-bit steamid of actor performing the kick)
+Const BS_EChatEntryType_WasBanned							= 9		;// user was banned (data: 64-bit steamid of actor performing the ban)
+Const BS_EChatEntryType_Disconnected						= 10	;// user disconnected
+Const BS_EChatEntryType_HistoricalChat						= 11	;// a chat message from user's chat history or offilne message
+Const BS_EChatEntryType_Reserved1							= 12
+Const BS_EChatEntryType_Reserved2							= 13
+Const BS_EChatEntryType_LinkBlocked							= 14	;// a link was removed by the chat filter.
+;[End Block]
+
+;[Block] Enumeration: EChatRoomEnterResponse
+;------------------------------------------------------------------------------
+;! Enumeration - EChatRoomEnterResponse
+;------------------------------------------------------------------------------
+; Purpose: Chat Room Enter Responses
+Const BS_EChatRoomEnterResponseSuccess						= 1		; Success
+Const BS_EChatRoomEnterResponseDoesntExist					= 2	; Chat doesn't exist (probably closed)
+Const BS_EChatRoomEnterResponseNotAllowed					= 3		; General Denied - You don't have the permissions needed to join the chat
+Const BS_EChatRoomEnterResponseFull							= 4			; Chat room has reached its maximum size
+Const BS_EChatRoomEnterResponseError						= 5			; Unexpected Error
+Const BS_EChatRoomEnterResponseBanned						= 6			; You are banned from this chat room and may not join
+Const BS_EChatRoomEnterResponseLimited						= 7		; Joining this chat is not allowed because you are a limited user (no value on account)
+Const BS_EChatRoomEnterResponseClanDisabled					= 8	; Attempt to join a clan chat when the clan is locked or disabled
+Const BS_EChatRoomEnterResponseCommunityBan					= 9	; Attempt to join a chat when the user has a community lock on their account
+Const BS_EChatRoomEnterResponseMemberBlockedYou				= 10 ; Join failed - some member in the chat has blocked you from joining
+Const BS_EChatRoomEnterResponseYouBlockedMember				= 11 ; Join failed - you have blocked some member already in the chat
+; Const BS_EChatRoomEnterResponseNoRankingDataLobby			= 12  ; No longer used
+; Const BS_EChatRoomEnterResponseNoRankingDataUser			= 13  ;  No longer used
+; Const BS_EChatRoomEnterResponseRankOutOfRange				= 14 ;  No longer used
+;[End Block]
+
+;[Block] Enumeration: EChatSteamIDInstanceFlags
+;------------------------------------------------------------------------------
+;! Enumeration - EChatSteamIDInstanceFlags
+;------------------------------------------------------------------------------
+; Special flags for Chat accounts - they go in the top 8 bits
+; of the steam ID's "instance" leaving 12 for the actual instances
+Const BS_EChatSteamIDInstanceFlags_Mask = $00000FFF ; top 8 bits are flags
+Const BS_EChatSteamIDInstanceFlags_Clan = ( BS_EChatSteamIDInstanceFlags_Mask + 1 ) Shr 1	; top bit
+Const BS_EChatSteamIDInstanceFlags_Lobby = ( BS_EChatSteamIDInstanceFlags_Mask + 1 ) Shr 2	; next one down etc
+Const BS_EChatSteamIDInstanceFlags_MMSLobby = ( BS_EChatSteamIDInstanceFlags_Mask + 1 ) Shr 3	; next one down etc
 ;[End Block]
 
 ;[Block] Enumeration: EControllerSource
@@ -205,36 +333,69 @@ Const BS_EControllerActionOrigin_Gyro_Roll					= 38
 Const BS_EControllerActionOrigin_Count						= 39
 ;[End Block]
 
+;[Block] Enumeration: EDenyReason
+;------------------------------------------------------------------------------
+;! Enumeration - EDenyReason
+;------------------------------------------------------------------------------
+;// Result codes to GSHandleClientDeny/Kick
+Const BS_EDenyReason_Invalid								= 0
+Const BS_EDenyReason_InvalidVersion							= 1
+Const BS_EDenyReason_Generic								= 2
+Const BS_EDenyReason_NotLoggedOn							= 3
+Const BS_EDenyReason_NoLicense								= 4
+Const BS_EDenyReason_Cheater								= 5
+Const BS_EDenyReason_LoggedInElseWhere						= 6
+Const BS_EDenyReason_UnknownText							= 7
+Const BS_EDenyReason_IncompatibleAnticheat					= 8
+Const BS_EDenyReason_MemoryCorruption						= 9
+Const BS_EDenyReason_IncompatibleSoftware					= 10
+Const BS_EDenyReason_SteamConnectionLost					= 11
+Const BS_EDenyReason_SteamConnectionError					= 12
+Const BS_EDenyReason_ResponseTimedOut						= 13
+Const BS_EDenyReason_ValidationStalled						= 14
+Const BS_EDenyReason_OwnerLeftGuestUser						= 15
+;[End Block]
+
 ;[Block] Enumeration: EFriendRelationShip
 ;------------------------------------------------------------------------------
 ;! Enumeration - EFriendRelationShip
 ;------------------------------------------------------------------------------
+;//-----------------------------------------------------------------------------
+;// Purpose: set of relationships to other users
+;//-----------------------------------------------------------------------------
 Const BS_EFriendRelationShip_None							= 0
-Const BS_EFriendRelationShip_Blocked						= 1
+Const BS_EFriendRelationShip_Blocked						= 1	;// this doesn't get stored; the user has just done an Ignore on an friendship invite
 Const BS_EFriendRelationShip_RequestRecipient				= 2
 Const BS_EFriendRelationShip_Friend							= 3
 Const BS_EFriendRelationShip_RequestInitiator				= 4
-Const BS_EFriendRelationShip_Ignored						= 5
+Const BS_EFriendRelationShip_Ignored						= 5 ;// this is stored; the user has explicit blocked this other user from comments/chat/etc
 Const BS_EFriendRelationShip_IgnoredFriend					= 6
 Const BS_EFriendRelationShip_Suggested						= 7
+Const BS_EFriendRelationShip_Max							= 8 ;// keep this updated
 ;[End Block]
 
 ;[Block] Enumeration: EFriendFlags
 ;------------------------------------------------------------------------------
 ;! Enumeration - EFriendFlags
 ;------------------------------------------------------------------------------
-Const BS_EFriendFlags_None									= $00000000
-Const BS_EFriendFlags_Blocked								= $00000001
-Const BS_EFriendFlags_FriendshipRequested					= $00000002
-Const BS_EFriendFlags_Immediate								= $00000004
-Const BS_EFriendFlags_ClanMember							= $00000008
-Const BS_EFriendFlags_OnGameServer							= $00000010
-Const BS_EFriendFlags_RequestingFriendship					= $00000080
-Const BS_EFriendFlags_RequestingInfo						= $00000100
-Const BS_EFriendFlags_Ignored								= $00000200
-Const BS_EFriendFlags_IgnoredFriend							= $00000400
-Const BS_EFriendFlags_Suggested								= $00000800
-Const BS_EFriendFlags_All									= $0000FFFF
+;//-----------------------------------------------------------------------------
+;// Purpose: flags for enumerating friends list or quickly checking a the relationship between users
+;//-----------------------------------------------------------------------------
+Const BS_EFriendFlags_None									= $00
+Const BS_EFriendFlags_Blocked								= $01
+Const BS_EFriendFlags_FriendshipRequested					= $02
+Const BS_EFriendFlags_Immediate								= $04 ;// "regular" friend
+Const BS_EFriendFlags_ClanMember							= $08
+Const BS_EFriendFlags_OnGameServer							= $10
+Const BS_EFriendFlags_HasPlayedWith							= $20 ;// not currently used
+Const BS_EFriendFlags_FriendOfFriend						= $40 ;// not currently used
+Const BS_EFriendFlags_RequestingFriendship					= $80
+Const BS_EFriendFlags_RequestingInfo						= $0100
+Const BS_EFriendFlags_Ignored								= $0200
+Const BS_EFriendFlags_IgnoredFriend							= $0400
+Const BS_EFriendFlags_Suggested								= $0800
+Const BS_EFriendFlags_ChatMember							= $1000
+Const BS_EFriendFlags_All									= $FFFF
 ;[End Block]
 
 ;[Block] Enumeration: EHTMLMouseButton
@@ -256,6 +417,29 @@ Const BS_EHTMLKeyModifiers_CtrlDown							= 1 Shl 1
 Const BS_EHTMLKeyModifiers_ShiftDown						= 1 Shl 2
 ;[End Block]
 
+;[Block] Enumeration: ELaunchOptionType
+;------------------------------------------------------------------------------
+;! Enumeration - ELaunchOptionType
+;------------------------------------------------------------------------------
+; Purpose: codes for well defined launch options
+Const BS_ELaunchOptionType_None		= 0	; unknown what launch option does
+Const BS_ELaunchOptionType_Default		= 1	; runs the game app whatever in default mode
+Const BS_ELaunchOptionType_SafeMode	= 2	; runs the game in safe mode
+Const BS_ELaunchOptionType_Multiplayer = 3	; runs the game in multiplayer mode
+Const BS_ELaunchOptionType_Config		= 4	; runs config tool for this game
+Const BS_ELaunchOptionType_OpenVR		= 5	; runs game in VR mode using OpenVR
+Const BS_ELaunchOptionType_Server		= 6	; runs dedicated server for this game
+Const BS_ELaunchOptionType_Editor		= 7	; runs game editor
+Const BS_ELaunchOptionType_Manual		= 8	; shows game manual
+Const BS_ELaunchOptionType_Benchmark	= 9	; runs game benchmark
+Const BS_ELaunchOptionType_Option1		= 10	; generic run option uses description field for game name
+Const BS_ELaunchOptionType_Option2		= 11	; generic run option uses description field for game name
+Const BS_ELaunchOptionType_Option3     = 12	; generic run option uses description field for game name
+Const BS_ELaunchOptionType_OtherVR		= 13	; runs game in VR mode using the Oculus SDK or other vendor-specific VR SDK
+Const BS_ELaunchOptionType_OpenVROverlay = 14	; runs an OpenVR dashboard overlay
+Const BS_ELaunchOptionType_Dialog 		= 1000 ; show launch options dialog
+;[End Block]
+
 ;[Block] Enumeration: ELeaderboardDataRequest
 ;------------------------------------------------------------------------------
 ;! Enumeration - ELeaderboardDataRequest
@@ -272,8 +456,8 @@ Const BS_ELeaderboardDataRequest_Users						= 3
 ;------------------------------------------------------------------------------
 Const BS_ELeaderboardDisplayType_None						= 0
 Const BS_ELeaderboardDisplayType_Numeric					= 1		; simple numerical score
-Const BS_ELeaderboardDisplayType_TimeSeconds				= 2		; the score represents a time, in seconds
-Const BS_ELeaderboardDisplayType_TimeMilliSeconds			= 3		; the score represents a time, in milliseconds
+Const BS_ELeaderboardDisplayType_TimeSeconds				= 2		; the score represents a time in seconds
+Const BS_ELeaderboardDisplayType_TimeMilliSeconds			= 3		; the score represents a time in milliseconds
 ;[End Block]
 
 ;[Block] Enumeration: ELeaderboardSortMethod
@@ -294,10 +478,36 @@ Const BS_ELeaderboardUploadScoreMethod_KeepBest				= 1		; Leaderboard will keep 
 Const BS_ELeaderboardUploadScoreMethod_ForceUpdate			= 2		; Leaderboard will always replace score with specified
 ;[End Block]
 
+;[Block] Enumeration: EMarketingMessageFlags
+;------------------------------------------------------------------------------
+;! Enumeration - EMarketingMessageFlags
+;------------------------------------------------------------------------------
+; Purpose: Marketing message flags that change how a client should handle them
+Const BS_EMarketingMessageFlags_None = 0
+Const BS_EMarketingMessageFlags_HighPriority = 1 Shl 0
+Const BS_EMarketingMessageFlags_PlatformWindows = 1 Shl 1
+Const BS_EMarketingMessageFlags_PlatformMac = 1 Shl 2
+Const BS_EMarketingMessageFlags_PlatformLinux = 1 Shl 3
+;aggregate flags
+Const BS_EMarketingMessageFlags_PlatformRestrictions = BS_EMarketingMessageFlags_PlatformWindows Or BS_EMarketingMessageFlags_PlatformMac Or BS_EMarketingMessageFlags_PlatformLinux
+;[End Block]
+
+;[Block] Enumeration: ENotificationPosition
+;------------------------------------------------------------------------------
+;! Enumeration - ENotificationPosition
+;------------------------------------------------------------------------------
+; Purpose: Possible positions to tell the overlay to show notifications in
+Const BS_ENotificationPosition_TopLeft = 0
+Const BS_ENotificationPosition_TopRight = 1
+Const BS_ENotificationPosition_BottomLeft = 2
+Const BS_ENotificationPosition_BottomRight = 3
+;[End Block]
+
 ;[Block] Enumeration: EOverlayToStoreFlag
 ;------------------------------------------------------------------------------
 ;! Enumeration - EOverlayToStoreFlag
 ;------------------------------------------------------------------------------
+;// These values are passed as parameters to the store
 Const BS_EOverlayToStoreFlag_None							= 0
 Const BS_EOverlayToStoreFlag_AddToCart						= 1
 Const BS_EOverlayToStoreFlag_AddToCartAndShow				= 2
@@ -307,6 +517,8 @@ Const BS_EOverlayToStoreFlag_AddToCartAndShow				= 2
 ;------------------------------------------------------------------------------
 ;! Enumeration - EPersonaChange
 ;------------------------------------------------------------------------------
+;// used in PersonaStateChange_t::m_nChangeFlags to describe what's changed about a user
+;// these flags describe what the client has learned has changed recently so on startup you'll see a name avatar & relationship change for every friend
 Const BS_EPersonaChange_Name								= $0001
 Const BS_EPersonaChange_Status								= $0002
 Const BS_EPersonaChange_ComeOnline							= $0004
@@ -327,13 +539,17 @@ Const BS_EPersonaChange_SteamLevel							= $2000
 ;------------------------------------------------------------------------------
 ;! Enumeration - EPersonaState
 ;------------------------------------------------------------------------------
-Const BS_EPersonaState_Offline								= 0
-Const BS_EPersonaState_Online								= 1
-Const BS_EPersonaState_Busy									= 2
-Const BS_EPersonaState_Away									= 3
-Const BS_EPersonaState_Snooze								= 4
-Const BS_EPersonaState_LookingToTrade						= 5
-Const BS_EPersonaState_LookingToPlay						= 6
+;//-----------------------------------------------------------------------------
+;// Purpose: list of states a friend can be in
+;//-----------------------------------------------------------------------------
+Const BS_EPersonaState_Offline								= 0 ;// friend is not currently logged on
+Const BS_EPersonaState_Online								= 1 ;// friend is logged on
+Const BS_EPersonaState_Busy									= 2 ;// user is on but busy
+Const BS_EPersonaState_Away									= 3 ;// auto-away feature
+Const BS_EPersonaState_Snooze								= 4 ;// auto-away for a long time
+Const BS_EPersonaState_LookingToTrade						= 5 ;// Online trading
+Const BS_EPersonaState_LookingToPlay						= 6 ;// Online wanting to play
+Const BS_EPersonaState_Max									= 7
 ;[End Block]
 
 ;[Block] Enumeration: EP2PSend
@@ -341,22 +557,22 @@ Const BS_EPersonaState_LookingToPlay						= 6
 ;! Enumeration - EP2PSend
 ;------------------------------------------------------------------------------
 ; SendP2PPacket() send types
-; Typically k_EP2PSendUnreliable is what you want for UDP-like packets, k_EP2PSendReliable for TCP-like packets
-	; Basic UDP send. Packets can't be bigger than 1200 bytes (your typical MTU size). Can be lost, or arrive out of order (rare).
-	; The sending API does have some knowledge of the underlying connection, so if there is no NAT-traversal accomplished or
-	; there is a recognized adjustment happening on the connection, the packet will be batched until the connection is open again.
+; Typically k_EP2PSendUnreliable is what you want for UDP-like packets k_EP2PSendReliable for TCP-like packets
+	; Basic UDP send. Packets can't be bigger than 1200 bytes (your typical MTU size). Can be lost or arrive out of order (rare).
+	; The sending API does have some knowledge of the underlying connection so if there is no NAT-traversal accomplished or
+	; there is a recognized adjustment happening on the connection the packet will be batched until the connection is open again.
 Const BS_EP2PSend_Unreliable								= 0
-	; As above, but if the underlying p2p connection isn't yet established the packet will just be thrown away. Using this on the first
+	; As above but if the underlying p2p connection isn't yet established the packet will just be thrown away. Using this on the first
 	; packet sent to a remote host almost guarantees the packet will be dropped.
-	; This is only really useful for kinds of data that should never buffer up, i.e. voice payload packets
+	; This is only really useful for kinds of data that should never buffer up i.e. voice payload packets
 Const BS_EP2PSend_UnreliableNoDelay							= 1
 	; Reliable message send. Can send up to 1MB of data in a single message. 
-	; Does fragmentation/re-assembly of messages under the hood, as well as a sliding window for efficient sends of large chunks of data. 
+	; Does fragmentation/re-assembly of messages under the hood as well as a sliding window for efficient sends of large chunks of data. 
 Const BS_EP2PSend_Reliable									= 2
-	; As above, but applies the Nagle algorithm to the send - sends will accumulate 
-	; until the current MTU size (typically ~1200 bytes, but can change) or ~200ms has passed (Nagle algorithm). 
+	; As above but applies the Nagle algorithm to the send - sends will accumulate 
+	; until the current MTU size (typically ~1200 bytes but can change) or ~200ms has passed (Nagle algorithm). 
 	; Useful if you want to send a set of smaller messages but have the coalesced into a single packet
-	; Since the reliable stream is all ordered, you can do several small message sends with k_EP2PSendReliableWithBuffering and then
+	; Since the reliable stream is all ordered you can do several small message sends with k_EP2PSendReliableWithBuffering and then
 	; do a normal k_EP2PSendReliable to force all the buffered data to be sent.
 Const BS_EP2PSend_ReliableWithBuffering						= 3
 ;[End Block]
@@ -371,9 +587,9 @@ Const BS_EP2PSessionError_None								= 0
 Const BS_EP2PSessionError_NotRunningApp						= 1		; target is not running the same game
 Const BS_EP2PSessionError_NoRightsToApp						= 2		; local user doesn't own the app that is running
 Const BS_EP2PSessionError_DestinationNotLoggedIn			= 3		; target user isn't connected to Steam
-Const BS_EP2PSessionError_Timeout							= 4		; target isn't responding, perhaps not calling AcceptP2PSessionWithUser()
+Const BS_EP2PSessionError_Timeout							= 4		; target isn't responding perhaps not calling AcceptP2PSessionWithUser()
 																	; corporate firewalls can also block this (NAT traversal is not firewall traversal)
-																	; make sure that UDP ports 3478, 4379, and 4380 are open in an outbound direction
+																	; make sure that UDP ports 3478 4379 and 4380 are open in an outbound direction
 Const BS_EP2PSessionError_Max								= 5
 ;[End Block]
 
@@ -381,10 +597,11 @@ Const BS_EP2PSessionError_Max								= 5
 ;------------------------------------------------------------------------------
 ;! Enumeration - EResult
 ;------------------------------------------------------------------------------
+;// General result codes
 Const BS_EResult_OK											= 1		; success
 Const BS_EResult_Fail										= 2		; generic failure 
 Const BS_EResult_NoConnection								= 3		; no/failed network connection
-Const BS_EResult_NoConnectionRetry							= 4		; OBSOLETE - removed
+;Const BS_EResult_NoConnectionRetry							= 4		; OBSOLETE - removed
 Const BS_EResult_InvalidPassword							= 5		; password/ticket is invalid
 Const BS_EResult_LoggedInElsewhere							= 6		; same user logged in elsewhere
 Const BS_EResult_InvalidProtocolVer							= 7		; protocol version is incorrect
@@ -402,14 +619,14 @@ Const BS_EResult_AccountNotFound							= 18	; account not found
 Const BS_EResult_InvalidSteamID								= 19	; steamID is invalid
 Const BS_EResult_ServiceUnavailable							= 20	; The requested service is currently unavailable
 Const BS_EResult_NotLoggedOn								= 21	; The user is not logged on
-Const BS_EResult_Pending									= 22	; Request is pending (may be in process, or waiting on third party)
+Const BS_EResult_Pending									= 22	; Request is pending (may be in process or waiting on third party)
 Const BS_EResult_EncryptionFailure							= 23	; Encryption or Decryption failed
 Const BS_EResult_InsufficientPrivilege						= 24	; Insufficient privilege
 Const BS_EResult_LimitExceeded								= 25	; Too much of a good thing
 Const BS_EResult_Revoked									= 26	; Access has been revoked (used for revoked guest passes)
 Const BS_EResult_Expired									= 27	; License/Guest pass the user is trying to access is expired
-Const BS_EResult_AlreadyRedeemed							= 28	; Guest pass has already been redeemed by account, cannot be acked again
-Const BS_EResult_DuplicateRequest							= 29	; The request is a duplicate and the action has already occurred in the past, ignored this time
+Const BS_EResult_AlreadyRedeemed							= 28	; Guest pass has already been redeemed by account cannot be acked again
+Const BS_EResult_DuplicateRequest							= 29	; The request is a duplicate and the action has already occurred in the past ignored this time
 Const BS_EResult_AlreadyOwned								= 30	; All the games in this guest pass redemption request are already owned by the user
 Const BS_EResult_IPNotFound									= 31	; IP address not found
 Const BS_EResult_PersistFailed								= 32	; failed to write change to the data store
@@ -425,21 +642,21 @@ Const BS_EResult_Ignored									= 41	; target is ignoring sender
 Const BS_EResult_NoMatch									= 42	; nothing matching the request found
 Const BS_EResult_AccountDisabled							= 43
 Const BS_EResult_ServiceReadOnly							= 44	; this service is not accepting content changes right now
-Const BS_EResult_AccountNotFeatured							= 45	; account doesn't have value, so this feature isn't available
-Const BS_EResult_AdministratorOK							= 46	; allowed to take this action, but only because requester is admin
+Const BS_EResult_AccountNotFeatured							= 45	; account doesn't have value so this feature isn't available
+Const BS_EResult_AdministratorOK							= 46	; allowed to take this action but only because requester is admin
 Const BS_EResult_ContentVersion								= 47	; A Version mismatch in content transmitted within the Steam protocol.
-Const BS_EResult_TryAnotherCM								= 48	; The current CM can't service the user making a request, user should try another.
-Const BS_EResult_PasswordRequiredToKickSession				= 49	; You are already logged in elsewhere, this cached credential login has failed.
-Const BS_EResult_AlreadyLoggedInElsewhere					= 50	; You are already logged in elsewhere, you must wait
+Const BS_EResult_TryAnotherCM								= 48	; The current CM can't service the user making a request user should try another.
+Const BS_EResult_PasswordRequiredToKickSession				= 49	; You are already logged in elsewhere this cached credential login has failed.
+Const BS_EResult_AlreadyLoggedInElsewhere					= 50	; You are already logged in elsewhere you must wait
 Const BS_EResult_Suspended									= 51	; Long running operation (content download) suspended/paused
 Const BS_EResult_Cancelled									= 52	; Operation canceled (typically by user: content download)
 Const BS_EResult_DataCorruption								= 53	; Operation canceled because data is ill formed or unrecoverable
 Const BS_EResult_DiskFull									= 54	; Operation canceled - not enough disk space.
 Const BS_EResult_RemoteCallFailed							= 55	; an remote call or IPC call failed
 Const BS_EResult_PasswordUnset								= 56	; Password could not be verified as it's unset server side
-Const BS_EResult_ExternalAccountUnlinked					= 57	; External account (PSN, Facebook...) is not linked to a Steam account
+Const BS_EResult_ExternalAccountUnlinked					= 57	; External account (PSN Facebook...) is not linked to a Steam account
 Const BS_EResult_PSNTicketInvalid							= 58	; PSN ticket was invalid
-Const BS_EResult_ExternalAccountAlreadyLinked				= 59	; External account (PSN, Facebook...) is already linked to some other account, must explicitly request to replace/delete the link first
+Const BS_EResult_ExternalAccountAlreadyLinked				= 59	; External account (PSN Facebook...) is already linked to some other account must explicitly request to replace/delete the link first
 Const BS_EResult_RemoteFileConflict							= 60	; The sync cannot resume due to a conflict between the local and remote files
 Const BS_EResult_IllegalPassword							= 61	; The requested new password is not legal
 Const BS_EResult_SameAsPreviousValue						= 62	; new value is the same as the old one ( secret question and answer )
@@ -456,7 +673,7 @@ Const BS_EResult_IPLoginRestrictionFailed					= 72
 Const BS_EResult_AccountLockedDown							= 73
 Const BS_EResult_AccountLogonDeniedVerifiedEmailRequired	= 74
 Const BS_EResult_NoMatchingURL								= 75
-Const BS_EResult_BadResponse								= 76	; parse failure, missing field, etc.
+Const BS_EResult_BadResponse								= 76	; parse failure missing field etc.
 Const BS_EResult_RequirePasswordReEntry						= 77	; The user cannot complete the action until they re-enter their password
 Const BS_EResult_ValueOutOfRange							= 78	; the value entered is outside the acceptable range
 Const BS_EResult_UnexpectedError							= 79	; something happened that we didn't expect to ever happen
@@ -464,34 +681,51 @@ Const BS_EResult_Disabled									= 80	; The requested service has been configur
 Const BS_EResult_InvalidCEGSubmission						= 81	; The set of files submitted to the CEG server are not valid !
 Const BS_EResult_RestrictedDevice							= 82	; The device being used is not allowed to perform this action
 Const BS_EResult_RegionLocked								= 83	; The action could not be complete because it is region restricted
-Const BS_EResult_RateLimitExceeded							= 84	; Temporary rate limit exceeded, try again later, different from k_EResultLimitExceeded which may be permanent
+Const BS_EResult_RateLimitExceeded							= 84	; Temporary rate limit exceeded try again later different from k_EResultLimitExceeded which may be permanent
 Const BS_EResult_AccountLoginDeniedNeedTwoFactor			= 85	; Need two-factor code to login
 Const BS_EResult_ItemDeleted								= 86	; The thing we're trying to access has been deleted
-Const BS_EResult_AccountLoginDeniedThrottle					= 87	; login attempt failed, try to throttle response to possible attacker
+Const BS_EResult_AccountLoginDeniedThrottle					= 87	; login attempt failed try to throttle response to possible attacker
 Const BS_EResult_TwoFactorCodeMismatch						= 88	; two factor code mismatch
 Const BS_EResult_TwoFactorActivationCodeMismatch			= 89	; activation code for two-factor didn't match
 Const BS_EResult_AccountAssociatedToMultiplePartners		= 90	; account has been associated with multiple partners
 Const BS_EResult_NotModified								= 91	; data not modified
 Const BS_EResult_NoMobileDevice								= 92	; the account does not have a mobile device associated with it
 Const BS_EResult_TimeNotSynced								= 93	; the time presented is out of range or tolerance
-Const BS_EResult_SmsCodeFailed								= 94	; SMS code failure (no match, none pending, etc.)
+Const BS_EResult_SmsCodeFailed								= 94	; SMS code failure (no match none pending etc.)
 Const BS_EResult_AccountLimitExceeded						= 95	; Too many accounts access this resource
 Const BS_EResult_AccountActivityLimitExceeded				= 96	; Too many changes to this account
 Const BS_EResult_PhoneActivityLimitExceeded					= 97	; Too many changes to this phone
-Const BS_EResult_RefundToWallet								= 98	; Cannot refund to payment method, must use wallet
+Const BS_EResult_RefundToWallet								= 98	; Cannot refund to payment method must use wallet
 Const BS_EResult_EmailSendFailure							= 99	; Cannot send an email
 Const BS_EResult_NotSettled									= 100	; Can't perform operation till payment has settled
 Const BS_EResult_NeedCaptcha								= 101	; Needs to provide a valid captcha
+Const BS_EResult_GSLTDenied									= 102	; a game server login token owned by this token's owner has been banned
+Const BS_EResult_GSOwnerDenied								= 103	; game server owner is denied for other reason (account lock community ban vac ban missing phone)
+Const BS_EResult_InvalidItemType							= 104	; the type of thing we were requested to act on is invalid
+;[End Block]
+
+;[Block] Enumeration: ERegisterActivationCodeResult
+;------------------------------------------------------------------------------
+;! Enumeration - ERegisterActivationCodeResult
+;------------------------------------------------------------------------------
+;//-----------------------------------------------------------------------------
+;// Purpose: possible results when registering an activation code
+;//-----------------------------------------------------------------------------
+Const BS_ERegisterActivationCodeResult_OK					= 0
+Const BS_ERegisterActivationCodeResult_Fail					= 1
+Const BS_ERegisterActivationCodeResult_AlreadyRegistered	= 2
+Const BS_ERegisterActivationCodeResult_Timeout				= 3
+Const BS_ERegisterActivationCodeResult_AlreadyOwned			= 4
 ;[End Block]
 
 ;[Block] Enumeration: EServerMode
 ;------------------------------------------------------------------------------
 ;! Enumeration - EServerMode
 ;------------------------------------------------------------------------------
-Const BS_EServerMode_Invalid								= 0
-Const BS_EServerMode_NoAuthentication						= 1
-Const BS_EServerMode_Authentication							= 2
-Const BS_EServerMode_AuthenticationAndSecure				= 3
+Const BS_EServerMode_Invalid								= 0;// DO NOT USE		
+Const BS_EServerMode_NoAuthentication						= 1;// Don't authenticate user logins and don't list on the server list
+Const BS_EServerMode_Authentication							= 2;// Authenticate users list on the server list don't run VAC on clients that connect
+Const BS_EServerMode_AuthenticationAndSecure				= 3;// Authenticate users list on the server list and VAC protect clients
 ;[End Block]
 
 ;[Block] Enumeration: EServerFlag
@@ -510,10 +744,48 @@ Const BS_EServerFlag_Private								= $20	; server shouldn't list on master serv
 																	; be connected to the internet but you want them to play (i.e LANs)
 ;[End Block]
 
+;[Block] Enumeration: ESteamControllerPad
+;------------------------------------------------------------------------------
+;! Enumeration - EControllerPad
+;------------------------------------------------------------------------------
+Const BS_ESteamControllerPad_Left							= 0
+Const BS_ESteamControllerPad_Right							= 1
+;[End Block]
+
+;[Block] Enumeration: ESteamUserStatType
+;------------------------------------------------------------------------------
+;! Enumeration - ESteamUserStatType
+;------------------------------------------------------------------------------
+Const BS_ESteamUserStatType_INVALID							= 0
+Const BS_ESteamUserStatType_INT								= 1
+Const BS_ESteamUserStatType_FLOAT							= 2
+;// Read as FLOAT set with count / session length
+Const BS_ESteamUserStatType_AVGRATE							= 3
+Const BS_ESteamUserStatType_ACHIEVEMENTS					= 4
+Const BS_ESteamUserStatType_GROUPACHIEVEMENTS				= 5
+;// max for sanity checks
+Const BS_ESteamUserStatType_MAX								= 6
+;[End Block]
+
+;[Block] Enumeration: EUniverse
+;------------------------------------------------------------------------------
+;! Enumeration - EUniverse
+;------------------------------------------------------------------------------
+; Steam universes.  Each universe is a self-contained Steam instance.
+Const BS_EUniverse_Invalid = 0
+Const BS_EUniverse_Public = 1
+Const BS_EUniverse_Beta = 2
+Const BS_EUniverse_Internal = 3
+Const BS_EUniverse_Dev = 4
+;Const BS_EUniverse_RC = 5 ; no such universe anymore
+Const BS_EUniverse_Max = 6
+;[End Block]
+
 ;[Block] Enumeration: EUserHasLicenseResult
 ;------------------------------------------------------------------------------
 ;! Enumeration - EUserHasLicenseResult
 ;------------------------------------------------------------------------------
+;// results from UserHasLicenseForApp
 Const BS_EUserHasLicenseResult_HasLicense					= 0 ; User has a license for specified app
 Const BS_EUserHasLicenseResult_DoesNotHaveLicense			= 1 ; User does not have a license for the specified app
 Const BS_EUserHasLicenseResult_NoAuth						= 2 ; User has not been authenticated
@@ -523,20 +795,24 @@ Const BS_EUserHasLicenseResult_NoAuth						= 2 ; User has not been authenticated
 ;------------------------------------------------------------------------------
 ;! Enumeration - EUserRestriction
 ;------------------------------------------------------------------------------
-Const BS_EUserRestrictionNone								= 0
-Const BS_EUserRestrictionUnknown							= 1
-Const BS_EUserRestrictionAnyChat							= 2
-Const BS_EUserRestrictionVoiceChat							= 4
-Const BS_EUserRestrictionGroupChat							= 8
-Const BS_EUserRestrictionRating								= 16
-Const BS_EUserRestrictionGameInvites						= 32
-Const BS_EUserRestrictionTrading							= 64
+;//-----------------------------------------------------------------------------
+;// Purpose: user restriction flags
+;//-----------------------------------------------------------------------------
+Const BS_EUserRestrictionNone								= 0	;// no known chat/content restriction
+Const BS_EUserRestrictionUnknown							= 1	;// we don't know yet (user offline)
+Const BS_EUserRestrictionAnyChat							= 2	;// user is not allowed to (or can't) send/recv any chat
+Const BS_EUserRestrictionVoiceChat							= 4	;// user is not allowed to (or can't) send/recv voice chat
+Const BS_EUserRestrictionGroupChat							= 8	;// user is not allowed to (or can't) send/recv group chat
+Const BS_EUserRestrictionRating								= 16;// user is too young according to rating in current region
+Const BS_EUserRestrictionGameInvites						= 32;// user cannot send or recv game invites (e.g. mobile)
+Const BS_EUserRestrictionTrading							= 64;// user cannot participate in trading (console mobile)
 ;[End Block]
 
 ;[Block] Enumeration: EVoiceResult
 ;------------------------------------------------------------------------------
 ;! Enumeration - EVoiceResult
 ;------------------------------------------------------------------------------
+;// Error codes for use with the voice functions
 Const BS_EVoiceResult_OK									= 0
 Const BS_EVoiceResult_NotInitialized						= 1
 Const BS_EVoiceResult_NotRecording							= 2
@@ -549,28 +825,130 @@ Const BS_EVoiceResult_ReceiverOutOfDate						= 8
 Const BS_EVoiceResult_ReceiverDidNotAnswer					= 9
 ;[End Block]
 
+;------------------------------------------------------------------------------
+;! APIs
+;------------------------------------------------------------------------------
+;[Block] API: Steam
+;[End Block]
+
 ;[Block] API: AppList
 ;------------------------------------------------------------------------------
 ;! AppList
 ;------------------------------------------------------------------------------
-Const BS_CALLBACK_AppInstalled								= BS_ECallback_SteamAppListCallbacks + 1
-Const BS_CALLBACK_AppUninstalled							= BS_ECallback_SteamAppListCallbacks + 2
 
+;//---------------------------------------------------------------------------------
+;// Purpose: Sent when a new app is installed
+;//---------------------------------------------------------------------------------
+Const BS_AppList_AppInstalled								= BS_ECallback_SteamAppListCallbacks + 1
+;DEFINE_CALLBACK( SteamAppInstalled_t, k_iSteamAppListCallbacks + 1 );
+;	CALLBACK_MEMBER( 0,	AppId_t,	m_nAppID )			// ID of the app that installs
+;END_DEFINE_CALLBACK_1()
+
+;//---------------------------------------------------------------------------------
+;// Purpose: Sent when an app is uninstalled
+;//---------------------------------------------------------------------------------
+Const BS_AppList_AppUninstalled								= BS_ECallback_SteamAppListCallbacks + 2
+;DEFINE_CALLBACK( SteamAppUninstalled_t, k_iSteamAppListCallbacks + 2 );
+;	CALLBACK_MEMBER( 0,	AppId_t,	m_nAppID )			// ID of the app that installs
+;END_DEFINE_CALLBACK_1()
 ;[End Block]
 
 ;[Block] API: Apps
 ;------------------------------------------------------------------------------
 ;! Apps
 ;------------------------------------------------------------------------------
-Const BS_CALLBACK_DLCInstalled								= BS_ECallback_SteamAppsCallbacks + 5
-Const BS_CALLBACK_APPProofOfPurchaseKeyResponse				= BS_ECallback_SteamAppsCallbacks + 13
-Const BS_CALLBACK_NewLaunchQueryParameters					= BS_ECallback_SteamAppsCallbacks + 14
+Const BS_Apps_AppProofOfPurchaseKeyMax = 64;			// max bytes of a legacy cd key we support
+
+;//-----------------------------------------------------------------------------
+;// Purpose: posted after the user gains ownership of DLC & that DLC is installed
+;//-----------------------------------------------------------------------------
+Const BS_Apps_DLCInstalled									= BS_ECallback_SteamAppsCallbacks + 5
+;struct DlcInstalled_t
+;{
+;	enum { k_iCallback = k_iSteamAppsCallbacks + 5 };
+;	AppId_t m_nAppID;		// AppID of the DLC
+;};
+
+;//-----------------------------------------------------------------------------
+;// Purpose: response to RegisterActivationCode()
+;//-----------------------------------------------------------------------------
+Const BS_Apps_RegisterActivationCodeResponse				= BS_ECallback_SteamAppsCallbacks + 8
+;;struct RegisterActivationCodeResponse_t
+;{
+;	enum { k_iCallback = k_iSteamAppsCallbacks + 8 };
+;	ERegisterActivationCodeResult m_eResult;
+;	uint32 m_unPackageRegistered;						// package that was registered. Only set on success
+;};
+
+;//-----------------------------------------------------------------------------
+;// Purpose: response to RegisterActivationCode()
+;//-----------------------------------------------------------------------------
+Const BS_Apps_AppProofOfPurchaseKeyResponse					= BS_ECallback_SteamAppsCallbacks + 13
+;struct AppProofOfPurchaseKeyResponse_t
+;{
+;	enum { k_iCallback = k_iSteamAppsCallbacks + 13 };
+;	EResult m_eResult;
+;	uint32	m_nAppID;
+;	char	m_rgchKey[ k_cubAppProofOfPurchaseKeyMax ];
+;};
+
+;//---------------------------------------------------------------------------------
+;// Purpose: posted after the user gains executes a steam url with query parameters
+;// such as steam://run/<appid>//?param1=value1;param2=value2;param3=value3; etc
+;// while the game is already running.  The new params can be queried
+;// with GetLaunchQueryParam.
+;//---------------------------------------------------------------------------------
+Const BS_Apps_NewLaunchQueryParameters						= BS_ECallback_SteamAppsCallbacks + 14
+;struct NewLaunchQueryParameters_t
+;{
+;	enum { k_iCallback = k_iSteamAppsCallbacks + 14 };
+;};
+;[End Block]
+
+;[Block] API: Client
+;------------------------------------------------------------------------------
+;! Client
+;------------------------------------------------------------------------------
+Const BS_Client_SteamAccountIDMask = $FFFFFFFF
+Const BS_Client_SteamAccountInstanceMask = $0000FFFF
+Const BS_Client_SteamUserDesktopInstance = 1
+Const BS_Client_SteamUserConsoleInstance = 2
+Const BS_Client_SteamUserWebInstance = 4
+
+; generic invalid CSteamID
+Global BS_Client_SteamIDNil = BS_CSteamID_New()
+; This steamID comes from a user game connection to an out of date GS that hasnt implemented the protocol
+; to provide its steamID
+Global BS_Client_SteamIDOutOfDateGS = BS_CSteamID_FromIDInstance(0, 0, BS_EUniverse_Invalid, BS_EAccountType_Invalid)
+; This steamID comes from a user game connection to an sv_lan GS
+Global BS_Client_SteamIDLanModeGS = BS_CSteamID_FromIDInstance(0, 0, BS_EUniverse_Public, BS_EAccountType_Invalid)
+; This steamID can come from a user game connection to a GS that has just booted but hasnt yet even initialized
+; its steam3 component and started logging on.
+Global BS_Client_SteamIDNotInitYetGS = BS_CSteamID_FromIDInstance(1, 0, BS_EUniverse_Invalid, BS_EAccountType_Invalid)
+; This steamID can come from a user game connection to a GS that isn't using the steam authentication system but still
+; wants to support the "Join Game" option in the friends list
+Global BS_Client_SteamIDNonSteamGS = BS_CSteamID_FromIDInstance(2, 0, BS_EUniverse_Invalid, BS_EAccountType_Invalid)
+
+; Constants used for query ports.
+Const BS_Client_Query_Port_Not_Initialized = $FFFF ;We haven't asked the GS for this query port's actual value yet.
+Const BS_Client_Query_Port_Error = $FFFE ;We were unable to get the query port for this server.
+
+Const BS_Client_GameExtraInfoMax = 64
+
 ;[End Block]
 
 ;[Block] API: Controller
 ;------------------------------------------------------------------------------
 ;! Controller
 ;------------------------------------------------------------------------------
+Const BS_Controller_Max_Count								= 16
+Const BS_Controller_Max_Analog_Actions						= 16
+Const BS_Controller_Max_Digital_Actions						= 128
+Const BS_Controller_Max_Origins								= 8
+;// When sending an option to a specific controller handle, you can send to all controllers via this command
+Global BS_Controller_Handle_All_Controllers					= BS_Long_FromII($FFFFFFFF, $FFFFFFFF)
+Const BS_Controller_Min_Analog_Action_Data#					= -1.0
+Const BS_Controller_Max_Analog_Action_Data#					=  1.0
 
 ; Memory Structure: ControllerAnalogActionData_t
 ; Offs.	Len	Description
@@ -594,47 +972,258 @@ Const BS_CALLBACK_NewLaunchQueryParameters					= BS_ECallback_SteamAppsCallbacks
 ;------------------------------------------------------------------------------
 ;! Friends
 ;------------------------------------------------------------------------------
-Const BS_CALLBACK_PersonaStateChange						= BS_ECallback_SteamFriendsCallbacks + 4
-Const BS_CALLBACK_GameOverlayActivated						= BS_ECallback_SteamFriendsCallbacks + 31
-Const BS_CALLBACK_GameServerChangeRequested					= BS_ECallback_SteamFriendsCallbacks + 32
-Const BS_CALLBACK_GameLobbyJoinRequested					= BS_ECallback_SteamFriendsCallbacks + 33
-Const BS_CALLBACK_AvatarImageLoaded							= BS_ECallback_SteamFriendsCallbacks + 34
-Const BS_CALLBACK_ClanOfficerListResponse					= BS_ECallback_SteamFriendsCallbacks + 35
-Const BS_CALLBACK_FriendRichPresenceUpdate					= BS_ECallback_SteamFriendsCallbacks + 36
-Const BS_CALLBACK_GameRichPresenceJoinRequested				= BS_ECallback_SteamFriendsCallbacks + 37
-Const BS_CALLBACK_GameConnectedClanChatMsg					= BS_ECallback_SteamFriendsCallbacks + 38
-Const BS_CALLBACK_GameConnectedChatJoin						= BS_ECallback_SteamFriendsCallbacks + 39
-Const BS_CALLBACK_GameConnectedChatLeave					= BS_ECallback_SteamFriendsCallbacks + 40
-Const BS_CALLBACK_DownloadClanActivityCountsResult			= BS_ECallback_SteamFriendsCallbacks + 41
-Const BS_CALLBACK_JoinClanChatRoomCompletionResult			= BS_ECallback_SteamFriendsCallbacks + 42
-Const BS_CALLBACK_GameConnectedFriendChatMsg				= BS_ECallback_SteamFriendsCallbacks + 43
-Const BS_CALLBACK_FriendsGetFollowerCount					= BS_ECallback_SteamFriendsCallbacks + 44
-Const BS_CALLBACK_FriendsIsFollowing						= BS_ECallback_SteamFriendsCallbacks + 45
-Const BS_CALLBACK_FriendsEnumerateFollowingList				= BS_ECallback_SteamFriendsCallbacks + 46
-Const BS_CALLBACK_SetPersonaNameResponse					= BS_ECallback_SteamFriendsCallbacks + 47
+;// maximum length of friend group name (not including terminating nul!)
+Const BS_Friends_MaxFriendsGroupName						= 64
+;// maximum number of groups a single user is allowed
+Const BS_Friends_FriendsGroupLimit							= 100
+;// invalid friends group identifier constant
+Const BS_Friends_GroupID_Invalid							= -1
+Const BS_Friends_EnumerateFollowersMax						= 50
+;// maximum number of characters in a user's name. Two flavors; one for UTF-8 and one for UTF-16.
+;// The UTF-8 version has to be very generous to accomodate characters that get large when encoded
+;// in UTF-8.
+Const BS_Friends_PersonaNameMax								= 128
+Const BS_Friends_PersonaNameMaxW							= 32
+;// size limit on chat room or member metadata
+Const BS_Friends_ChatMetadataMax							= 8192
+;// size limits on Rich Presence data
+Const BS_Friends_MaxRichPresenceKeys						= 20
+Const BS_Friends_MaxRichPresenceKeyLength					= 64
+Const BS_Friends_MaxRichPresenceValueLength					= 256
 
-Const BS_cchMaxFriendsGroupName								= 64
-Const BS_cFriendsGroupLimit									= 100
-Const BS_FriendsGroupID_Invalid								= -1
-Const BS_cEnumerateFollowersMax								= 50
-Const BS_cchPersonaNameMax									= 128
-Const BS_cwchPersonaNameMax									= 32
-Const BS_cubChatMetadataMax									= 8192
-Const BS_cchMaxRichPresenceKeys								= 20
-Const BS_cchMaxRichPresenceKeyLength						= 64
-Const BS_cchMaxRichPresenceValueLength						= 256
+;// friend game played information
+; Memory Structure: FriendGameInfo_t
+; Offs.	Len	Description
+;	0	4	<CGameID> m_GameID
+;	8	4	<Int> m_unGameIP
+;	16	2	<Short> m_usGamePort
+;	24	2	<Short> m_usQueryPort
+;	32	8	<CSteamID> m_steamIDLobby
 
-Type BS_FriendGameInfo_t
-	Field m_gameID%
-	Field m_unGameIP%
-	Field m_usGamePortQueryPort% ; Left/High GamePort, Right/Low QueryPort
-	Field m_steamIDLobby%
-End Type
+;//-----------------------------------------------------------------------------
+;// Purpose: information about user sessions
+;//-----------------------------------------------------------------------------
+; Memory Structure: FriendSessionStateInfo_t
+; Offs.	Len	Description
+;	0	4	<Int> m_uiOnlineSessionInstances
+;	4	1	<ByteY m_uiPublishedToFriendsSessionInstance
 
-Type BS_FriendSessionStateInfo_t
-	Field m_uiOnlineSessionInstances
-	Field m_uiPublishedToFriendsSessionInstance
-End Type
+;! structs below are 8-byte aligned.
+
+;//-----------------------------------------------------------------------------
+;// Purpose: called when a friends' status changes
+;//-----------------------------------------------------------------------------
+Const BS_Friends_PersonaStateChange							= BS_ECallback_SteamFriendsCallbacks + 4
+;struct PersonaStateChange_t
+;{
+;	enum { k_iCallback = k_iSteamFriendsCallbacks + 4 };
+;	
+;	uint64 m_ulSteamID;		// steamID of the friend who changed
+;	int m_nChangeFlags;		// what's changed
+;};
+
+;//-----------------------------------------------------------------------------
+;// Purpose: posted when game overlay activates or deactivates
+;//			the game can use this to be pause or resume single player games
+;//-----------------------------------------------------------------------------
+Const BS_Friends_GameOverlayActivated						= BS_ECallback_SteamFriendsCallbacks + 31
+;struct GameOverlayActivated_t
+;{
+;	enum { k_iCallback = k_iSteamFriendsCallbacks + 31 };
+;	uint8 m_bActive;	// true if it's just been activated, false otherwise
+;};
+
+;//-----------------------------------------------------------------------------
+;// Purpose: called when the user tries to join a different game server from their friends list
+;//			game client should attempt to connect to specified server when this is received
+;//-----------------------------------------------------------------------------
+Const BS_Friends_GameServerChangeRequested					= BS_ECallback_SteamFriendsCallbacks + 32
+;struct GameServerChangeRequested_t
+;{
+;	enum { k_iCallback = k_iSteamFriendsCallbacks + 32 };
+;	char m_rgchServer[64];		// server address ("127.0.0.1:27015", "tf2.valvesoftware.com")
+;	char m_rgchPassword[64];	// server password, if any
+;};
+
+;//-----------------------------------------------------------------------------
+;// Purpose: called when the user tries to join a lobby from their friends list
+;//			game client should attempt to connect to specified lobby when this is received
+;//-----------------------------------------------------------------------------
+Const BS_Friends_GameLobbyJoinRequested						= BS_ECallback_SteamFriendsCallbacks + 33
+;struct GameLobbyJoinRequested_t
+;{
+;	enum { k_iCallback = k_iSteamFriendsCallbacks + 33 };
+;	CSteamID m_steamIDLobby;
+;
+;	// The friend they did the join via (will be invalid if not directly via a friend)
+;	//
+;	// On PS3, the friend will be invalid if this was triggered by a PSN invite via the XMB, but
+;	// the account type will be console user so you can tell at least that this was from a PSN friend
+;	// rather than a Steam friend.
+;	CSteamID m_steamIDFriend;		
+;};
+
+;//-----------------------------------------------------------------------------
+;// Purpose: called when an avatar is loaded in from a previous GetLargeFriendAvatar() call
+;//			if the image wasn't already available
+;//-----------------------------------------------------------------------------
+Const BS_Friends_AvatarImageLoaded							= BS_ECallback_SteamFriendsCallbacks + 34
+;struct AvatarImageLoaded_t
+;{
+;	enum { k_iCallback = k_iSteamFriendsCallbacks + 34 };
+;	CSteamID m_steamID; // steamid the avatar has been loaded for
+;	int m_iImage; // the image index of the now loaded image
+;	int m_iWide; // width of the loaded image
+;	int m_iTall; // height of the loaded image
+;};
+
+;//-----------------------------------------------------------------------------
+;// Purpose: marks the return of a request officer list call
+;//-----------------------------------------------------------------------------
+Const BS_Friends_ClanOfficerListResponse					= BS_ECallback_SteamFriendsCallbacks + 35
+;struct ClanOfficerListResponse_t
+;{
+;	enum { k_iCallback = k_iSteamFriendsCallbacks + 35 };
+;	CSteamID m_steamIDClan;
+;	int m_cOfficers;
+;	uint8 m_bSuccess;
+;};
+
+;//-----------------------------------------------------------------------------
+;// Purpose: callback indicating updated data about friends rich presence information
+;//-----------------------------------------------------------------------------
+Const BS_Friends_FriendRichPresenceUpdate					= BS_ECallback_SteamFriendsCallbacks + 36
+;struct FriendRichPresenceUpdate_t
+;{
+;	enum { k_iCallback = k_iSteamFriendsCallbacks + 36 };
+;	CSteamID m_steamIDFriend;	// friend who's rich presence has changed
+;	AppId_t m_nAppID;			// the appID of the game (should always be the current game)
+;};
+
+;//-----------------------------------------------------------------------------
+;// Purpose: called when the user tries to join a game from their friends list
+;//			rich presence will have been set with the "connect" key which is set here
+;//-----------------------------------------------------------------------------
+Const BS_Friends_GameRichPresenceJoinRequested				= BS_ECallback_SteamFriendsCallbacks + 37
+;struct GameRichPresenceJoinRequested_t
+;{
+;	enum { k_iCallback = k_iSteamFriendsCallbacks + 37 };
+;	CSteamID m_steamIDFriend;		// the friend they did the join via (will be invalid if not directly via a friend)
+;	char m_rgchConnect[k_cchMaxRichPresenceValueLength];
+;};
+
+;//-----------------------------------------------------------------------------
+;// Purpose: a chat message has been received for a clan chat the game has joined
+;//-----------------------------------------------------------------------------
+Const BS_Friends_GameConnectedClanChatMsg					= BS_ECallback_SteamFriendsCallbacks + 38
+;struct GameConnectedClanChatMsg_t
+;{
+;	enum { k_iCallback = k_iSteamFriendsCallbacks + 38 };
+;	CSteamID m_steamIDClanChat;
+;	CSteamID m_steamIDUser;
+;	int m_iMessageID;
+;};
+
+;//-----------------------------------------------------------------------------
+;// Purpose: a user has joined a clan chat
+;//-----------------------------------------------------------------------------
+Const BS_Friends_GameConnectedChatJoin						= BS_ECallback_SteamFriendsCallbacks + 39
+;struct GameConnectedChatJoin_t
+;{
+;	enum { k_iCallback = k_iSteamFriendsCallbacks + 39 };
+;	CSteamID m_steamIDClanChat;
+;	CSteamID m_steamIDUser;
+;};
+
+;//-----------------------------------------------------------------------------
+;// Purpose: a user has left the chat we're in
+;//-----------------------------------------------------------------------------
+Const BS_Friends_GameConnectedChatLeave						= BS_ECallback_SteamFriendsCallbacks + 40
+;struct GameConnectedChatLeave_t
+;{
+;	enum { k_iCallback = k_iSteamFriendsCallbacks + 40 };
+;	CSteamID m_steamIDClanChat;
+;	CSteamID m_steamIDUser;
+;	bool m_bKicked;		// true if admin kicked
+;	bool m_bDropped;	// true if Steam connection dropped
+;};
+
+;//-----------------------------------------------------------------------------
+;// Purpose: a DownloadClanActivityCounts() call has finished
+;//-----------------------------------------------------------------------------
+Const BS_Friends_DownloadClanActivityCountsResult			= BS_ECallback_SteamFriendsCallbacks + 41
+;struct DownloadClanActivityCountsResult_t
+;{
+;	enum { k_iCallback = k_iSteamFriendsCallbacks + 41 };
+;	bool m_bSuccess;
+;};
+
+;//-----------------------------------------------------------------------------
+;// Purpose: a JoinClanChatRoom() call has finished
+;//-----------------------------------------------------------------------------
+Const BS_Friends_JoinClanChatRoomCompletionResult			= BS_ECallback_SteamFriendsCallbacks + 42
+;struct JoinClanChatRoomCompletionResult_t
+;{
+;	enum { k_iCallback = k_iSteamFriendsCallbacks + 42 };
+;	CSteamID m_steamIDClanChat;
+;	EChatRoomEnterResponse m_eChatRoomEnterResponse;
+;};
+
+;//-----------------------------------------------------------------------------
+;// Purpose: a chat message has been received from a user
+;//-----------------------------------------------------------------------------
+Const BS_Friends_GameConnectedFriendChatMsg					= BS_ECallback_SteamFriendsCallbacks + 43
+;struct GameConnectedFriendChatMsg_t
+;{
+;	enum { k_iCallback = k_iSteamFriendsCallbacks + 43 };
+;	CSteamID m_steamIDUser;
+;	int m_iMessageID;
+;};
+
+Const BS_Friends_FriendsGetFollowerCount					= BS_ECallback_SteamFriendsCallbacks + 44
+;struct FriendsGetFollowerCount_t
+;{
+;	enum { k_iCallback = k_iSteamFriendsCallbacks + 44 };
+;	EResult m_eResult;
+;	CSteamID m_steamID;
+;	int m_nCount;
+;};
+
+Const BS_Friends_FriendsIsFollowing							= BS_ECallback_SteamFriendsCallbacks + 45
+;struct FriendsIsFollowing_t
+;{
+;	enum { k_iCallback = k_iSteamFriendsCallbacks + 45 };
+;	EResult m_eResult;
+;	CSteamID m_steamID;
+;	bool m_bIsFollowing;
+;};
+
+Const BS_Friends_FriendsEnumerateFollowingList				= BS_ECallback_SteamFriendsCallbacks + 46
+;struct FriendsEnumerateFollowingList_t
+;{
+;	enum { k_iCallback = k_iSteamFriendsCallbacks + 46 };
+;	EResult m_eResult;
+;	CSteamID m_rgSteamID[ k_cEnumerateFollowersMax ];
+;	int32 m_nResultsReturned;
+;	int32 m_nTotalResultCount;
+;};
+
+Const BS_Friends_SetPersonaNameResponse						= BS_ECallback_SteamFriendsCallbacks + 47
+;struct SetPersonaNameResponse_t
+;{
+;	enum { k_iCallback = k_iSteamFriendsCallbacks + 47 };
+;
+;	bool m_bSuccess; // true if name change succeeded completely.
+;	bool m_bLocalSuccess; // true if name change was retained locally.  (We might not have been able to communicate with Steam)
+;	EResult m_result; // detailed result code
+;};
+
+;[End Block]
+;[Block] API: GameServer
+;------------------------------------------------------------------------------
+;! GameServer
+;------------------------------------------------------------------------------
+
 ;[End Block]
 
 ;[Block] API: HTMLSurface
@@ -1126,6 +1715,4 @@ End Type
 ;[End Block]
 
 ;~IDEal Editor Parameters:
-;~F#10#27#38#44#79#81#90#A1#CF#DD#EF#F8#102#10C#116#11F#128#131#145#152
-;~F#16B#17B#1E6#1F0#200#209#217#227#230#239#250#372#3BC#3EF#447
 ;~C#Blitz3D

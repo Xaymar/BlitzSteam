@@ -19,5 +19,4 @@
 DLL_FUNCTION(ISteamMatchmaking*) BS_Matchmaking() {
 	return SteamMatchmaking();
 }
-#pragma comment(linker, "/EXPORT:BS_Matchmaking=_BS_Matchmaking@0")
-
+BS_I

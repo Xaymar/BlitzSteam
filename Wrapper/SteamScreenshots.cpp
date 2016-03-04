@@ -19,5 +19,4 @@
 DLL_FUNCTION(ISteamScreenshots*) BS_Screenshots() {
 	return SteamScreenshots();
 }
-#pragma comment(linker, "/EXPORT:BS_Screenshots=_BS_Screenshots@0")
-
+BS_I

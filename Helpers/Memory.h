@@ -14,8 +14,7 @@
 //	You should have received a copy of the GNU Lesser General Public License
 //	along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-#pragma once
-#include "BlitzSteam.h"
+BS_I#include "BlitzSteam.h"
 
 DLL_FUNCTION(void*) BS_Memory_Alloc(uint32_t iSize);
 DLL_FUNCTION(void*) BS_Memory_ReAlloc(void* pMemory, uint32_t iNewSize);

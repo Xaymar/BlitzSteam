@@ -19,5 +19,4 @@
 DLL_FUNCTION(ISteamMusic*) BS_Music() {
 	return SteamMusic();
 }
-#pragma comment(linker, "/EXPORT:BS_Music=_BS_Music@0")
-
+BS_I

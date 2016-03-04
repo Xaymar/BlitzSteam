@@ -44,13 +44,12 @@
     <OutDir>$(SolutionDir)#Build\$(ProjectName)\$(Configuration)\</OutDir>
     <IntDir>$(SolutionDir)#Intermediate\$(ProjectName)\$(Configuration)\</IntDir>
     <TargetExt>.dll</TargetExt>
-    <LinkIncremental>true</LinkIncremental>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <OutDir>$(SolutionDir)#Build\$(ProjectName)\$(Configuration)\</OutDir>
     <IntDir>$(SolutionDir)#Intermediate\$(ProjectName)\$(Configuration)\</IntDir>
     <TargetExt>.dll</TargetExt>
-    <LinkIncremental>false</LinkIncremental>
+    <LinkIncremental>true</LinkIncremental>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -60,7 +59,7 @@
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <WholeProgramOptimization>false</WholeProgramOptimization>
       <AdditionalIncludeDirectories>$(ProjectDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <BufferSecurityCheck>false</BufferSecurityCheck>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <StructMemberAlignment>4Bytes</StructMemberAlignment>
@@ -83,25 +82,26 @@
       <FloatingPointExceptions>true</FloatingPointExceptions>
       <UseUnicodeForAssemblerListing>true</UseUnicodeForAssemblerListing>
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ControlFlowGuard>false</ControlFlowGuard>
+      <EnforceTypeConversionRules>true</EnforceTypeConversionRules>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>Debug</GenerateDebugInformation>
-      <Version>1.0</Version>
       <AdditionalLibraryDirectories>$(ProjectDir)\SteamworksSDK\redistributable_bin</AdditionalLibraryDirectories>
       <AdditionalDependencies>steam_api.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <LinkTimeCodeGeneration>
       </LinkTimeCodeGeneration>
-      <OptimizeReferences>
-      </OptimizeReferences>
+      <OptimizeReferences>false</OptimizeReferences>
       <LinkStatus>
       </LinkStatus>
       <CreateHotPatchableImage>Enabled</CreateHotPatchableImage>
       <EnableCOMDATFolding>false</EnableCOMDATFolding>
       <FixedBaseAddress>false</FixedBaseAddress>
+      <LargeAddressAware>false</LargeAddressAware>
+      <ImageHasSafeExceptionHandlers>false</ImageHasSafeExceptionHandlers>
+      <FullProgramDatabaseFile>true</FullProgramDatabaseFile>
     </Link>
-    <ProjectReference>
-      <LinkLibraryDependencies>true</LinkLibraryDependencies>
-    </ProjectReference>
+    <ProjectReference />
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
@@ -119,7 +119,7 @@
       <CompileAsWinRT>false</CompileAsWinRT>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <CreateHotpatchableImage>false</CreateHotpatchableImage>
-      <RuntimeTypeInfo>false</RuntimeTypeInfo>
+      <RuntimeTypeInfo>true</RuntimeTypeInfo>
       <OpenMPSupport>false</OpenMPSupport>
       <ForcedIncludeFiles>
       </ForcedIncludeFiles>
@@ -133,31 +133,35 @@
       <UseUnicodeForAssemblerListing>true</UseUnicodeForAssemblerListing>
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <DebugInformationFormat>None</DebugInformationFormat>
+      <ControlFlowGuard>false</ControlFlowGuard>
+      <EnforceTypeConversionRules>true</EnforceTypeConversionRules>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>No</GenerateDebugInformation>
       <EnableCOMDATFolding>false</EnableCOMDATFolding>
-      <OptimizeReferences>
-      </OptimizeReferences>
-      <Version>1.0</Version>
+      <OptimizeReferences>false</OptimizeReferences>
       <AdditionalLibraryDirectories>$(ProjectDir)\SteamworksSDK\redistributable_bin</AdditionalLibraryDirectories>
       <AdditionalDependencies>steam_api.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <LinkTimeCodeGeneration>Default</LinkTimeCodeGeneration>
+      <LinkTimeCodeGeneration>
+      </LinkTimeCodeGeneration>
       <LinkStatus>
       </LinkStatus>
       <CreateHotPatchableImage>Enabled</CreateHotPatchableImage>
       <FixedBaseAddress>false</FixedBaseAddress>
+      <LargeAddressAware>false</LargeAddressAware>
+      <ImageHasSafeExceptionHandlers>false</ImageHasSafeExceptionHandlers>
+      <FullProgramDatabaseFile>false</FullProgramDatabaseFile>
     </Link>
-    <ProjectReference>
-      <LinkLibraryDependencies>true</LinkLibraryDependencies>
-    </ProjectReference>
+    <ProjectReference />
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="BlitzSteam.cpp" />
-    <ClCompile Include="Helpers\CSteamID.cpp" />
     <ClCompile Include="Helpers\BlitzCallback.cpp" />
     <ClCompile Include="Helpers\Helper.cpp" />
     <ClCompile Include="Helpers\Memory.cpp" />
+    <ClCompile Include="Types\CSteamID.cpp" />
+    <ClCompile Include="Types\Double.cpp" />
+    <ClCompile Include="Types\Long.cpp" />
     <ClCompile Include="Wrapper\Steam.cpp" />
     <ClCompile Include="Wrapper\SteamAppList.cpp" />
     <ClCompile Include="Wrapper\SteamApps.cpp" />
@@ -187,23 +191,18 @@
     <ClInclude Include="BlitzSteam.h" />
     <ClInclude Include="Helpers\BlitzPointer.h" />
     <ClInclude Include="Helpers\BlitzCallback.h" />
-    <ClInclude Include="Helpers\CSteamID.h" />
     <ClInclude Include="Helpers\Helper.h" />
     <ClInclude Include="Helpers\Memory.h" />
+    <ClInclude Include="Types\CSteamID.h" />
+    <ClInclude Include="Types\Double.h" />
+    <ClInclude Include="Types\Long.h" />
   </ItemGroup>
   <Target Name="CopyResources" AfterTargets="Build">
-	  <ItemGroup>
-		<Resources Include="LICENSE" />
-		<Resources Include="$(ProjectDir)\LICENSE.lesser" />
-		<Resources Include="$(ProjectDir)\Blitz\*.*" />
-		<Resources Include="$(ProjectDir)\Blitz\**\*.*" />
-		<Resources Include="$(ProjectDir)\SteamworksSDK\redistributable_bin\steam_api.dll" />
-	  </ItemGroup>
-	  <Copy 
-		SourceFiles="@(Resources)"
-		DestinationFiles="@(Resources->'$(TargetDir)%(RecursiveDir)\%(Filename)%(Extension)')" 
-		SkipUnchangedFiles="True"
-		UseHardlinksIfPossible="True" />
+    <ItemGroup>
+      <Resources Include="$(ProjectDir)\Resources\**\*.*" />
+      <Resources Include="$(ProjectDir)\SteamworksSDK\redistributable_bin\steam_api.dll" />
+    </ItemGroup>
+    <Copy SourceFiles="@(Resources)" DestinationFiles="@(Resources->'$(TargetDir)%(RecursiveDir)\%(Filename)%(Extension)')" SkipUnchangedFiles="True" UseHardlinksIfPossible="True" />
   </Target>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

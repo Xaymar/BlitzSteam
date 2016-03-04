@@ -16,32 +16,35 @@
 
 #include "BlitzSteam.h"
 
-DLL_FUNCTION(ISteamAppList*) BS_AppList() {
-#pragma comment(linker, "/EXPORT:BS_AppList=_BS_AppList@0")
+//-----------------------------------------------------------------------------
+// Purpose: This is a restricted interface that can only be used by previously approved apps,
+//	contact your Steam Account Manager if you believe you need access to this API.
+//	This interface lets you detect installed apps for the local Steam client, useful for debugging tools
+//	to offer lists of apps to debug via Steam.
+//-----------------------------------------------------------------------------
+DLL_FUNCTION(ISteamAppList*) BS_SteamAppList() {
 	return SteamAppList();
 }
 
-DLL_FUNCTION(uint32_t) BS_AppList_GetNumInstalledApps(ISteamAppList* lpSteamAppList) {
-#pragma comment(linker, "/EXPORT:BS_AppList_GetNumInstalledApps=_BS_AppList_GetNumInstalledApps@4")
+DLL_FUNCTION(int32_t) BS_ISteamAppList_GetNumInstalledApps(ISteamAppList* lpSteamAppList) {
 	return lpSteamAppList->GetNumInstalledApps();
 }
 
-DLL_FUNCTION(uint32_t) BS_AppList_GetInstalledApps(ISteamAppList* lpSteamAppList, AppId_t *pvecAppID, uint32_t unMaxAppIDs) {
-#pragma comment(linker, "/EXPORT:BS_AppList_GetInstalledApps=_BS_AppList_GetInstalledApps@12")
+DLL_FUNCTION(int32_t) BS_ISteamAppList_GetInstalledApps(ISteamAppList* lpSteamAppList, AppId_t *pvecAppID, uint32_t unMaxAppIDs) {
 	return lpSteamAppList->GetInstalledApps(pvecAppID, unMaxAppIDs);
 }
 
-DLL_FUNCTION(uint32_t) BS_AppList_GetAppName(ISteamAppList* lpSteamAppList, AppId_t nAppID, const char* pchName, uint32_t cchNameMax) {
-#pragma comment(linker, "/EXPORT:BS_AppList_GetAppName=_BS_AppList_GetAppName@16")
+// returns -1 if no name was found
+DLL_FUNCTION(int32_t) BS_ISteamAppList_GetAppName(ISteamAppList* lpSteamAppList, AppId_t nAppID, const char* pchName, uint32_t cchNameMax) {
 	return lpSteamAppList->GetAppName(nAppID, (char*)pchName, cchNameMax);
 }
 
-DLL_FUNCTION(uint32_t) BS_AppList_GetAppInstallDir(ISteamAppList* lpSteamAppList, AppId_t nAppID, char* pchDirectoryBuffer, uint32_t cchDirectoryMax) {
-#pragma comment(linker, "/EXPORT:BS_AppList_GetAppInstallDir=_BS_AppList_GetAppInstallDir@16")
+// returns -1 if no dir was found
+DLL_FUNCTION(int32_t) BS_ISteamAppList_GetAppInstallDir(ISteamAppList* lpSteamAppList, AppId_t nAppID, char* pchDirectoryBuffer, uint32_t cchDirectoryMax) {
 	return lpSteamAppList->GetAppInstallDir(nAppID, pchDirectoryBuffer, cchDirectoryMax);
 }
 
-DLL_FUNCTION(uint32_t) BS_AppList_GetAppBuildId(ISteamAppList* lpSteamAppList, AppId_t nAppID) {
-#pragma comment(linker, "/EXPORT:BS_AppList_GetAppBuildId=_BS_AppList_GetAppBuildId@8")
+// return the buildid of this app, may change at any time based on backend updates to the game
+DLL_FUNCTION(int32_t) BS_ISteamAppList_GetAppBuildId(ISteamAppList* lpSteamAppList, AppId_t nAppID) {
 	return lpSteamAppList->GetAppBuildId(nAppID);
 }

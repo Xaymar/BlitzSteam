@@ -19,5 +19,4 @@
 DLL_FUNCTION(ISteamVideo*) BS_Video() {
 	return SteamVideo();
 }
-#pragma comment(linker, "/EXPORT:BS_Video=_BS_Video@0")
-
+BS_I

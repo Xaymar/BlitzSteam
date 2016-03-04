@@ -19,5 +19,4 @@
 DLL_FUNCTION(ISteamUtils*) BS_Utils() {
 	return SteamUtils();
 }
-#pragma comment(linker, "/EXPORT:BS_Utils=_BS_Utils@0")
-
+BS_I

@@ -14,7 +14,6 @@
 //	You should have received a copy of the GNU Lesser General Public License
 //	along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-#pragma once
-#include "BlitzSteam.h"
+BS_I#include "BlitzSteam.h"
 
 DLL_FUNCTION(const char*) BS_Helper_FormatUnixTime(uint32_t unTime, const char* pchFormat);

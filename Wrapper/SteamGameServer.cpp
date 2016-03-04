@@ -16,258 +16,356 @@
 
 #include "BlitzSteam.h"
 
+// Initialize ISteamGameServer interface object, and set server properties which may not be changed.
+//
+// After calling this function, you should set any additional server parameters, and then
+// call ISteamGameServer::LogOnAnonymous() or ISteamGameServer::LogOn()
+//
+// - usSteamPort is the local port used to communicate with the steam servers.
+// - usGamePort is the port that clients will connect to for gameplay.
+// - usQueryPort is the port that will manage server browser related duties and info
+//		pings from clients.  If you pass MASTERSERVERUPDATERPORT_USEGAMESOCKETSHARE for usQueryPort, then it
+//		will use "GameSocketShare" mode, which means that the game is responsible for sending and receiving
+//		UDP packets for the master  server updater. See references to GameSocketShare in isteamgameserver.h.
+// - The version string is usually in the form x.x.x.x, and is used by the master server to detect when the
+//		server is out of date.  (Only servers with the latest version will be listed.)
 DLL_FUNCTION(uint32_t) BS_SteamGameServer_Init(uint32_t unIP, uint16_t usSteamPort, uint16_t usGamePort, uint16_t usQueryPort, EServerMode eServerMode, const char *pchVersionString) {
-#pragma comment(linker, "/EXPORT:BS_SteamGameServer_Init=_BS_SteamGameServer_Init@24")
 	return SteamGameServer_Init(unIP, usSteamPort, usGamePort, usQueryPort, eServerMode, pchVersionString);
 }
 
 DLL_FUNCTION(void) BS_SteamGameServer_Shutdown() {
-#pragma comment(linker, "/EXPORT:BS_SteamGameServer_Shutdown=_BS_SteamGameServer_Shutdown@0")
 	SteamGameServer_Shutdown();
 }
 
 DLL_FUNCTION(void) BS_SteamGameServer_RunCallbacks() {
-#pragma comment(linker, "/EXPORT:BS_SteamGameServer_RunCallbacks=_BS_SteamGameServer_RunCallbacks@0")
 	SteamGameServer_RunCallbacks();
 }
 
-DLL_FUNCTION(HSteamPipe) BS_SteamGameServer_GetHSteamPipe() {
-#pragma comment(linker, "/EXPORT:BS_SteamGameServer_GetHSteamPipe=_BS_SteamGameServer_GetHSteamPipe@0")
-	return SteamGameServer_GetHSteamPipe();
-}
-
 DLL_FUNCTION(uint32_t) BS_SteamGameServer_IsSecure() {
-#pragma comment(linker, "/EXPORT:BS_SteamGameServer_IsSecure=_BS_SteamGameServer_IsSecure@0")
 	return SteamGameServer_BSecure();
 }
 
 DLL_FUNCTION(CSteamID*) BS_SteamGameServer_GetSteamID() {
-#pragma comment(linker, "/EXPORT:BS_SteamGameServer_GetSteamID=_BS_SteamGameServer_GetSteamID@0")
 	return new CSteamID(SteamGameServer_GetSteamID());
 }
 
+//----------------------------------------------------------------------------------------------------------------------------------------------------------//
+//	steamclient.dll private wrapper functions
+//
+//	The following functions are part of abstracting API access to the steamclient.dll, but should only be used in very specific cases
+//----------------------------------------------------------------------------------------------------------------------------------------------------------//
+DLL_FUNCTION(HSteamPipe) BS_SteamGameServer_GetHSteamPipe() {
+	return SteamGameServer_GetHSteamPipe();
+}
+
 // ISteamGameServer Stuff
-DLL_FUNCTION(ISteamGameServer*) BS_GameServer() {
-#pragma comment(linker, "/EXPORT:BS_GameServer=_BS_GameServer@0")
+//-----------------------------------------------------------------------------
+// Purpose: Functions for authenticating users via Steam to play on a game server
+//-----------------------------------------------------------------------------
+DLL_FUNCTION(ISteamGameServer*) BS_SteamGameServer() {
 	return SteamGameServer();
 }
 
-DLL_FUNCTION(uint32_t) BS_GameServer_InitGameServer(ISteamGameServer* pSteamGameServer, uint32_t unIP, uint16_t usGamePort, uint16_t usQueryPort, uint32_t unFlags, AppId_t nGameAppId, const char *pchVersionString) {
-#pragma comment(linker, "/EXPORT:BS_GameServer_InitGameServer=_BS_GameServer_InitGameServer@28")
+//
+// Basic server data.  These properties, if set, must be set before before calling LogOn.  They
+// may not be changed after logged in.
+//
+
+/// This is called by SteamGameServer_Init, and you will usually not need to call it directly
+DLL_FUNCTION(uint32_t) BS_ISteamGameServer_InitGameServer(ISteamGameServer* pSteamGameServer, uint32_t unIP, uint16_t usGamePort, uint16_t usQueryPort, uint32_t unFlags, AppId_t nGameAppId, const char *pchVersionString) {
 	return pSteamGameServer->InitGameServer(unIP, usGamePort, usQueryPort, unFlags, nGameAppId, pchVersionString);
 }
 
-DLL_FUNCTION(void) BS_GameServer_SetProduct(ISteamGameServer* pSteamGameServer, const char *pszProduct) {
-#pragma comment(linker, "/EXPORT:BS_GameServer_SetProduct=_BS_GameServer_SetProduct@8")
+/// Game product identifier.  This is currently used by the master server for version checking purposes.
+/// It's a required field, but will eventually will go away, and the AppID will be used for this purpose.
+DLL_FUNCTION(void) BS_ISteamGameServer_SetProduct(ISteamGameServer* pSteamGameServer, const char *pszProduct) {
 	pSteamGameServer->SetProduct(pszProduct);
 }
 
-DLL_FUNCTION(void) BS_GameServer_SetGameDescription(ISteamGameServer* pSteamGameServer, const char *pszGameDescription) {
-#pragma comment(linker, "/EXPORT:BS_GameServer_SetGameDescription=_BS_GameServer_SetGameDescription@8")
+/// Description of the game.  This is a required field and is displayed in the steam server browser....for now.
+/// This is a required field, but it will go away eventually, as the data should be determined from the AppID.
+DLL_FUNCTION(void) BS_ISteamGameServer_SetGameDescription(ISteamGameServer* pSteamGameServer, const char *pszGameDescription) {
 	pSteamGameServer->SetGameDescription(pszGameDescription);
 }
 
-DLL_FUNCTION(void) BS_GameServer_SetModDir(ISteamGameServer* pSteamGameServer, const char *pszModDir) {
-#pragma comment(linker, "/EXPORT:BS_GameServer_SetModDir=_BS_GameServer_SetModDir@8")
+/// If your game is a "mod," pass the string that identifies it.  The default is an empty string, meaning
+/// this application is the original game, not a mod.
+///
+/// @see k_cbMaxGameServerGameDir
+DLL_FUNCTION(void) BS_ISteamGameServer_SetModDir(ISteamGameServer* pSteamGameServer, const char *pszModDir) {
 	pSteamGameServer->SetModDir(pszModDir);
 }
 
-DLL_FUNCTION(void) BS_GameServer_SetDedicatedServer(ISteamGameServer* pSteamGameServer, uint32_t bDedicated) {
-#pragma comment(linker, "/EXPORT:BS_GameServer_SetDedicatedServer=_BS_GameServer_SetDedicatedServer@8")
+/// Is this is a dedicated server?  The default value is false.
+DLL_FUNCTION(void) BS_ISteamGameServer_SetDedicatedServer(ISteamGameServer* pSteamGameServer, uint32_t bDedicated) {
 	pSteamGameServer->SetDedicatedServer(!!bDedicated);
 }
 
-DLL_FUNCTION(void) BS_GameServer_LogOn(ISteamGameServer* pSteamGameServer, const char *pszToken) {
-#pragma comment(linker, "/EXPORT:BS_GameServer_LogOn=_BS_GameServer_LogOn@8")
+//
+// Login
+//
+
+/// Begin process to login to a persistent game server account
+///
+/// You need to register for callbacks to determine the result of this operation.
+/// @see SteamServersConnected_t
+/// @see SteamServerConnectFailure_t
+/// @see SteamServersDisconnected_t
+DLL_FUNCTION(void) BS_ISteamGameServer_LogOn(ISteamGameServer* pSteamGameServer, const char *pszToken) {
 	pSteamGameServer->LogOn(pszToken);
 }
 
-DLL_FUNCTION(void) BS_GameServer_LogOnAnonymous(ISteamGameServer* pSteamGameServer) {
-#pragma comment(linker, "/EXPORT:BS_GameServer_LogOnAnonymous=_BS_GameServer_LogOnAnonymous@4")
+/// Login to a generic, anonymous account.
+///
+/// Note: in previous versions of the SDK, this was automatically called within SteamGameServer_Init,
+/// but this is no longer the case.
+DLL_FUNCTION(void) BS_ISteamGameServer_LogOnAnonymous(ISteamGameServer* pSteamGameServer) {
 	pSteamGameServer->LogOnAnonymous();
 }
 
-DLL_FUNCTION(void) BS_GameServer_LogOff(ISteamGameServer* pSteamGameServer) {
-#pragma comment(linker, "/EXPORT:BS_GameServer_LogOff=_BS_GameServer_LogOff@4")
+/// Begin process of logging game server out of steam
+DLL_FUNCTION(void) BS_ISteamGameServer_LogOff(ISteamGameServer* pSteamGameServer) {
 	pSteamGameServer->LogOff();
 }
 
-DLL_FUNCTION(uint32_t) BS_GameServer_IsLoggedOn(ISteamGameServer* pSteamGameServer) {
-#pragma comment(linker, "/EXPORT:BS_GameServer_IsLoggedOn=_BS_GameServer_IsLoggedOn@4")
+// status functions
+DLL_FUNCTION(uint32_t) BS_ISteamGameServer_IsLoggedOn(ISteamGameServer* pSteamGameServer) {
 	return pSteamGameServer->BLoggedOn();
 }
 
-DLL_FUNCTION(uint32_t) BS_GameServer_IsSecure(ISteamGameServer* pSteamGameServer) {
-#pragma comment(linker, "/EXPORT:BS_GameServer_IsSecure=_BS_GameServer_IsSecure@4")
+DLL_FUNCTION(uint32_t) BS_ISteamGameServer_IsSecure(ISteamGameServer* pSteamGameServer) {
 	return pSteamGameServer->BSecure();
 }
 
-DLL_FUNCTION(CSteamID*) BS_GameServer_GetSteamID(ISteamGameServer* pSteamGameServer) {
-#pragma comment(linker, "/EXPORT:BS_GameServer_GetSteamID=_BS_GameServer_GetSteamID@4")
+DLL_FUNCTION(CSteamID*) BS_ISteamGameServer_GetSteamID(ISteamGameServer* pSteamGameServer) {
 	return new CSteamID(pSteamGameServer->GetSteamID());
 }
 
-DLL_FUNCTION(uint32_t) BS_GameServer_WasRestartRequested(ISteamGameServer* pSteamGameServer) {
-#pragma comment(linker, "/EXPORT:BS_GameServer_WasRestartRequested=_BS_GameServer_WasRestartRequested@4")
+/// Returns true if the master server has requested a restart.
+/// Only returns true once per request.
+DLL_FUNCTION(uint32_t) BS_ISteamGameServer_WasRestartRequested(ISteamGameServer* pSteamGameServer) {
 	return pSteamGameServer->WasRestartRequested();
 }
 
-DLL_FUNCTION(void) BS_GameServer_SetMaxPlayerCount(ISteamGameServer* pSteamGameServer, int32_t cPlayersMax) {
-#pragma comment(linker, "/EXPORT:BS_GameServer_SetMaxPlayerCount=_BS_GameServer_SetMaxPlayerCount@8")
+//
+// Server state.  These properties may be changed at any time.
+//
+
+/// Max player count that will be reported to server browser and client queries
+DLL_FUNCTION(void) BS_ISteamGameServer_SetMaxPlayerCount(ISteamGameServer* pSteamGameServer, int32_t cPlayersMax) {
 	pSteamGameServer->SetMaxPlayerCount(cPlayersMax);
 }
 
-DLL_FUNCTION(void) BS_GameServer_SetBotPlayerCount(ISteamGameServer* pSteamGameServer, int32_t cBotplayers) {
-#pragma comment(linker, "/EXPORT:BS_GameServer_SetBotPlayerCount=_BS_GameServer_SetBotPlayerCount@8")
+/// Number of bots.  Default value is zero
+DLL_FUNCTION(void) BS_ISteamGameServer_SetBotPlayerCount(ISteamGameServer* pSteamGameServer, int32_t cBotplayers) {
 	pSteamGameServer->SetBotPlayerCount(cBotplayers);
 }
 
-DLL_FUNCTION(void) BS_GameServer_SetServerName(ISteamGameServer* pSteamGameServer, const char *pszServerName) {
-#pragma comment(linker, "/EXPORT:BS_GameServer_SetServerName=_BS_GameServer_SetServerName@8")
+/// Set the name of server as it will appear in the server browser
+///
+/// @see k_cbMaxGameServerName
+DLL_FUNCTION(void) BS_ISteamGameServer_SetServerName(ISteamGameServer* pSteamGameServer, const char *pszServerName) {
 	pSteamGameServer->SetServerName(pszServerName);
 }
 
-DLL_FUNCTION(void) BS_GameServer_SetMapName(ISteamGameServer* pSteamGameServer, const char *pszMapName) {
-#pragma comment(linker, "/EXPORT:BS_GameServer_SetMapName=_BS_GameServer_SetMapName@8")
+/// Set name of map to report in the server browser
+///
+/// @see k_cbMaxGameServerName
+DLL_FUNCTION(void) BS_ISteamGameServer_SetMapName(ISteamGameServer* pSteamGameServer, const char *pszMapName) {
 	pSteamGameServer->SetMapName(pszMapName);
 }
 
-DLL_FUNCTION(void) BS_GameServer_SetPasswordProtected(ISteamGameServer* pSteamGameServer, uint32_t bPasswordProtected) {
-#pragma comment(linker, "/EXPORT:BS_GameServer_SetPasswordProtected=_BS_GameServer_SetPasswordProtected@8")
+/// Let people know if your server will require a password
+DLL_FUNCTION(void) BS_ISteamGameServer_SetPasswordProtected(ISteamGameServer* pSteamGameServer, uint32_t bPasswordProtected) {
 	pSteamGameServer->SetPasswordProtected(!!bPasswordProtected);
 }
 
-DLL_FUNCTION(void) BS_GameServer_SetSpectatorPort(ISteamGameServer* pSteamGameServer, uint16_t unSpectatorPort) {
-#pragma comment(linker, "/EXPORT:BS_GameServer_SetSpectatorPort=_BS_GameServer_SetSpectatorPort@8")
+/// Spectator server.  The default value is zero, meaning the service
+/// is not used.
+DLL_FUNCTION(void) BS_ISteamGameServer_SetSpectatorPort(ISteamGameServer* pSteamGameServer, uint16_t unSpectatorPort) {
 	pSteamGameServer->SetSpectatorPort(unSpectatorPort);
 }
 
-DLL_FUNCTION(void) BS_GameServer_SetSpectatorServerName(ISteamGameServer* pSteamGameServer, const char *pszSpectatorServerName) {
-#pragma comment(linker, "/EXPORT:BS_GameServer_SetSpectatorServerName=_BS_GameServer_SetSpectatorServerName@8")
+/// Name of the spectator server.  (Only used if spectator port is nonzero.)
+///
+/// @see k_cbMaxGameServerMapName
+DLL_FUNCTION(void) BS_ISteamGameServer_SetSpectatorServerName(ISteamGameServer* pSteamGameServer, const char *pszSpectatorServerName) {
 	pSteamGameServer->SetSpectatorServerName(pszSpectatorServerName);
 }
 
-DLL_FUNCTION(void) BS_GameServer_ClearAllKeyValues(ISteamGameServer* pSteamGameServer) {
-#pragma comment(linker, "/EXPORT:BS_GameServer_ClearAllKeyValues=_BS_GameServer_ClearAllKeyValues@4")
+/// Call this to clear the whole list of key/values that are sent in rules queries.
+DLL_FUNCTION(void) BS_ISteamGameServer_ClearAllKeyValues(ISteamGameServer* pSteamGameServer) {
 	pSteamGameServer->ClearAllKeyValues();
 }
 
-DLL_FUNCTION(void) BS_GameServer_SetKeyValue(ISteamGameServer* pSteamGameServer, const char *pKey, const char *pValue) {
-#pragma comment(linker, "/EXPORT:BS_GameServer_SetKeyValue=_BS_GameServer_SetKeyValue@12")
+/// Call this to add/update a key/value pair.
+DLL_FUNCTION(void) BS_ISteamGameServer_SetKeyValue(ISteamGameServer* pSteamGameServer, const char *pKey, const char *pValue) {
 	pSteamGameServer->SetKeyValue(pKey, pValue);
 }
 
-DLL_FUNCTION(void) BS_GameServer_SetGameTags(ISteamGameServer* pSteamGameServer, const char *pchGameTags) {
-#pragma comment(linker, "/EXPORT:BS_GameServer_SetGameTags=_BS_GameServer_SetGameTags@8")
+/// Sets a string defining the "gametags" for this server, this is optional, but if it is set
+/// it allows users to filter in the matchmaking/server-browser interfaces based on the value
+///
+/// @see k_cbMaxGameServerTags
+DLL_FUNCTION(void) BS_ISteamGameServer_SetGameTags(ISteamGameServer* pSteamGameServer, const char *pchGameTags) {
 	pSteamGameServer->SetGameTags(pchGameTags);
 }
 
-DLL_FUNCTION(void) BS_GameServer_SetGameData(ISteamGameServer* pSteamGameServer, const char *pchGameData) {
-#pragma comment(linker, "/EXPORT:BS_GameServer_SetGameData=_BS_GameServer_SetGameData@8")
+/// Sets a string defining the "gamedata" for this server, this is optional, but if it is set
+/// it allows users to filter in the matchmaking/server-browser interfaces based on the value
+/// don't set this unless it actually changes, its only uploaded to the master once (when
+/// acknowledged)
+///
+/// @see k_cbMaxGameServerGameData
+DLL_FUNCTION(void) BS_ISteamGameServer_SetGameData(ISteamGameServer* pSteamGameServer, const char *pchGameData) {
 	pSteamGameServer->SetGameData(pchGameData);
 }
 
-DLL_FUNCTION(void) BS_GameServer_SetRegion(ISteamGameServer* pSteamGameServer, const char *pszRegion) {
-#pragma comment(linker, "/EXPORT:BS_GameServer_SetRegion=_BS_GameServer_SetRegion@8")
+/// Region identifier.  This is an optional field, the default value is empty, meaning the "world" region
+DLL_FUNCTION(void) BS_ISteamGameServer_SetRegion(ISteamGameServer* pSteamGameServer, const char *pszRegion) {
 	pSteamGameServer->SetRegion(pszRegion);
 }
 
-DLL_FUNCTION(uint32_t) BS_GameServer_SendUserConnectAndAuthenticate(ISteamGameServer* pSteamGameServer, uint32_t unIPClient, const void *pvAuthBlob, uint32_t cubAuthBlobSize, CSteamID *pSteamIDUser) {
-#pragma comment(linker, "/EXPORT:BS_GameServer_SendUserConnectAndAuthenticate=_BS_GameServer_SendUserConnectAndAuthenticate@20")
+//
+// Player list management / authentication
+//
+
+// Handles receiving a new connection from a Steam user.  This call will ask the Steam
+// servers to validate the users identity, app ownership, and VAC status.  If the Steam servers 
+// are off-line, then it will validate the cached ticket itself which will validate app ownership 
+// and identity.  The AuthBlob here should be acquired on the game client using SteamUser()->InitiateGameConnection()
+// and must then be sent up to the game server for authentication.
+//
+// Return Value: returns true if the users ticket passes basic checks. pSteamIDUser will contain the Steam ID of this user. pSteamIDUser must NOT be NULL
+// If the call succeeds then you should expect a GSClientApprove_t or GSClientDeny_t callback which will tell you whether authentication
+// for the user has succeeded or failed (the steamid in the callback will match the one returned by this call)
+DLL_FUNCTION(uint32_t) BS_ISteamGameServer_SendUserConnectAndAuthenticate(ISteamGameServer* pSteamGameServer, uint32_t unIPClient, const void *pvAuthBlob, uint32_t cubAuthBlobSize, CSteamID *pSteamIDUser) {
 	return pSteamGameServer->SendUserConnectAndAuthenticate(unIPClient, pvAuthBlob, cubAuthBlobSize, pSteamIDUser);
 }
 
-DLL_FUNCTION(CSteamID*) BS_GameServer_CreateUnauthenticatedUserConnection(ISteamGameServer* pSteamGameServer) {
-#pragma comment(linker, "/EXPORT:BS_GameServer_CreateUnauthenticatedUserConnection=_BS_GameServer_CreateUnauthenticatedUserConnection@4")
+// Creates a fake user (ie, a bot) which will be listed as playing on the server, but skips validation.  
+// 
+// Return Value: Returns a SteamID for the user to be tracked with, you should call HandleUserDisconnect()
+// when this user leaves the server just like you would for a real user.
+DLL_FUNCTION(CSteamID*) BS_ISteamGameServer_CreateUnauthenticatedUserConnection(ISteamGameServer* pSteamGameServer) {
 	return new CSteamID(pSteamGameServer->CreateUnauthenticatedUserConnection());
 }
 
-DLL_FUNCTION(void) BS_GameServer_SendUserDisconnect(ISteamGameServer* pSteamGameServer, CSteamID* pSteamIDUser) {
-#pragma comment(linker, "/EXPORT:BS_GameServer_SendUserDisconnect=_BS_GameServer_SendUserDisconnect@8")
+// Should be called whenever a user leaves our game server, this lets Steam internally
+// track which users are currently on which servers for the purposes of preventing a single
+// account being logged into multiple servers, showing who is currently on a server, etc.
+DLL_FUNCTION(void) BS_ISteamGameServer_SendUserDisconnect(ISteamGameServer* pSteamGameServer, CSteamID* pSteamIDUser) {
 	pSteamGameServer->SendUserDisconnect(*pSteamIDUser);
 }
 
-DLL_FUNCTION(uint32_t) BS_GameServer_UpdateUserData(ISteamGameServer* pSteamGameServer, CSteamID* pSteamIDUser, const char *pchPlayerName, uint32_t uScore) {
-#pragma comment(linker, "/EXPORT:BS_GameServer_UpdateUserData=_BS_GameServer_UpdateUserData@16")
+// Update the data to be displayed in the server browser and matchmaking interfaces for a user
+// currently connected to the server.  For regular users you must call this after you receive a
+// GSUserValidationSuccess callback.
+// 
+// Return Value: true if successful, false if failure (ie, steamIDUser wasn't for an active player)
+DLL_FUNCTION(uint32_t) BS_ISteamGameServer_UpdateUserData(ISteamGameServer* pSteamGameServer, CSteamID* pSteamIDUser, const char *pchPlayerName, uint32_t uScore) {
 	return pSteamGameServer->BUpdateUserData(*pSteamIDUser, pchPlayerName, uScore);
 }
 
-DLL_FUNCTION(HAuthTicket) BS_GameServer_GetAuthSessionTicket(ISteamGameServer* pSteamGameServer, void *pTicket, int32_t cbMaxTicket, uint32_t *pcbTicket) {
-#pragma comment(linker, "/EXPORT:BS_GameServer_GetAuthSessionTicket=_BS_GameServer_GetAuthSessionTicket@16")
+// New auth system APIs - do not mix with the old auth system APIs.
+// ----------------------------------------------------------------
+
+// Retrieve ticket to be sent to the entity who wishes to authenticate you ( using BeginAuthSession API ). 
+// pcbTicket retrieves the length of the actual ticket.
+DLL_FUNCTION(HAuthTicket) BS_ISteamGameServer_GetAuthSessionTicket(ISteamGameServer* pSteamGameServer, void *pTicket, int32_t cbMaxTicket, uint32_t *pcbTicket) {
 	return pSteamGameServer->GetAuthSessionTicket(pTicket, cbMaxTicket, pcbTicket);
 }
 
-DLL_FUNCTION(EBeginAuthSessionResult) BS_GameServer_BeginAuthSession(ISteamGameServer* pSteamGameServer, const void *pAuthTicket, int32_t cbAuthTicket, CSteamID* pSteamID) {
-#pragma comment(linker, "/EXPORT:BS_GameServer_BeginAuthSession=_BS_GameServer_BeginAuthSession@16")
+// Authenticate ticket ( from GetAuthSessionTicket ) from entity steamID to be sure it is valid and isnt reused
+// Registers for callbacks if the entity goes offline or cancels the ticket ( see ValidateAuthTicketResponse_t callback and EAuthSessionResponse )
+DLL_FUNCTION(EBeginAuthSessionResult) BS_ISteamGameServer_BeginAuthSession(ISteamGameServer* pSteamGameServer, const void *pAuthTicket, int32_t cbAuthTicket, CSteamID* pSteamID) {
 	return pSteamGameServer->BeginAuthSession(pAuthTicket, cbAuthTicket, *pSteamID);
 }
 
-DLL_FUNCTION(void) BS_GameServer_EndAuthSession(ISteamGameServer* pSteamGameServer, CSteamID* pSteamID) {
-#pragma comment(linker, "/EXPORT:BS_GameServer_EndAuthSession=_BS_GameServer_EndAuthSession@8")
+// Stop tracking started by BeginAuthSession - called when no longer playing game with this entity
+DLL_FUNCTION(void) BS_ISteamGameServer_EndAuthSession(ISteamGameServer* pSteamGameServer, CSteamID* pSteamID) {
 	pSteamGameServer->EndAuthSession(*pSteamID);
 }
 
-DLL_FUNCTION(void) BS_GameServer_CancelAuthTicket(ISteamGameServer* pSteamGameServer, HAuthTicket hAuthTicket) {
-#pragma comment(linker, "/EXPORT:BS_GameServer_CancelAuthTicket=_BS_GameServer_CancelAuthTicket@8")
+// Cancel auth ticket from GetAuthSessionTicket, called when no longer playing game with the entity you gave the ticket to
+DLL_FUNCTION(void) BS_ISteamGameServer_CancelAuthTicket(ISteamGameServer* pSteamGameServer, HAuthTicket hAuthTicket) {
 	pSteamGameServer->CancelAuthTicket(hAuthTicket);
 }
 
-DLL_FUNCTION(EUserHasLicenseForAppResult) BS_GameServer_UserHasLicenseForApp(ISteamGameServer* pSteamGameServer, CSteamID* pSteamID, AppId_t appID) {
-#pragma comment(linker, "/EXPORT:BS_GameServer_UserHasLicenseForApp=_BS_GameServer_UserHasLicenseForApp@12")
+// After receiving a user's authentication data, and passing it to SendUserConnectAndAuthenticate, use this function
+// to determine if the user owns downloadable content specified by the provided AppID.
+DLL_FUNCTION(EUserHasLicenseForAppResult) BS_ISteamGameServer_UserHasLicenseForApp(ISteamGameServer* pSteamGameServer, CSteamID* pSteamID, AppId_t appID) {
 	return pSteamGameServer->UserHasLicenseForApp(*pSteamID, appID);
 }
 
-DLL_FUNCTION(uint32_t) BS_GameServer_RequestUserGroupStatus(ISteamGameServer* pSteamGameServer, CSteamID* pSteamIDUser, CSteamID* pSteamIDGroup) {
-#pragma comment(linker, "/EXPORT:BS_GameServer_RequestUserGroupStatus=_BS_GameServer_RequestUserGroupStatus@12")
+// Ask if a user in in the specified group, results returns async by GSUserGroupStatus_t
+// returns false if we're not connected to the steam servers and thus cannot ask
+DLL_FUNCTION(uint32_t) BS_ISteamGameServer_RequestUserGroupStatus(ISteamGameServer* pSteamGameServer, CSteamID* pSteamIDUser, CSteamID* pSteamIDGroup) {
 	return pSteamGameServer->RequestUserGroupStatus(*pSteamIDUser, *pSteamIDGroup);
 }
 
-DLL_FUNCTION(void) BS_GameServer_GetGameplayStats(ISteamGameServer* pSteamGameServer) {
-#pragma comment(linker, "/EXPORT:BS_GameServer_GetGameplayStats=_BS_GameServer_GetGameplayStats@4")
-	pSteamGameServer->GetGameplayStats();
-}
-
-DLL_FUNCTION(SteamAPICall_t*) BS_GameServer_GetServerReputation(ISteamGameServer* pSteamGameServer) {
-#pragma comment(linker, "/EXPORT:BS_GameServer_GetServerReputation=_BS_GameServer_GetServerReputation@4")
-	return new uint64_t(pSteamGameServer->GetServerReputation());
-}
-
-DLL_FUNCTION(uint32_t) BS_GameServer_GetPublicIP(ISteamGameServer* pSteamGameServer) {
-#pragma comment(linker, "/EXPORT:BS_GameServer_GetPublicIP=_BS_GameServer_GetPublicIP@4")
+// Returns the public IP of the server according to Steam, useful when the server is 
+// behind NAT and you want to advertise its IP in a lobby for other clients to directly
+// connect to
+DLL_FUNCTION(uint32_t) BS_ISteamGameServer_GetPublicIP(ISteamGameServer* pSteamGameServer) {
 	return pSteamGameServer->GetPublicIP();
 }
 
-DLL_FUNCTION(uint32_t) BS_GameServer_HandleIncomingPacket(ISteamGameServer* pSteamGameServer, const void *pData, int32_t cbData, uint32_t srcIP, uint16_t srcPort) {
-#pragma comment(linker, "/EXPORT:BS_GameServer_HandleIncomingPacket=_BS_GameServer_HandleIncomingPacket@20")
+// These are in GameSocketShare mode, where instead of ISteamGameServer creating its own
+// socket to talk to the master server on, it lets the game use its socket to forward messages
+// back and forth. This prevents us from requiring server ops to open up yet another port
+// in their firewalls.
+//
+// the IP address and port should be in host order, i.e 127.0.0.1 == 0x7f000001
+
+// These are used when you've elected to multiplex the game server's UDP socket
+// rather than having the master server updater use its own sockets.
+// 
+// Source games use this to simplify the job of the server admins, so they 
+// don't have to open up more ports on their firewalls.
+
+// Call this when a packet that starts with 0xFFFFFFFF comes in. That means
+// it's for us.
+DLL_FUNCTION(uint32_t) BS_ISteamGameServer_HandleIncomingPacket(ISteamGameServer* pSteamGameServer, const void *pData, int32_t cbData, uint32_t srcIP, uint16_t srcPort) {
 	return pSteamGameServer->HandleIncomingPacket(pData, cbData, srcIP, srcPort);
 }
 
-DLL_FUNCTION(uint32_t) BS_GameServer_GetNextOutgoingPacket(ISteamGameServer* pSteamGameServer, void *pOut, int32_t cbMaxOut, uint32_t *pNetAdr, uint16_t *pPort) {
-#pragma comment(linker, "/EXPORT:BS_GameServer_GetNextOutgoingPacket=_BS_GameServer_GetNextOutgoingPacket@20")
+// AFTER calling HandleIncomingPacket for any packets that came in that frame, call this.
+// This gets a packet that the master server updater needs to send out on UDP.
+// It returns the length of the packet it wants to send, or 0 if there are no more packets to send.
+// Call this each frame until it returns 0.
+DLL_FUNCTION(uint32_t) BS_ISteamGameServer_GetNextOutgoingPacket(ISteamGameServer* pSteamGameServer, void *pOut, int32_t cbMaxOut, uint32_t *pNetAdr, uint16_t *pPort) {
 	return pSteamGameServer->GetNextOutgoingPacket(pOut, cbMaxOut, pNetAdr, pPort);
 }
 
-DLL_FUNCTION(void) BS_GameServer_EnableHeartbeats(ISteamGameServer* pSteamGameServer, uint32_t bActive) {
-#pragma comment(linker, "/EXPORT:BS_GameServer_EnableHeartbeats=_BS_GameServer_EnableHeartbeats@8")
+//
+// Control heartbeats / advertisement with master server
+//
+
+// Call this as often as you like to tell the master server updater whether or not
+// you want it to be active (default: off).
+DLL_FUNCTION(void) BS_ISteamGameServer_EnableHeartbeats(ISteamGameServer* pSteamGameServer, uint32_t bActive) {
 	pSteamGameServer->EnableHeartbeats(!!bActive);
 }
 
-DLL_FUNCTION(void) BS_GameServer_SetHeartbeatInterval(ISteamGameServer* pSteamGameServer, int32_t iHeartbeatInterval) {
-#pragma comment(linker, "/EXPORT:BS_GameServer_SetHeartbeatInterval=_BS_GameServer_SetHeartbeatInterval@8")
+// You usually don't need to modify this.
+// Pass -1 to use the default value for iHeartbeatInterval.
+// Some mods change this.
+DLL_FUNCTION(void) BS_ISteamGameServer_SetHeartbeatInterval(ISteamGameServer* pSteamGameServer, int32_t iHeartbeatInterval) {
 	pSteamGameServer->SetHeartbeatInterval(iHeartbeatInterval);
 }
 
-DLL_FUNCTION(void) BS_GameServer_ForceHeartbeat(ISteamGameServer* pSteamGameServer) {
-#pragma comment(linker, "/EXPORT:BS_GameServer_ForceHeartbeat=_BS_GameServer_ForceHeartbeat@4")
+// Force a heartbeat to steam at the next opportunity
+DLL_FUNCTION(void) BS_ISteamGameServer_ForceHeartbeat(ISteamGameServer* pSteamGameServer) {
 	pSteamGameServer->ForceHeartbeat();
 }
 
-DLL_FUNCTION(SteamAPICall_t*) BS_GameServer_AssociateWithClan(ISteamGameServer* pSteamGameServer, CSteamID* pSteamIDClan) {
-#pragma comment(linker, "/EXPORT:BS_GameServer_AssociateWithClan=_BS_GameServer_AssociateWithClan@8")
+// associate this game server with this clan for the purposes of computing player compat
+DLL_FUNCTION(SteamAPICall_t*) BS_ISteamGameServer_AssociateWithClan(ISteamGameServer* pSteamGameServer, CSteamID* pSteamIDClan) {
 	return new SteamAPICall_t(pSteamGameServer->AssociateWithClan(*pSteamIDClan));
 }
 
-DLL_FUNCTION(SteamAPICall_t*) BS_GameServer_ComputeNewPlayerCompatibility(ISteamGameServer* pSteamGameServer, CSteamID* pSteamIDNewPlayer) {
-#pragma comment(linker, "/EXPORT:BS_GameServer_ComputeNewPlayerCompatibility=_BS_GameServer_ComputeNewPlayerCompatibility@8")
+// ask if any of the current players dont want to play with this new player - or vice versa
+DLL_FUNCTION(SteamAPICall_t*) BS_ISteamGameServer_ComputeNewPlayerCompatibility(ISteamGameServer* pSteamGameServer, CSteamID* pSteamIDNewPlayer) {
 	return new SteamAPICall_t(pSteamGameServer->ComputeNewPlayerCompatibility(*pSteamIDNewPlayer));
 }

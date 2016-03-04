@@ -19,5 +19,4 @@
 DLL_FUNCTION(ISteamMusicRemote*) BS_MusicRemote() {
 	return SteamMusicRemote();
 }
-#pragma comment(linker, "/EXPORT:BS_MusicRemote=_BS_MusicRemote@0")
-
+BS_I

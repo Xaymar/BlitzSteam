@@ -19,5 +19,4 @@
 DLL_FUNCTION(ISteamUnifiedMessages*) BS_UnifiedMessages() {
 	return SteamUnifiedMessages();
 }
-#pragma comment(linker, "/EXPORT:BS_UnifiedMessages=_BS_UnifiedMessages@0")
-
+BS_I

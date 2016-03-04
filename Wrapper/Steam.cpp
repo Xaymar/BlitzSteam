@@ -15,59 +15,86 @@
 //	along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "BlitzSteam.h"
+#include "Helpers\BlitzCallback.h"
 
-DLL_FUNCTION(uint32_t) BS_Steam_Init() {
-#pragma comment(linker, "/EXPORT:BS_Steam_Init=_BS_Steam_Init@0")
+//----------------------------------------------------------------------------------------------------------------------------------------------------------//
+//	Steam API setup & shutdown
+//
+//	These functions manage loading, initializing and shutdown of the steamclient.dll
+//
+//----------------------------------------------------------------------------------------------------------------------------------------------------------//
+
+DLL_FUNCTION(int32_t) BS_SteamAPI_Init() {
 	return SteamAPI_Init();
 }
 
-DLL_FUNCTION(void) BS_Steam_Shutdown() {
-#pragma comment(linker, "/EXPORT:BS_Steam_Shutdown=_BS_Steam_Shutdown@0")
+DLL_FUNCTION(void) BS_SteamAPI_Shutdown() {
 	SteamAPI_Shutdown();
 }
 
-DLL_FUNCTION(uint32_t) BS_Steam_IsSteamRunning() {
-#pragma comment(linker, "/EXPORT:BS_Steam_IsSteamRunning=_BS_Steam_IsSteamRunning@0")
+// checks if a local Steam client is running 
+DLL_FUNCTION(int32_t) BS_SteamAPI_IsSteamRunning() {
 	return SteamAPI_IsSteamRunning();
 }
 
-DLL_FUNCTION(uint32_t) BS_Steam_RestartAppIfNecessary(uint32_t unOwnAppID) {
-#pragma comment(linker, "/EXPORT:BS_Steam_RestartAppIfNecessary=_BS_Steam_RestartAppIfNecessary@4")
+// Detects if your executable was launched through the Steam client, and restarts your game through 
+// the client if necessary. The Steam client will be started if it is not running.
+//
+// Returns: true if your executable was NOT launched through the Steam client. This function will
+//          then start your application through the client. Your current process should exit.
+//
+//          false if your executable was started through the Steam client or a steam_appid.txt file
+//          is present in your game's directory (for development). Your current process should continue.
+//
+// NOTE: This function should be used only if you are using CEG or not using Steam's DRM. Once applied
+//       to your executable, Steam's DRM will handle restarting through Steam if necessary.
+DLL_FUNCTION(int32_t) BS_SteamAPI_RestartAppIfNecessary(uint32_t unOwnAppID) {
 	return SteamAPI_RestartAppIfNecessary(unOwnAppID);
 }
 
-DLL_FUNCTION(void) BS_Steam_SetMiniDumpComment(const char* pchMsg) {
-#pragma comment(linker, "/EXPORT:BS_Steam_SetMiniDumpComment=_BS_Steam_SetMiniDumpComment@4")
-	SteamAPI_SetMiniDumpComment(pchMsg);
-}
-
-DLL_FUNCTION(void) BS_Steam_WriteMiniDump(uint32_t uStructuredExceptionCode, void* pvExceptionInfo, uint32_t uBuildID) {
-#pragma comment(linker, "/EXPORT:BS_Steam_WriteMiniDump=_BS_Steam_WriteMiniDump@12")
+// crash dump recording functions
+DLL_FUNCTION(void) BS_SteamAPI_WriteMiniDump(uint32_t uStructuredExceptionCode, void* pvExceptionInfo, uint32_t uBuildID) {
 	SteamAPI_WriteMiniDump(uStructuredExceptionCode, pvExceptionInfo, uBuildID);
 }
 
+DLL_FUNCTION(void) BS_SteamAPI_SetMiniDumpComment(const char* pchMsg) {
+	SteamAPI_SetMiniDumpComment(pchMsg);
+}
+
+// Most Steam API functions allocate some amount of thread-local memory for
+// parameter storage. The SteamAPI_ReleaseCurrentThreadMemory() function
+// will free all API-related memory associated with the calling thread.
+// This memory is also released automatically by SteamAPI_RunCallbacks(), so
+// a single-threaded program does not need to explicitly call this function.
+DLL_FUNCTION(void) BS_SteamAPI_ReleaseCurrentThreadMemory() {
+	return SteamAPI_ReleaseCurrentThreadMemory();
+}
+
 // -- Callbacks
-DLL_FUNCTION(void) BS_Steam_RunCallbacks() {
-#pragma comment(linker, "/EXPORT:BS_Steam_RunCallbacks=_BS_Steam_RunCallbacks@0")
+//----------------------------------------------------------------------------------------------------------------------------------------------------------//
+//	steam callback and call-result helpers
+//
+//	The following macros and classes are used to register your application for
+//	callbacks and call-results, which are delivered in a predictable manner.
+//
+//	STEAM_CALLBACK macros are meant for use inside of a C++ class definition.
+//	They map a Steam notification callback directly to a class member function
+//	which is automatically prototyped as "void func( callback_type *pParam )".
+//
+//	CCallResult is used with specific Steam APIs that return "result handles".
+//	The handle can be passed to a CCallResult object's Set function, along with
+//	an object pointer and member-function pointer. The member function will
+//	be executed once the results of the Steam API call are available.
+//
+//	CCallback and CCallbackManual classes can be used instead of STEAM_CALLBACK
+//	macros if you require finer control over registration and unregistration.
+//
+//	Callbacks and call-results are queued automatically and are only
+//	delivered/executed when your application calls SteamAPI_RunCallbacks().
+//----------------------------------------------------------------------------------------------------------------------------------------------------------//
+
+// SteamAPI_RunCallbacks is safe to call from multiple threads simultaneously,
+// but if you choose to do this, callback code may be executed on any thread.
+DLL_FUNCTION(void) BS_SteamAPI_RunCallbacks() {
 	SteamAPI_RunCallbacks();
-}
-
-DLL_FUNCTION(void) BS_Steam_RegisterCallback(class CCallbackBase *pCallback, uint32_t iCallback) {
-#pragma comment(linker, "/EXPORT:BS_Steam_RegisterCallback=_BS_Steam_RegisterCallback@8")
-	SteamAPI_RegisterCallback(pCallback, iCallback);
-}
-
-DLL_FUNCTION(void) BS_Steam_UnregisterCallback(class CCallbackBase *pCallback) {
-#pragma comment(linker, "/EXPORT:BS_Steam_UnregisterCallback=_BS_Steam_UnregisterCallback@4")
-	SteamAPI_UnregisterCallback(pCallback);
-}
-
-DLL_FUNCTION(void) BS_Steam_RegisterCallResult(class CCallbackBase *pCallback, uint64_t* phAPICall) {
-#pragma comment(linker, "/EXPORT:BS_Steam_RegisterCallResult=_BS_Steam_RegisterCallResult@8")
-	SteamAPI_RegisterCallResult(pCallback, *phAPICall);
-}
-
-DLL_FUNCTION(void) BS_Steam_UnregisterCallResult(class CCallbackBase *pCallback, uint64_t* phAPICall) {
-#pragma comment(linker, "/EXPORT:BS_Steam_UnregisterCallResult=_BS_Steam_UnregisterCallResult@8")
-	SteamAPI_UnregisterCallResult(pCallback, *phAPICall);
 }

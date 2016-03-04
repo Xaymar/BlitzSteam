@@ -17,7 +17,6 @@
 #include "BlitzSteam.h"
 
 DLL_FUNCTION(ISteamMatchmakingServers*) BS_MatchmakingServers() {
-#pragma comment(linker, "/EXPORT:BS_MatchmakingServers=_BS_MatchmakingServers@0")
 	return SteamMatchmakingServers();
 }
 

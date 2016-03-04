@@ -19,10 +19,8 @@
 DLL_FUNCTION(ISteamUGC*) BS_UGC() {
 	return SteamUGC();
 }
-#pragma comment(linker, "/EXPORT:BS_UGC=_BS_UGC@0")
 
 DLL_FUNCTION(ISteamUGC*) BS_GameServerUGC() {
-#pragma comment(linker, "/EXPORT:BS_GameServerUGC=_BS_GameServerUGC@0")
 	return SteamGameServerUGC();
 }
 

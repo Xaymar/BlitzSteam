@@ -16,127 +16,131 @@
 
 #include "BlitzSteam.h"
 
-DLL_FUNCTION(ISteamApps*) BS_Apps() {
-#pragma comment(linker, "/EXPORT:BS_Apps=_BS_Apps@0")
+//-----------------------------------------------------------------------------
+// Purpose: interface to app data
+//-----------------------------------------------------------------------------
+DLL_FUNCTION(ISteamApps*) BS_SteamApps() {
 	return SteamApps();
 }
 
-DLL_FUNCTION(uint32_t) BS_Apps_IsSubscribed(ISteamApps* lpSteamApps) {
-#pragma comment(linker, "/EXPORT:BS_Apps_IsSubscribed=_BS_Apps_IsSubscribed@4")
+DLL_FUNCTION(int32_t) BS_ISteamApps_IsSubscribed(ISteamApps* lpSteamApps) {
 	return lpSteamApps->BIsSubscribed();
 }
 
-DLL_FUNCTION(uint32_t) BS_Apps_IsLowViolence(ISteamApps* lpSteamApps) {
-#pragma comment(linker, "/EXPORT:BS_Apps_IsLowViolence=_BS_Apps_IsLowViolence@4")
+DLL_FUNCTION(int32_t) BS_ISteamApps_IsLowViolence(ISteamApps* lpSteamApps) {
 	return lpSteamApps->BIsLowViolence();
 }
 
-DLL_FUNCTION(uint32_t) BS_Apps_IsCybercafe(ISteamApps* lpSteamApps) {
-#pragma comment(linker, "/EXPORT:BS_Apps_IsCybercafe=_BS_Apps_IsCybercafe@4")
+DLL_FUNCTION(int32_t) BS_ISteamApps_IsCybercafe(ISteamApps* lpSteamApps) {
 	return lpSteamApps->BIsCybercafe();
 }
 
-DLL_FUNCTION(uint32_t) BS_Apps_IsVACBanned(ISteamApps* lpSteamApps) {
-#pragma comment(linker, "/EXPORT:BS_Apps_IsVACBanned=_BS_Apps_IsVACBanned@4")
+DLL_FUNCTION(int32_t) BS_ISteamApps_IsVACBanned(ISteamApps* lpSteamApps) {
 	return lpSteamApps->BIsVACBanned();
 }
 
-DLL_FUNCTION(const char*) BS_Apps_GetCurrentGameLanguage(ISteamApps* lpSteamApps) {
-#pragma comment(linker, "/EXPORT:BS_Apps_GetCurrentGameLanguage=_BS_Apps_GetCurrentGameLanguage@4")
+DLL_FUNCTION(const char*) BS_ISteamApps_GetCurrentGameLanguage(ISteamApps* lpSteamApps) {
 	return lpSteamApps->GetCurrentGameLanguage();
 }
 
-DLL_FUNCTION(const char*) BS_Apps_GetAvailableGameLanguages(ISteamApps* lpSteamApps) {
-#pragma comment(linker, "/EXPORT:BS_Apps_GetAvailableGameLanguages=_BS_Apps_GetAvailableGameLanguages@4")
+DLL_FUNCTION(const char*) BS_ISteamApps_GetAvailableGameLanguages(ISteamApps* lpSteamApps) {
 	return lpSteamApps->GetAvailableGameLanguages();
 }
 
-DLL_FUNCTION(uint32_t) BS_Apps_IsSubscribedApp(ISteamApps* lpSteamApps, AppId_t appID) {
-#pragma comment(linker, "/EXPORT:BS_Apps_IsSubscribedApp=_BS_Apps_IsSubscribedApp@8")
+// only use this member if you need to check ownership of another game related to yours, a demo for example
+DLL_FUNCTION(int32_t) BS_ISteamApps_IsSubscribedApp(ISteamApps* lpSteamApps, AppId_t appID) {
 	return lpSteamApps->BIsSubscribedApp(appID);
 }
 
-DLL_FUNCTION(uint32_t) BS_Apps_IsDlcInstalled(ISteamApps* lpSteamApps, AppId_t appID) {
-#pragma comment(linker, "/EXPORT:BS_Apps_IsDlcInstalled=_BS_Apps_IsDlcInstalled@8")
+// Takes AppID of DLC and checks if the user owns the DLC & if the DLC is installed
+DLL_FUNCTION(int32_t) BS_ISteamApps_IsDlcInstalled(ISteamApps* lpSteamApps, AppId_t appID) {
 	return lpSteamApps->BIsDlcInstalled(appID);
 }
 
-DLL_FUNCTION(uint32_t) BS_Apps_GetEarliestPurchaseUnixTime(ISteamApps* lpSteamApps, AppId_t appID) {
-#pragma comment(linker, "/EXPORT:BS_Apps_GetEarliestPurchaseUnixTime=_BS_Apps_GetEarliestPurchaseUnixTime@8")
+// returns the Unix time of the purchase of the app
+DLL_FUNCTION(int32_t) BS_ISteamApps_GetEarliestPurchaseUnixTime(ISteamApps* lpSteamApps, AppId_t appID) {
 	return lpSteamApps->GetEarliestPurchaseUnixTime(appID);
 }
 
-DLL_FUNCTION(uint32_t) BS_Apps_IsSubscribedFromFreeWeekend(ISteamApps* lpSteamApps) {
-#pragma comment(linker, "/EXPORT:BS_Apps_IsSubscribedFromFreeWeekend=_BS_Apps_IsSubscribedFromFreeWeekend@4")
+// Checks if the user is subscribed to the current app through a free weekend
+// This function will return false for users who have a retail or other type of license
+// Before using, please ask your Valve technical contact how to package and secure your free weekened
+DLL_FUNCTION(int32_t) BS_ISteamApps_IsSubscribedFromFreeWeekend(ISteamApps* lpSteamApps) {
 	return lpSteamApps->BIsSubscribedFromFreeWeekend();
 }
 
-DLL_FUNCTION(uint32_t) BS_Apps_GetDLCCount(ISteamApps* lpSteamApps) {
-#pragma comment(linker, "/EXPORT:BS_Apps_GetDLCCount=_BS_Apps_GetDLCCount@4")
+// Returns the number of DLC pieces for the running app
+DLL_FUNCTION(int32_t) BS_ISteamApps_GetDLCCount(ISteamApps* lpSteamApps) {
 	return lpSteamApps->GetDLCCount();
 }
 
-DLL_FUNCTION(uint32_t) BS_Apps_GetDLCDataByIndex(ISteamApps* lpSteamApps, uint32_t iDLC, AppId_t *pAppIdBuffer, bool* pbAvailableBuffer, char *pchNameBuffer, uint32_t cchNameBufferSize) {
-#pragma comment(linker, "/EXPORT:BS_Apps_GetDLCDataByIndex=_BS_Apps_GetDLCDataByIndex@24")
+// Returns metadata for DLC by index, of range [0, GetDLCCount()]
+DLL_FUNCTION(int32_t) BS_ISteamApps_GetDLCDataByIndex(ISteamApps* lpSteamApps, uint32_t iDLC, AppId_t *pAppIdBuffer, bool* pbAvailableBuffer, char *pchNameBuffer, uint32_t cchNameBufferSize) {
 	return lpSteamApps->BGetDLCDataByIndex(iDLC, pAppIdBuffer, (bool*)pbAvailableBuffer, pchNameBuffer, cchNameBufferSize);
 }
 
-DLL_FUNCTION(void) BS_Apps_InstallDLC(ISteamApps* lpSteamApps, AppId_t nAppID) {
-#pragma comment(linker, "/EXPORT:BS_Apps_InstallDLC=_BS_Apps_InstallDLC@8")
+// Install/Uninstall control for optional DLC
+DLL_FUNCTION(void) BS_ISteamApps_InstallDLC(ISteamApps* lpSteamApps, AppId_t nAppID) {
 	lpSteamApps->InstallDLC(nAppID);
 }
 
-DLL_FUNCTION(void) BS_Apps_UninstallDLC(ISteamApps* lpSteamApps, AppId_t nAppID) {
-#pragma comment(linker, "/EXPORT:BS_Apps_UninstallDLC=_BS_Apps_UninstallDLC@8")
+DLL_FUNCTION(void) BS_ISteamApps_UninstallDLC(ISteamApps* lpSteamApps, AppId_t nAppID) {
 	lpSteamApps->UninstallDLC(nAppID);
 }
 
-DLL_FUNCTION(void) BS_Apps_RequestAppProofOfPurchaseKey(ISteamApps* lpSteamApps, AppId_t nAppID) {
-#pragma comment(linker, "/EXPORT:BS_Apps_RequestAppProofOfPurchaseKey=_BS_Apps_RequestAppProofOfPurchaseKey@8")
+// Request cd-key for yourself or owned DLC. If you are interested in this
+// data then make sure you provide us with a list of valid keys to be distributed
+// to users when they purchase the game, before the game ships.
+// You'll receive an AppProofOfPurchaseKeyResponse_t callback when
+// the key is available (which may be immediately).
+DLL_FUNCTION(void) BS_ISteamApps_RequestAppProofOfPurchaseKey(ISteamApps* lpSteamApps, AppId_t nAppID) {
 	lpSteamApps->RequestAppProofOfPurchaseKey(nAppID);
 }
 
-DLL_FUNCTION(uint32_t) BS_Apps_GetCurrentBetaName(ISteamApps* lpSteamApps, char* pchNameBuffer, int cchNameBufferSize) {
-#pragma comment(linker, "/EXPORT:BS_Apps_GetCurrentBetaName=_BS_Apps_GetCurrentBetaName@12")
+// returns current beta branch name, 'public' is the default branch
+DLL_FUNCTION(int32_t) BS_ISteamApps_GetCurrentBetaName(ISteamApps* lpSteamApps, char* pchNameBuffer, int cchNameBufferSize) {
 	return lpSteamApps->GetCurrentBetaName(pchNameBuffer, cchNameBufferSize);
 }
 
-DLL_FUNCTION(uint32_t) BS_Apps_MarkContentCorrupt(ISteamApps* lpSteamApps, uint32_t bMissingFilesOnly) {
-#pragma comment(linker, "/EXPORT:BS_Apps_MarkContentCorrupt=_BS_Apps_MarkContentCorrupt@8")
+// signal Steam that game files seems corrupt or missing
+DLL_FUNCTION(int32_t) BS_ISteamApps_MarkContentCorrupt(ISteamApps* lpSteamApps, uint32_t bMissingFilesOnly) {
 	return lpSteamApps->MarkContentCorrupt(bMissingFilesOnly != 0);
 }
 
-DLL_FUNCTION(uint32_t) BS_Apps_GetInstalledDepots(ISteamApps* lpSteamApps, AppId_t nAppID, DepotId_t *pDepotsBuffer, uint32_t cMaxDepots) {
-#pragma comment(linker, "/EXPORT:BS_Apps_GetInstalledDepots=_BS_Apps_GetInstalledDepots@16")
+// return installed depots in mount order
+DLL_FUNCTION(int32_t) BS_ISteamApps_GetInstalledDepots(ISteamApps* lpSteamApps, AppId_t nAppID, DepotId_t *pDepotsBuffer, uint32_t cMaxDepots) {
 	return lpSteamApps->GetInstalledDepots(nAppID, pDepotsBuffer, cMaxDepots);
 }
 
-DLL_FUNCTION(uint32_t) BS_Apps_GetAppInstallDir(ISteamApps* lpSteamApps, AppId_t appID, char *pchFolderBuffer, uint32_t cchFolderBufferSize) {
-#pragma comment(linker, "/EXPORT:BS_Apps_GetAppInstallDir=_BS_Apps_GetAppInstallDir@16")
+// returns current app install folder for AppID, returns folder name length
+DLL_FUNCTION(int32_t) BS_ISteamApps_GetAppInstallDir(ISteamApps* lpSteamApps, AppId_t appID, char *pchFolderBuffer, uint32_t cchFolderBufferSize) {
 	return lpSteamApps->GetAppInstallDir(appID, pchFolderBuffer, cchFolderBufferSize);
 }
 
-DLL_FUNCTION(uint32_t) BS_Apps_IsAppInstalled(ISteamApps* lpSteamApps, AppId_t appID) {
-#pragma comment(linker, "/EXPORT:BS_Apps_IsAppInstalled=_BS_Apps_IsAppInstalled@8")
+// returns true if that app is installed (not necessarily owned)
+DLL_FUNCTION(int32_t) BS_ISteamApps_IsAppInstalled(ISteamApps* lpSteamApps, AppId_t appID) {
 	return lpSteamApps->BIsAppInstalled(appID);
 }
 
-DLL_FUNCTION(CSteamID*) BS_Apps_GetAppOwner(ISteamApps* lpSteamApps) {
-#pragma comment(linker, "/EXPORT:BS_Apps_GetAppOwner=_BS_Apps_GetAppOwner@4")
+// returns the SteamID of the original owner. If different from current user, it's borrowed
+DLL_FUNCTION(CSteamID*) BS_ISteamApps_GetAppOwner(ISteamApps* lpSteamApps) {
 	return new CSteamID(lpSteamApps->GetAppOwner());
 }
 
-DLL_FUNCTION(const char*) BS_Apps_GetLaunchQueryParam(ISteamApps* lpSteamApps, const char *pchKey) {
-#pragma comment(linker, "/EXPORT:BS_Apps_GetLaunchQueryParam=_BS_Apps_GetLaunchQueryParam@8")
+// Returns the associated launch param if the game is run via steam://run/<appid>//?param1=value1;param2=value2;param3=value3 etc.
+// Parameter names starting with the character '@' are reserved for internal use and will always return and empty string.
+// Parameter names starting with an underscore '_' are reserved for steam features -- they can be queried by the game,
+// but it is advised that you not param names beginning with an underscore for your own features.
+DLL_FUNCTION(const char*) BS_ISteamApps_GetLaunchQueryParam(ISteamApps* lpSteamApps, const char *pchKey) {
 	return lpSteamApps->GetLaunchQueryParam(pchKey);
 }
 
-DLL_FUNCTION(uint32_t) BS_Apps_GetDlcDownloadProgress(ISteamApps* lpSteamApps, AppId_t nAppID, uint64_t* pLLBytesDownloaded, uint64_t* pLLBytesTotal) {
-#pragma comment(linker, "/EXPORT:BS_Apps_GetDlcDownloadProgress=_BS_Apps_GetDlcDownloadProgress@16")
+// get download progress for optional DLC
+DLL_FUNCTION(int32_t) BS_ISteamApps_GetDlcDownloadProgress(ISteamApps* lpSteamApps, AppId_t nAppID, uint64_t* pLLBytesDownloaded, uint64_t* pLLBytesTotal) {
 	return lpSteamApps->GetDlcDownloadProgress(nAppID, pLLBytesDownloaded, pLLBytesTotal);
 }
 
-DLL_FUNCTION(uint32_t) BS_Apps_GetAppBuildId(ISteamApps* lpSteamApps) {
-#pragma comment(linker, "/EXPORT:BS_Apps_GetAppBuildId=_BS_Apps_GetAppBuildId@4")
+// return the buildid of this app, may change at any time based on backend updates to the game
+DLL_FUNCTION(int32_t) BS_ISteamApps_GetAppBuildId(ISteamApps* lpSteamApps) {
 	return lpSteamApps->GetAppBuildId();
 }

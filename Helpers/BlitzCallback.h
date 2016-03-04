@@ -14,13 +14,16 @@
 //	You should have received a copy of the GNU Lesser General Public License
 //	along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-#pragma once
-#include "BlitzSteam.h"
+BS_I#include "BlitzSteam.h"
 #include "BlitzPointer.h"
+
+#include <list>
+#include <vector>
+#include <map>
 
 class BlitzCallback : public CCallbackBase {
 	public:
-	BlitzCallback(BP_Function3_t pFunctionPointer);
+	BlitzCallback(BP_BlitzFunction3_t pFunctionPointer);
 	~BlitzCallback();
 
 	virtual void Run(void *pvParam);
@@ -34,15 +37,16 @@ class BlitzCallback : public CCallbackBase {
 	void Register(uint32_t iCallback);
 	void Unregister();
 
-	void RegisterResult(SteamAPICall_t hSteamAPICall);
+	void RegisterResult(SteamAPICall_t hSteamAPICall, uint32_t iCallback);
 	void UnregisterResult();
 
 	private:
-	BP_Function3_t m_pFunctionPointer;
+	BP_BlitzFunction3_t m_pFunctionPointer;
+	uint32_t m_iCallback;
 	SteamAPICall_t m_hSteamAPICall;
 };
 
-DLL_FUNCTION(BlitzCallback*) BS_Callback_Create(BP_Function3_t pFunctionPointer);
+DLL_FUNCTION(BlitzCallback*) BS_Callback_Create(BP_BlitzFunction3_t pFunctionPointer);
 DLL_FUNCTION(void) BS_Callback_Destroy(BlitzCallback* pCallback);
 
 DLL_FUNCTION(int32_t) BS_Callback_IsRegistered(BlitzCallback* pCallback);
@@ -51,5 +55,5 @@ DLL_FUNCTION(int32_t) BS_Callback_SetGameServerFlag(BlitzCallback* pCallback, in
 
 DLL_FUNCTION(void) BS_Callback_Register(BlitzCallback* pCallback, uint32_t iCallback);
 DLL_FUNCTION(void) BS_Callback_Unregister(BlitzCallback* pCallback);
-DLL_FUNCTION(void) BS_Callback_RegisterResult(BlitzCallback* pCallback, SteamAPICall_t* pSteamAPICall);
+DLL_FUNCTION(void) BS_Callback_RegisterResult(BlitzCallback* pCallback, SteamAPICall_t* pSteamAPICall, uint32_t iCallback);
 DLL_FUNCTION(void) BS_Callback_UnregisterResult(BlitzCallback* pCallback);

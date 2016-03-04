@@ -16,58 +16,66 @@
 
 #include "BlitzSteam.h"
 
-DLL_FUNCTION(ISteamGameServerStats*) BS_GameServerStats() {
-#pragma comment(linker, "/EXPORT:BS_GameServerStats=_BS_GameServerStats@0")
+//-----------------------------------------------------------------------------
+// Purpose: Functions for authenticating users via Steam to play on a game server
+//-----------------------------------------------------------------------------
+DLL_FUNCTION(ISteamGameServerStats*) BS_SteamGameServerStats() {
 	return SteamGameServerStats();
 }
 
-DLL_FUNCTION(SteamAPICall_t*) BS_GameServerStats_RequestUserStats(ISteamGameServerStats* pSteamGameServerStats, CSteamID* steamIDUser) {
-#pragma comment(linker, "/EXPORT:BS_GameServerStats_RequestUserStats=_BS_GameServerStats_RequestUserStats@8")
+// downloads stats for the user
+// returns a GSStatsReceived_t callback when completed
+// if the user has no stats, GSStatsReceived_t.m_eResult will be set to k_EResultFail
+// these stats will only be auto-updated for clients playing on the server. For other
+// users you'll need to call RequestUserStats() again to refresh any data
+DLL_FUNCTION(SteamAPICall_t*) BS_ISteamGameServerStats_RequestUserStats(ISteamGameServerStats* pSteamGameServerStats, CSteamID* steamIDUser) {
 	return new SteamAPICall_t(pSteamGameServerStats->RequestUserStats(*steamIDUser));
 }
 
-DLL_FUNCTION(SteamAPICall_t*) BS_GameServerStats_StoreUserStats(ISteamGameServerStats* pSteamGameServerStats, CSteamID* steamIDUser) {
-#pragma comment(linker, "/EXPORT:BS_GameServerStats_StoreUserStats=_BS_GameServerStats_StoreUserStats@8")
+// Store the current data on the server, will get a GSStatsStored_t callback when set.
+//
+// If the callback has a result of k_EResultInvalidParam, one or more stats 
+// uploaded has been rejected, either because they broke constraints
+// or were out of date. In this case the server sends back updated values.
+// The stats should be re-iterated to keep in sync.
+DLL_FUNCTION(SteamAPICall_t*) BS_ISteamGameServerStats_StoreUserStats(ISteamGameServerStats* pSteamGameServerStats, CSteamID* steamIDUser) {
 	return new SteamAPICall_t(pSteamGameServerStats->StoreUserStats(*steamIDUser));
 }
 
-DLL_FUNCTION(uint32_t) BS_GameServerStats_GetUserStat(ISteamGameServerStats* pSteamGameServerStats, CSteamID* steamIDUser, const char* pchName, uint32_t* pData) {
-#pragma comment(linker, "/EXPORT:BS_GameServerStats_GetUserStat=_BS_GameServerStats_GetUserStat@16")
+// requests stat information for a user, usable after a successful call to RequestUserStats()
+DLL_FUNCTION(uint32_t) BS_ISteamGameServerStats_GetUserStat(ISteamGameServerStats* pSteamGameServerStats, CSteamID* steamIDUser, const char* pchName, uint32_t* pData) {
 	return pSteamGameServerStats->GetUserStat(*steamIDUser, pchName, (int32_t*)pData);
 }
 
-DLL_FUNCTION(uint32_t) BS_GameServerStats_GetUserStatF(ISteamGameServerStats* pSteamGameServerStats, CSteamID* steamIDUser, const char* pchName, float_t* pData) {
-#pragma comment(linker, "/EXPORT:BS_GameServerStats_GetUserStatF=_BS_GameServerStats_GetUserStatF@16")
+DLL_FUNCTION(uint32_t) BS_ISteamGameServerStats_GetUserStatF(ISteamGameServerStats* pSteamGameServerStats, CSteamID* steamIDUser, const char* pchName, float_t* pData) {
 	return pSteamGameServerStats->GetUserStat(*steamIDUser, pchName, pData);
 }
 
-DLL_FUNCTION(uint32_t) BS_GameServerStats_GetUserAchievement(ISteamGameServerStats* pSteamGameServerStats, CSteamID* steamIDUser, const char* pchName, uint32_t* pbAchieved) {
-#pragma comment(linker, "/EXPORT:BS_GameServerStats_GetUserAchievement=_BS_GameServerStats_GetUserAchievement@16")
+DLL_FUNCTION(uint32_t) BS_ISteamGameServerStats_GetUserAchievement(ISteamGameServerStats* pSteamGameServerStats, CSteamID* steamIDUser, const char* pchName, uint32_t* pbAchieved) {
 	return pSteamGameServerStats->GetUserAchievement(*steamIDUser, pchName, (bool*)pbAchieved);
 }
 
-DLL_FUNCTION(uint32_t) BS_GameServerStats_SetUserStat(ISteamGameServerStats* pSteamGameServerStats, CSteamID* steamIDUser, const char* pchName, uint32_t nData) {
-#pragma comment(linker, "/EXPORT:BS_GameServerStats_SetUserStat=_BS_GameServerStats_SetUserStat@16")
+// Set / update stats and achievements. 
+// Note: These updates will work only on stats game servers are allowed to edit and only for 
+// game servers that have been declared as officially controlled by the game creators. 
+// Set the IP range of your official servers on the Steamworks page
+DLL_FUNCTION(uint32_t) BS_ISteamGameServerStats_SetUserStat(ISteamGameServerStats* pSteamGameServerStats, CSteamID* steamIDUser, const char* pchName, uint32_t nData) {
 	return pSteamGameServerStats->SetUserStat(*steamIDUser, pchName, (int32_t)nData);
 }
 
-DLL_FUNCTION(uint32_t) BS_GameServerStats_SetUserStatF(ISteamGameServerStats* pSteamGameServerStats, CSteamID* steamIDUser, const char* pchName, float_t fData) {
-#pragma comment(linker, "/EXPORT:BS_GameServerStats_SetUserStatF=_BS_GameServerStats_SetUserStatF@16")
+DLL_FUNCTION(uint32_t) BS_ISteamGameServerStats_SetUserStatF(ISteamGameServerStats* pSteamGameServerStats, CSteamID* steamIDUser, const char* pchName, float_t fData) {
 	return pSteamGameServerStats->SetUserStat(*steamIDUser, pchName, fData);
 }
 
-DLL_FUNCTION(uint32_t) BS_GameServerStats_UpdateUserAvgRateStat(ISteamGameServerStats* pSteamGameServerStats, CSteamID* steamIDUser, const char *pchName, float flCountThisSession, double* pdSessionLength) {
-#pragma comment(linker, "/EXPORT:BS_GameServerStats_UpdateUserAvgRateStat=_BS_GameServerStats_UpdateUserAvgRateStat@20")
+DLL_FUNCTION(uint32_t) BS_ISteamGameServerStats_UpdateUserAvgRateStat(ISteamGameServerStats* pSteamGameServerStats, CSteamID* steamIDUser, const char *pchName, float flCountThisSession, double* pdSessionLength) {
 	return pSteamGameServerStats->UpdateUserAvgRateStat(*steamIDUser, pchName, flCountThisSession, *pdSessionLength);
 }
 
-DLL_FUNCTION(uint32_t) BS_GameServerStats_SetUserAchievement(ISteamGameServerStats* pSteamGameServerStats, CSteamID* steamIDUser, const char* pchName) {
-#pragma comment(linker, "/EXPORT:BS_GameServerStats_SetUserAchievement=_BS_GameServerStats_SetUserAchievement@12")
+DLL_FUNCTION(uint32_t) BS_ISteamGameServerStats_SetUserAchievement(ISteamGameServerStats* pSteamGameServerStats, CSteamID* steamIDUser, const char* pchName) {
 	return pSteamGameServerStats->SetUserAchievement(*steamIDUser, pchName);
 }
 
-DLL_FUNCTION(uint32_t) BS_GameServerStats_ClearUserAchievement(ISteamGameServerStats* pSteamGameServerStats, CSteamID* steamIDUser, const char* pchName) {
-#pragma comment(linker, "/EXPORT:BS_GameServerStats_ClearUserAchievement=_BS_GameServerStats_ClearUserAchievement@12")
+DLL_FUNCTION(uint32_t) BS_ISteamGameServerStats_ClearUserAchievement(ISteamGameServerStats* pSteamGameServerStats, CSteamID* steamIDUser, const char* pchName) {
 	return pSteamGameServerStats->ClearUserAchievement(*steamIDUser, pchName);
 }
 

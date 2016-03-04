@@ -19,10 +19,8 @@
 DLL_FUNCTION(ISteamInventory*) BS_Inventory() {
 	return SteamInventory();
 }
-#pragma comment(linker, "/EXPORT:BS_Inventory=_BS_Inventory@0")
 
 DLL_FUNCTION(ISteamInventory*) BS_GameServerInventory() {
-#pragma comment(linker, "/EXPORT:BS_GameServerInventory=_BS_GameServerInventory@0")
 	return SteamGameServerInventory();
 }
 

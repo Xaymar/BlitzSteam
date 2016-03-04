@@ -1,4 +1,5 @@
 Include "../BlitzSteam.bb"
+Stop
 
 ;----------------------------------------------------------------
 ;! Steam Stuff
@@ -73,12 +74,12 @@ Function Browser_HTMLSurface_BrowserReady(pvParam%, bIOFailure, llSteamAPICall)
 	Browser_SetSize(Browser, Browser\ImageSize[0], Browser\ImageSize[1])
 	
 	; Cleanup
-	BS_Helper_DeleteLong(Browser\z_llSteamAPICall):Browser\z_llSteamAPICall = 0
+	BS_Long_Destroy Browser\z_llSteamAPICall : Browser\z_llSteamAPICall = 0
 	BS_Callback_UnregisterResult Browser_HTMLSurface_BrowserReady_c ; Caller does this too.
 End Function:Browser_HTMLSurface_BrowserReady(0, 0, 0)
 
 Global Browser_HTMLSurface_NeedsPaint_p = 0, Browser_HTMLSurface_NeedsPaint_c = 0
-Function Browser_HTMLSurface_NeedsPaint(pvParam%)
+Function Browser_HTMLSurface_NeedsPaint(pvParam%, p2, p3)
 	If (Browser_HTMLSurface_NeedsPaint_p = 0) Then
 		Browser_HTMLSurface_NeedsPaint_p = BP_GetFunctionPointer()
 		Browser_HTMLSurface_NeedsPaint_c = BS_Callback_Create(Browser_HTMLSurface_NeedsPaint_p)
@@ -103,10 +104,10 @@ Function Browser_HTMLSurface_NeedsPaint(pvParam%)
 	;CALLBACK_MEMBER(10, float, flPageScale) // the page scale factor on this page when rendered
 	;CALLBACK_MEMBER(11, uint32, unPageSerial) // incremented on each new page load, you can use this to reject draws while navigating to new pages
 	
-End Function:Browser_HTMLSurface_NeedsPaint(0)
+End Function:Browser_HTMLSurface_NeedsPaint(0, 0, 0)
 
 Global Browser_HTMLSurface_StartRequest_p = 0, Browser_HTMLSurface_StartRequest_c = 0
-Function Browser_HTMLSurface_StartRequest(pvParam%)
+Function Browser_HTMLSurface_StartRequest(pvParam%, p2, p3)
 	If (Browser_HTMLSurface_StartRequest_p = 0) Then
 		Browser_HTMLSurface_StartRequest_p = BP_GetFunctionPointer()
 		Browser_HTMLSurface_StartRequest_c = BS_Callback_Create(Browser_HTMLSurface_StartRequest_p)
@@ -117,13 +118,13 @@ Function Browser_HTMLSurface_StartRequest(pvParam%)
 	
 	; Default to allow all requests. (Why not? For an Example, this is good enough.)
 	BS_HTMLSurface_AllowStartRequest BS_HTMLSurface(), PeekMemoryInt(pvParam), True
-End Function:Browser_HTMLSurface_StartRequest(0)
+End Function:Browser_HTMLSurface_StartRequest(0, 0, 0)
 
 Function Browser_Create.Browser(Width%, Height, UserAgent$="BlitzSteam", UserCSS$="")
 	DebugLog "[Browser::Create] Creating with UserAgent '"+UserAgent+"' and CSS '"+UserCSS+"'."
 	
 	; Register Callbacks (Can do this in an Init function too)
-	BS_Callback_Register Browser_HTMLSurface_BrowserReady_c, BS_HTMLSurface_BrowserReady
+	;BS_Callback_Register Browser_HTMLSurface_BrowserReady_c, BS_HTMLSurface_BrowserReady
 	BS_Callback_Register Browser_HTMLSurface_NeedsPaint_c, BS_HTMLSurface_NeedsPaint
 	BS_Callback_Register Browser_HTMLSurface_StartRequest_c, BS_HTMLSurface_StartRequest
 	
@@ -132,9 +133,10 @@ Function Browser_Create.Browser(Width%, Height, UserAgent$="BlitzSteam", UserCSS
 	Browser\z_llSteamAPICall = BS_HTMLSurface_CreateBrowser(BS_HTMLSurface(), UserAgent, UserCSS)
 	Browser\ImageSize[0] = Width
 	Browser\ImageSize[1] = Height
+	DebugLog "llSteamAPICall: " + Hex(BS_Long_ToIH(Browser\z_llSteamAPICall)) + Hex(BS_Long_ToIL(Browser\z_llSteamAPICall))
 	
 	; Register CallResult
-	BS_Callback_RegisterResult Browser_HTMLSurface_BrowserReady_c, Browser\z_llSteamAPICall 
+	BS_Callback_RegisterResult Browser_HTMLSurface_BrowserReady_c, Browser\z_llSteamAPICall, BS_HTMLSurface_BrowserReady
 	
 	Return Browser
 End Function
@@ -142,7 +144,7 @@ End Function
 Function Browser_IsReady(Browser.Browser)
 	If Browser = Null Then Return False
 	
-	DebugLog "[Browser::IsReady] Checking if '"+Browser\Id+"'/'"+Browser\z_llSteamAPICall+"' is ready."
+	DebugLog "[Browser::IsReady] Checking if '"+Browser\Id+"'/'"+Hex(BS_Long_ToIH(Browser\z_llSteamAPICall)) + Hex(BS_Long_ToIL(Browser\z_llSteamAPICall))+"' is ready."
 	
 	Return (Browser\Id <> 0)
 End Function
@@ -167,7 +169,7 @@ Function Browser_FindBySteamAPICall.Browser(llSteamAPICall%)
 	
 	Local Browser.Browser
 	For Browser = Each Browser
-		If Browser\z_llSteamAPICall = llSteamAPICall Then Return Browser
+		If BS_Long_Compare(Browser\z_llSteamAPICall,llSteamAPICall) = 0 Then Return Browser
 	Next
 	
 	Return Null
@@ -231,10 +233,11 @@ Graphics3D 1024, 768, 32, 2:SetBuffer BackBuffer()
 ; Create a Browser
 Local myBrowser.Browser = Browser_Create(512, 512)
 
-While Not Browser_IsReady(myBrowser)
+Repeat 
 	BS_Steam_RunCallbacks()
+	
 	Delay 100
-Wend
+Until Browser_IsReady(myBrowser)
 
 While Not KeyHit(1)
 	Cls

@@ -19,49 +19,39 @@
 DLL_FUNCTION(ISteamNetworking*) BS_Networking() {
 	return SteamNetworking();
 }
-#pragma comment(linker, "/EXPORT:BS_Networking=_BS_Networking@0")
 
 DLL_FUNCTION(ISteamNetworking*) BS_GameServerNetworking() {
-#pragma comment(linker, "/EXPORT:BS_GameServerNetworking=_BS_GameServerNetworking@0")
 	return SteamGameServerNetworking();
 }
 
 DLL_FUNCTION(uint32_t) BS_Networking_SendP2PPacket(ISteamNetworking* pSteamNetworking, CSteamID* pSteamIDRemote, const void* pubData, uint32_t cubData, EP2PSend eP2PSendType, uint32_t nChannel) {
-#pragma comment(linker, "/EXPORT:BS_Networking_SendP2PPacket=_BS_Networking_SendP2PPacket@24")
 	return pSteamNetworking->SendP2PPacket(*pSteamIDRemote, pubData, cubData, eP2PSendType, nChannel);
 }
 
 DLL_FUNCTION(uint32_t) BS_Networking_IsP2PPacketAvailable(ISteamNetworking* pSteamNetworking, uint32_t* pcubMsgSize, uint32_t nChannel) {
-#pragma comment(linker, "/EXPORT:BS_Networking_IsP2PPacketAvailable=_BS_Networking_IsP2PPacketAvailable@12")
 	return pSteamNetworking->IsP2PPacketAvailable(pcubMsgSize, nChannel);
 }
 
 DLL_FUNCTION(uint32_t) BS_Networking_ReadP2PPacket(ISteamNetworking* pSteamNetworking, void* pubDest, uint32_t cubDest, uint32_t* pcubMsgSize, CSteamID* pSteamIDRemote, uint32_t nChannel) {
-#pragma comment(linker, "/EXPORT:BS_Networking_ReadP2PPacket=_BS_Networking_ReadP2PPacket@24")
 	return pSteamNetworking->ReadP2PPacket(pubDest, cubDest, pcubMsgSize, pSteamIDRemote, nChannel);
 }
 
 DLL_FUNCTION(uint32_t) BS_Networking_AcceptP2PSessionWithUser(ISteamNetworking* pSteamNetworking, CSteamID* pSteamIDRemote) {
-#pragma comment(linker, "/EXPORT:BS_Networking_AcceptP2PSessionWithUser=_BS_Networking_AcceptP2PSessionWithUser@8")
 	return pSteamNetworking->AcceptP2PSessionWithUser(*pSteamIDRemote);
 }
 
 DLL_FUNCTION(uint32_t) BS_Networking_CloseP2PSessionWithUser(ISteamNetworking* pSteamNetworking, CSteamID* pSteamIDRemote) {
-#pragma comment(linker, "/EXPORT:BS_Networking_CloseP2PSessionWithUser=_BS_Networking_CloseP2PSessionWithUser@8")
 	return pSteamNetworking->CloseP2PSessionWithUser(*pSteamIDRemote);
 }
 
 DLL_FUNCTION(uint32_t) BS_Networking_CloseP2PChannelWithUser(ISteamNetworking* pSteamNetworking, CSteamID* pSteamIDRemote, uint32_t nChannel) {
-#pragma comment(linker, "/EXPORT:BS_Networking_CloseP2PChannelWithUser=_BS_Networking_CloseP2PChannelWithUser@12")
 	return pSteamNetworking->CloseP2PChannelWithUser(*pSteamIDRemote, nChannel);
 }
 
 DLL_FUNCTION(uint32_t) BS_Networking_GetP2PSessionState(ISteamNetworking* pSteamNetworking, CSteamID* pSteamIDRemote, P2PSessionState_t* pConnectionState) {
-#pragma comment(linker, "/EXPORT:BS_Networking_GetP2PSessionState=_BS_Networking_GetP2PSessionState@12")
 	return pSteamNetworking->GetP2PSessionState(*pSteamIDRemote, pConnectionState);
 }
 
 DLL_FUNCTION(uint32_t) BS_Networking_AllowP2PPacketRelay(ISteamNetworking* pSteamNetworking, uint32_t bAllow) {
-#pragma comment(linker, "/EXPORT:BS_Networking_AllowP2PPacketRelay=_BS_Networking_AllowP2PPacketRelay@8")
 	return pSteamNetworking->AllowP2PPacketRelay(!!bAllow);
 }

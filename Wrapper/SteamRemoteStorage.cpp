@@ -19,5 +19,4 @@
 DLL_FUNCTION(ISteamRemoteStorage*) BS_RemoteStorage() {
 	return SteamRemoteStorage();
 }
-#pragma comment(linker, "/EXPORT:BS_RemoteStorage=_BS_RemoteStorage@0")
-
+BS_I
