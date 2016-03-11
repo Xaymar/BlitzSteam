@@ -16,7 +16,8 @@
 
 #include "BlitzSteam.h"
 
-DLL_FUNCTION(ISteamRemoteStorage*) BS_RemoteStorage() {
+DLL_FUNCTION(ISteamRemoteStorage*) BS_SteamRemoteStorage() {
 	return SteamRemoteStorage();
 }
-BS_I
+
+#pragma message("SteamRemoteStorage is not ported yet. TODO!")

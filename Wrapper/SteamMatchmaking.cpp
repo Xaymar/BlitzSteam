@@ -16,7 +16,8 @@
 
 #include "BlitzSteam.h"
 
-DLL_FUNCTION(ISteamMatchmaking*) BS_Matchmaking() {
+DLL_FUNCTION(ISteamMatchmaking*) BS_SteamMatchmaking() {
 	return SteamMatchmaking();
 }
-BS_I
+
+#pragma message("SteamMatchmaking is not ported yet. TODO!")

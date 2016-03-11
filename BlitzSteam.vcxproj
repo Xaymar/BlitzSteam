@@ -156,12 +156,12 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="BlitzSteam.cpp" />
-    <ClCompile Include="Helpers\BlitzCallback.cpp" />
     <ClCompile Include="Helpers\Helper.cpp" />
-    <ClCompile Include="Helpers\Memory.cpp" />
+    <ClCompile Include="Types\BlitzCallback.cpp" />
     <ClCompile Include="Types\CSteamID.cpp" />
     <ClCompile Include="Types\Double.cpp" />
     <ClCompile Include="Types\Long.cpp" />
+    <ClCompile Include="Types\Memory.cpp" />
     <ClCompile Include="Wrapper\Steam.cpp" />
     <ClCompile Include="Wrapper\SteamAppList.cpp" />
     <ClCompile Include="Wrapper\SteamApps.cpp" />
@@ -189,15 +189,61 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BlitzSteam.h" />
+    <ClInclude Include="BlitzSteamInternal.h" />
     <ClInclude Include="Helpers\BlitzPointer.h" />
-    <ClInclude Include="Helpers\BlitzCallback.h" />
     <ClInclude Include="Helpers\Helper.h" />
-    <ClInclude Include="Helpers\Memory.h" />
+    <ClInclude Include="Types\BlitzCallback.h" />
     <ClInclude Include="Types\CSteamID.h" />
     <ClInclude Include="Types\Double.h" />
     <ClInclude Include="Types\Long.h" />
+    <ClInclude Include="Types\Memory.h" />
   </ItemGroup>
-  <Target Name="CopyResources" AfterTargets="Build">
+  <ItemGroup>
+    <None Include="Resources\BlitzSteam.bb" />
+    <None Include="Resources\BlitzSteam.ipf" />
+    <None Include="Resources\BlitzSteamUtility.bb" />
+    <None Include="Resources\Decls\BlitzSteam.decls" />
+    <None Include="Resources\Decls\BlitzSteam_BlitzCallback.decls" />
+    <None Include="Resources\Decls\BlitzSteam_CSteamID.decls" />
+    <None Include="Resources\Decls\BlitzSteam_Double.decls" />
+    <None Include="Resources\Decls\BlitzSteam_Long.decls" />
+    <None Include="Resources\Decls\BlitzSteam_Memory.decls" />
+    <None Include="Resources\Decls\BlitzSteam_Steam.decls" />
+    <None Include="Resources\Decls\BlitzSteam_SteamAppList.decls" />
+    <None Include="Resources\Decls\BlitzSteam_SteamApps.decls" />
+    <None Include="Resources\Decls\BlitzSteam_SteamClient.decls" />
+    <None Include="Resources\Decls\BlitzSteam_SteamController.decls" />
+    <None Include="Resources\Decls\BlitzSteam_SteamFriends.decls" />
+    <None Include="Resources\Decls\BlitzSteam_SteamGameServer.decls" />
+    <None Include="Resources\Decls\BlitzSteam_SteamGameServerStats.decls" />
+    <None Include="Resources\Decls\BlitzSteam_SteamHTMLSurface.decls" />
+    <None Include="Resources\Decls\BlitzSteam_SteamHTTP.decls" />
+    <None Include="Resources\Decls\BlitzSteam_SteamInventory.decls" />
+    <None Include="Resources\Decls\BlitzSteam_SteamMatchmaking.decls" />
+    <None Include="Resources\Decls\BlitzSteam_SteamMatchmakingServers.decls" />
+    <None Include="Resources\Decls\BlitzSteam_SteamMusic.decls" />
+    <None Include="Resources\Decls\BlitzSteam_SteamMusicRemote.decls" />
+    <None Include="Resources\Decls\BlitzSteam_SteamNetworking.decls" />
+    <None Include="Resources\Decls\BlitzSteam_SteamRemoteStorage.decls" />
+    <None Include="Resources\Decls\BlitzSteam_SteamScreenshots.decls" />
+    <None Include="Resources\Decls\BlitzSteam_SteamUGC.decls" />
+    <None Include="Resources\Decls\BlitzSteam_SteamUnifiedMessages.decls" />
+    <None Include="Resources\Decls\BlitzSteam_SteamUser.decls" />
+    <None Include="Resources\Decls\BlitzSteam_SteamUserStats.decls" />
+    <None Include="Resources\Decls\BlitzSteam_SteamUtils.decls" />
+    <None Include="Resources\Decls\BlitzSteam_SteamVideo.decls" />
+    <None Include="Resources\Examples\SteamAPI_Example.bb" />
+    <None Include="Resources\Examples\SteamAppList_Example.bb" />
+    <None Include="Resources\Examples\SteamApps_Example.bb" />
+    <None Include="Resources\Examples\SteamController_Example.bb" />
+    <None Include="Resources\Examples\SteamHTMLSurface_Example.bb" />
+    <None Include="Resources\BlitzSteam.LICENSE" />
+    <None Include="Resources\BlitzSteam.LICENSE.lesser" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="Resources\Examples\steam_appid.txt" />
+  </ItemGroup>
+  <Target Name="CopyResources" BeforeTargets="Build">
     <ItemGroup>
       <Resources Include="$(ProjectDir)\Resources\**\*.*" />
       <Resources Include="$(ProjectDir)\SteamworksSDK\redistributable_bin\steam_api.dll" />

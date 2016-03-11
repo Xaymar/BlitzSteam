@@ -16,7 +16,8 @@
 
 #include "BlitzSteam.h"
 
-DLL_FUNCTION(ISteamUnifiedMessages*) BS_UnifiedMessages() {
+DLL_FUNCTION(ISteamUnifiedMessages*) BS_SteamUnifiedMessages() {
 	return SteamUnifiedMessages();
 }
-BS_I
+
+#pragma message("SteamUnifiedMessages is not ported yet. TODO!")

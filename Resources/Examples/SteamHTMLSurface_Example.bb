@@ -1,5 +1,4 @@
 Include "../BlitzSteam.bb"
-Stop
 
 ;----------------------------------------------------------------
 ;! Steam Stuff
@@ -47,50 +46,181 @@ Function PeekMemoryStringC(Memory%, Length%=-1)
 End Function
 
 ;----------------------------------------------------------------
-;! Blitz Browser Wrapper (Image based)
+;! SteamBrowser (Image & Texture Drawing)
 ;----------------------------------------------------------------
-Type Browser
-	Field Id%
+Global SteamBrowser_Callback_BrowserReady_p = 0, SteamBrowser_Callback_BrowserReady_c = 0
+Global SteamBrowser_Callback_NeedsPaint_p = 0, SteamBrowser_Callback_NeedsPaint_c = 0
+Global SteamBrowser_Callback_StartRequest_p = 0, SteamBrowser_Callback_StartRequest_c = 0
+
+Type SteamBrowser
+	Field Id%, lSteamAPICall%
+	Field Size%[1] ;Width, Height
+	Field URL$
 	
-	Field ImageHandle%, ImageSize[2]
+	; CEF Stuff
+	Field UpdateRegion[3] ;X,Y,W,H
+	Field Serial%, Scale#, ScrollX%, ScrollY%
 	
-	; Internal Steam
-	Field z_llSteamAPICall%
+	; Image Based
+	Field hImage%
+	
+	; Texture Based
+	Field hTexture%
 End Type
 
-Global Browser_HTMLSurface_BrowserReady_p = 0, Browser_HTMLSurface_BrowserReady_c = 0
-Function Browser_HTMLSurface_BrowserReady(pvParam%, bIOFailure, llSteamAPICall)
-	If (Browser_HTMLSurface_BrowserReady_p = 0) Then
-		Browser_HTMLSurface_BrowserReady_p = BP_GetFunctionPointer()
-		Browser_HTMLSurface_BrowserReady_c = BS_Callback_Create(Browser_HTMLSurface_BrowserReady_p)
-		Return 
-	EndIf
+Function SteamBrowser_Create.SteamBrowser(Width%, Height%, URL$="http://google.com/", UserAgent$="SteamBrowser", UserCSS$="")
+	; Create our Object
+	Local SB.SteamBrowser = New SteamBrowser
+	SB\Id = 0 ; Initialize to 0 until the Browser is ready.
+	SB\Size[0] = Width
+	SB\Size[1] = Height
+	SB\URL = URL
+	SB\lSteamAPICall = BS_ISteamHTMLSurface_CreateBrowser(BS_SteamHTMLSurface(), UserAgent, UserCSS)
 	
-	DebugLog "HTMLSurface_BrowserReady"
+	; We need to register our callbacks, or nothing will work.
+	BS_Callback_RegisterResult SteamBrowser_Callback_BrowserReady_c, SB\lSteamAPICall, BS_SteamHTMLSurface_BrowserReady ; Listen to the result of the last SteamAPICall.
+	BS_Callback_Register SteamBrowser_Callback_NeedsPaint_c, BS_SteamHTMLSurface_NeedsPaint
+	BS_Callback_Register SteamBrowser_Callback_StartRequest_c, BS_SteamHTMLSurface_StartRequest
 	
-	Local Browser.Browser = Browser_FindBySteamAPICall(llSteamAPICall)
-	Browser\Id = PeekMemoryInt(pvParam)
-	Browser_LoadURL(Browser, "http://google.com/")
-	Browser_SetSize(Browser, Browser\ImageSize[0], Browser\ImageSize[1])
+	; Image Based
+	SB\hImage = CreateImage(SB\Size[0], SB\Size[1])
+	; Texture Based
+	SB\hTexture = CreateTexture(SB\Size[0], SB\Size[1], 1+2)
 	
-	; Cleanup
-	BS_Long_Destroy Browser\z_llSteamAPICall : Browser\z_llSteamAPICall = 0
-	BS_Callback_UnregisterResult Browser_HTMLSurface_BrowserReady_c ; Caller does this too.
-End Function:Browser_HTMLSurface_BrowserReady(0, 0, 0)
+	Return SB
+End Function
 
-Global Browser_HTMLSurface_NeedsPaint_p = 0, Browser_HTMLSurface_NeedsPaint_c = 0
-Function Browser_HTMLSurface_NeedsPaint(pvParam%, p2, p3)
-	If (Browser_HTMLSurface_NeedsPaint_p = 0) Then
-		Browser_HTMLSurface_NeedsPaint_p = BP_GetFunctionPointer()
-		Browser_HTMLSurface_NeedsPaint_c = BS_Callback_Create(Browser_HTMLSurface_NeedsPaint_p)
+Function SteamBrowser_Destroy(SB.SteamBrowser)
+	; Texture Based
+	FreeTexture SB\hTexture
+	; Image Based
+	FreeImage SB\hImage
+	
+	BS_ISteamHTMLSurface_RemoveBrowser BS_SteamHTMLSurface(), SB\Id
+	Delete SB
+End Function
+
+Function SteamBrowser_Find.SteamBrowser(iId%, lSteamAPICall%)
+	Local SB.SteamBrowser = Null
+	; Find by Id
+	If iId <> 0
+		For SB.SteamBrowser = Each SteamBrowser
+			If (SB\Id = iId) Then
+				Return SB
+			EndIf
+		Next
+	EndIf
+	; Find by SteamAPICall
+	If lSteamAPICall <> 0
+		For SB.SteamBrowser = Each SteamBrowser
+			If (SB\lSteamAPICall <> 0) And (BS_Long_Compare(lSteamAPICall, SB\lSteamAPICall) = 0) Then
+				Return SB
+			EndIf
+		Next
+	EndIf
+	Return Null
+End Function
+
+Function SteamBrowser_SetSize(SB.SteamBrowser, Width%, Height%)
+	SB\Size[0] = Width
+	SB\Size[1] = Height
+	
+	; Update Browser Size
+	BS_ISteamHTMLSurface_SetSize BS_SteamHTMLSurface(), SB\Id, Width, Height
+	
+	; Image Based
+	FreeImage(SB\hImage)
+	SB\hImage = CreateImage(Width, Height)
+	; Texture Based
+	FreeTexture(SB\hTexture)
+	SB\hTexture = CreateTexture(Width, Height, 1+2)
+End Function
+
+Function SteamBrowser_LoadUrl(SB.SteamBrowser, URL$, PostData$="")
+	BS_ISteamHTMLSurface_LoadURL BS_SteamHTMLSurface(), SB\Id, URL, PostData
+End Function
+
+Function SteamBrowser_IsReady(SB.SteamBrowser)
+	Return (SB\Id <> 0)
+End Function
+
+Function SteamBrowser_GetImageHandle(SB.SteamBrowser)
+	Return SB\hImage
+End Function
+
+Function SteamBrowser_GetTextureHandle(SB.SteamBrowser)
+	Return SB\hTexture
+End Function
+
+Function SteamBrowser_Callback_BrowserReady(pvParam%, bIOFailure, lSteamAPICall)
+	If (SteamBrowser_Callback_BrowserReady_p = 0) Then
+		SteamBrowser_Callback_BrowserReady_p = BP_GetFunctionPointer()
+		SteamBrowser_Callback_BrowserReady_c = BS_Callback_New(SteamBrowser_Callback_BrowserReady_p)
 		Return 
 	EndIf
 	
-	DebugLog "HTMLSurface_NeedsPaint"
+	; Search for a valid SteamBrowser object.
+	Local SB.SteamBrowser = SteamBrowser_Find(0, lSteamAPICall)
+	SB\Id = BS_Memory_PeekInt(pvParam, 0)
+	SteamBrowser_SetSize(SB, SB\Size[0], SB\Size[1])
+	SteamBrowser_LoadUrl(SB, SB\URL)
 	
-	Local Browser.Browser = Browser_FindById(PeekMemoryInt(pvParam))
+	; Destroy our SteamAPICall pointer and clear the value.
+	BS_Long_Destroy(SB\lSteamAPICall):SB\lSteamAPICall = 0
+End Function:SteamBrowser_Callback_BrowserReady(0, 0, 0)
+
+Function SteamBrowser_Callback_NeedsPaint(pvParam%, p2, p3)
+	If (SteamBrowser_Callback_NeedsPaint_p = 0) Then
+		SteamBrowser_Callback_NeedsPaint_p = BP_GetFunctionPointer()
+		SteamBrowser_Callback_NeedsPaint_c = BS_Callback_New(SteamBrowser_Callback_NeedsPaint_p)
+		Return 
+	EndIf
 	
-	; Paint logic
+	; Search for a valid SteamBrowser object.
+	Local SB.SteamBrowser = SteamBrowser_Find(BS_Memory_PeekInt(pvParam, 0), 0)
+	
+	; Parse Data from pvParam
+	Local pBuffer, pW, pH, pUpdateX, pUpdateY, pUpdateW, pUpdateH, pScrollX, pScrollY, pScale#, pSerial
+	pBuffer				= BS_Memory_PeekInt(pvParam, 4)
+	pW					= BS_Memory_PeekInt(pvParam, 8)
+	pH					= BS_Memory_PeekInt(pvParam, 12)
+	pUpdateX			= BS_Memory_PeekInt(pvParam, 16)
+	pUpdateY			= BS_Memory_PeekInt(pvParam, 20)
+	pUpdateW			= BS_Memory_PeekInt(pvParam, 24)
+	pUpdateH			= BS_Memory_PeekInt(pvParam, 28)
+	pScrollX			= BS_Memory_PeekInt(pvParam, 32)
+	pScrollY			= BS_Memory_PeekInt(pvParam, 36)
+	pScale				= BS_Memory_PeekFloat(pvParam, 40)
+	pSerial				= BS_Memory_PeekInt(pvParam, 44)
+	
+	; Assign to Object
+	SB\UpdateRegion[0] = pUpdateX
+	SB\UpdateRegion[1] = pUpdateY
+	SB\UpdateRegion[2] = pUpdateW
+	SB\UpdateRegion[3] = pUpdateH
+	SB\Scale = pScale
+	SB\ScrollX = pScrollX
+	SB\ScrollY = pScrollY
+	SB\Serial = pSerial
+	
+	; Fix up Buffer Size (Always next bigger 16*n, for whatever reason (SIBLY WHAT DID YOU DO!?))
+	Local nW = (16 * Ceil(pW / 16.0))
+	;DebugLog ImageWidth(SB\hImage) + ":" + ImageHeight(SB\hImage)
+	
+	; Image Based
+	Local hImageBuffer = ImageBuffer(SB\hImage)
+	LockBuffer hImageBuffer
+	BS_Helper_CopyMemoryIntMangle pBuffer, BS_Memory_PeekInt(hImageBuffer, 72), 0, pW, pH, nW, SB\Size[1], pUpdateX, pUpdateY, pUpdateW, pUpdateH
+	UnlockBuffer hImageBuffer
+	
+	; Texture Based (Identical)
+	Local hTextureBuffer = ImageBuffer(SB\hImage)
+	LockBuffer hTextureBuffer
+	BS_Helper_CopyMemoryIntMangle pBuffer, BS_Memory_PeekInt(hTextureBuffer, 72), 0, pW, pH, nW, SB\Size[1], pUpdateX, pUpdateY, pUpdateW, pUpdateH
+	UnlockBuffer hTextureBuffer
+	
+	
+	; pvParam Structure
 	;CALLBACK_MEMBER(0, HHTMLBrowser, unBrowserHandle) // the browser that needs the paint
 	;CALLBACK_MEMBER(1, const char *, pBGRA ) // a pointer to the B8G8R8A8 data for this surface, valid until SteamAPI_RunCallbacks is next called
 	;CALLBACK_MEMBER(2, uint32, unWide) // the total width of the pBGRA texture
@@ -103,167 +233,149 @@ Function Browser_HTMLSurface_NeedsPaint(pvParam%, p2, p3)
 	;CALLBACK_MEMBER(9, uint32, unScrollY) // the page scroll the browser was at when this texture was rendered
 	;CALLBACK_MEMBER(10, float, flPageScale) // the page scale factor on this page when rendered
 	;CALLBACK_MEMBER(11, uint32, unPageSerial) // incremented on each new page load, you can use this to reject draws while navigating to new pages
-	
-End Function:Browser_HTMLSurface_NeedsPaint(0, 0, 0)
+End Function:SteamBrowser_Callback_NeedsPaint(0, 0, 0)
 
-Global Browser_HTMLSurface_StartRequest_p = 0, Browser_HTMLSurface_StartRequest_c = 0
-Function Browser_HTMLSurface_StartRequest(pvParam%, p2, p3)
-	If (Browser_HTMLSurface_StartRequest_p = 0) Then
-		Browser_HTMLSurface_StartRequest_p = BP_GetFunctionPointer()
-		Browser_HTMLSurface_StartRequest_c = BS_Callback_Create(Browser_HTMLSurface_StartRequest_p)
+Function SteamBrowser_Callback_StartRequest(pvParam%, p2, p3)
+	If (SteamBrowser_Callback_StartRequest_p = 0) Then
+		SteamBrowser_Callback_StartRequest_p = BP_GetFunctionPointer()
+		SteamBrowser_Callback_StartRequest_c = BS_Callback_New(SteamBrowser_Callback_StartRequest_p)
 		Return 
 	EndIf
 	
-	DebugLog "HTMLSurface_StartRequest"
+	; Search for a valid SteamBrowser object.
+	Local SB.SteamBrowser = SteamBrowser_Find(BS_Memory_PeekInt(pvParam, 0), 0)
 	
 	; Default to allow all requests. (Why not? For an Example, this is good enough.)
-	BS_HTMLSurface_AllowStartRequest BS_HTMLSurface(), PeekMemoryInt(pvParam), True
-End Function:Browser_HTMLSurface_StartRequest(0, 0, 0)
+	; Could implement a simple filter using a second type, but why don't you experiment a bit?
+	BS_ISteamHTMLSurface_AllowStartRequest BS_SteamHTMLSurface(), SB\Id, True
+End Function:SteamBrowser_Callback_StartRequest(0, 0, 0)
 
-Function Browser_Create.Browser(Width%, Height, UserAgent$="BlitzSteam", UserCSS$="")
-	DebugLog "[Browser::Create] Creating with UserAgent '"+UserAgent+"' and CSS '"+UserCSS+"'."
-	
-	; Register Callbacks (Can do this in an Init function too)
-	;BS_Callback_Register Browser_HTMLSurface_BrowserReady_c, BS_HTMLSurface_BrowserReady
-	BS_Callback_Register Browser_HTMLSurface_NeedsPaint_c, BS_HTMLSurface_NeedsPaint
-	BS_Callback_Register Browser_HTMLSurface_StartRequest_c, BS_HTMLSurface_StartRequest
-	
-	; Create Browser Object
-	Local Browser.Browser = New Browser
-	Browser\z_llSteamAPICall = BS_HTMLSurface_CreateBrowser(BS_HTMLSurface(), UserAgent, UserCSS)
-	Browser\ImageSize[0] = Width
-	Browser\ImageSize[1] = Height
-	DebugLog "llSteamAPICall: " + Hex(BS_Long_ToIH(Browser\z_llSteamAPICall)) + Hex(BS_Long_ToIL(Browser\z_llSteamAPICall))
-	
-	; Register CallResult
-	BS_Callback_RegisterResult Browser_HTMLSurface_BrowserReady_c, Browser\z_llSteamAPICall, BS_HTMLSurface_BrowserReady
-	
-	Return Browser
-End Function
 
-Function Browser_IsReady(Browser.Browser)
-	If Browser = Null Then Return False
-	
-	DebugLog "[Browser::IsReady] Checking if '"+Browser\Id+"'/'"+Hex(BS_Long_ToIH(Browser\z_llSteamAPICall)) + Hex(BS_Long_ToIL(Browser\z_llSteamAPICall))+"' is ready."
-	
-	Return (Browser\Id <> 0)
-End Function
 
-Function Browser_FindById.Browser(Id%)
-	If Id = 0 Then Return Null ; 0 is not a valid Browser Handle.
-	
-	DebugLog "[Browser::FindById] Finding by Id '"+Id+"."
-	
-	Local Browser.Browser
-	For Browser = Each Browser
-		If Browser\Id = Id Then Return Browser
-	Next
-	
-	Return Null
-End Function
-
-Function Browser_FindBySteamAPICall.Browser(llSteamAPICall%)
-	If llSteamAPICall = 0 Then Return Null ; 0 is not a valid SteamAPICall.
-	
-	DebugLog "[Browser::FindBySteamAPICall] Finding by SteamAPICall '"+llSteamAPICall+"."
-	
-	Local Browser.Browser
-	For Browser = Each Browser
-		If BS_Long_Compare(Browser\z_llSteamAPICall,llSteamAPICall) = 0 Then Return Browser
-	Next
-	
-	Return Null
-End Function
-
-Function Browser_Destroy.Browser(Browser.Browser)
-	If Browser = Null Then Return Null
-	
-	DebugLog "[Browser::Destroy] Destroying '"+Browser\Id+"'."
-	
-	BS_HTMLSurface_RemoveBrowser BS_HTMLSurface(), Browser\Id
-	Delete Browser:Return Null
-End Function
-
-Function Browser_SetSize(Browser.Browser, Width%, Height%)
-	If Browser = Null Then Return
-	
-	DebugLog "[Browser::SetSize] Resizing '"+Browser\Id+"' to "+Width+"x"+Height+"."
-	
-	; Free old Image
-	If (Browser\ImageHandle <> 0) Then
-		FreeImage(Browser\ImageHandle)
-	EndIf
-	
-	; Create new Image
-	Browser\ImageHandle = CreateImage(Width%, Height%)
-	Browser\ImageSize[0] = Width
-	Browser\ImageSize[1] = Height
-	
-	BS_HTMLSurface_SetSize BS_HTMLSurface(), Browser\Id, Width, Height
-End Function
-
-Function Browser_GetHandle(Browser.Browser)
-	Return Browser\ImageHandle
-End Function
-
-Function Browser_LoadURL(Browser.Browser, URL$, PostData$="")
-	If Browser = Null Then Return
-	
-	DebugLog "[Browser::SetSize] Browser '"+Browser\Id+"' is loading URL '"+URL+"'."
-	
-	BS_HTMLSurface_LoadURL BS_HTMLSurface(), Browser\Id, URL, PostData
-End Function
 
 ;----------------------------------------------------------------
 ;! Example Code
 ;----------------------------------------------------------------
-If BS_Steam_Init() = 0 Then RuntimeError "Steam failed to initialize."
+If BS_SteamAPI_Init() = 0 Then RuntimeError "Steam failed to initialize."
 
 ; Steam: Hooks, Callbacks, CallResults
-BS_Client_SetWarningMessageHook BS_Client(), Steam_WarningMessageHook_Callback
+BS_ISteamClient_SetWarningMessageHook BS_SteamClient(), Steam_WarningMessageHook_Callback
 
 ; Steam: HTMLSurface API
-If BS_HTMLSurface() = 0 Then RuntimeError "Steam: HTMLSurface API is not available."
-If BS_HTMLSurface_Init(BS_HTMLSurface()) = 0 Then RuntimeError "Steam: HTMLSurface API did not want to be initialized?!"
-BS_HTMLSurface_SetSize BS_HTMLSurface(), 0, GraphicsWidth(), GraphicsHeight()
+If BS_SteamHTMLSurface() = 0 Then RuntimeError "Steam: HTMLSurface API is not available."
+If BS_ISteamHTMLSurface_Init(BS_SteamHTMLSurface()) = 0 Then RuntimeError "Steam: HTMLSurface API did not want to be initialized?!"
+;BS_ISteamHTMLSurface_SetSize BS_SteamHTMLSurface(), 0, GraphicsWidth(), GraphicsHeight()
 
-; Scene Setup
-Graphics3D 1024, 768, 32, 2:SetBuffer BackBuffer()
+Const FPS = 60
+Const FPS_MULT# = 1.0 / FPS
+
+; Demo Scene
+Graphics3D 1024, 768, 32, 2
+SetBuffer BackBuffer()
+
+Local demoTimer = CreateTimer(FPS)
+Local demoRoot = CreatePivot()
+Local demoCameraRoot = CreatePivot(demoRoot)
+Local demoCamera = CreateCamera(demoCameraRoot)
+MoveEntity demoCamera, 0, 0, -10
+Local demoCube = CreateCube(demoRoot)
 
 ; Create a Browser
-Local myBrowser.Browser = Browser_Create(512, 512)
+Local myBrowser.SteamBrowser = SteamBrowser_Create(GraphicsWidth(), GraphicsHeight(), "http://store.steampowered.com/app/368720/")
 
-Repeat 
-	BS_Steam_RunCallbacks()
-	
-	Delay 100
-Until Browser_IsReady(myBrowser)
-
+Local Mouse[3], MouseButton[3], Key[255]
 While Not KeyHit(1)
 	Cls
 	
+	; Only allow input when the browser is up to date.
+	;If (myBrowser\iLastDraw > myBrowser\iLastRequest) Then
+	If True
+		; Mouse Input
+		If Mouse[0] <> MouseX() Or Mouse[1] <> MouseY() Then
+			Mouse[0] = MouseX()
+			Mouse[1] = MouseY()
+			BS_ISteamHTMLSurface_MouseMove BS_SteamHTMLSurface(), myBrowser\Id, MouseX(), MouseY()
+		EndIf
+		If Mouse[2] <> MouseZ() Then
+			Mouse[2] = MouseZ()
+			BS_ISteamHTMLSurface_MouseWheel BS_SteamHTMLSurface(), myBrowser\Id, MouseZSpeed()*30
+		EndIf
+		
+		Local Button
+		For Button = 1 To 3
+			Local ButtonDown = MouseDown(Button)
+			If MouseButton[Button] <> ButtonDown Then
+				MouseButton[Button] = MouseDown(Button)
+				
+				If ButtonDown
+					BS_ISteamHTMLSurface_MouseDown BS_SteamHTMLSurface(), myBrowser\Id, Button - 1
+				Else
+					BS_ISteamHTMLSurface_MouseUp BS_SteamHTMLSurface(), myBrowser\Id, Button - 1
+				EndIf
+			EndIf
+		Next
+		
+		; Keyboard
+		Local Modifier = BS_EHTMLKeyModifiers_None
+		If KeyDown(42) Or KeyDown(54) Then Modifier = Modifier Or BS_EHTMLKeyModifiers_ShiftDown
+		If KeyDown(29) Or KeyDown(157) Or KeyDown(184) Then Modifier = Modifier Or BS_EHTMLKeyModifiers_CtrlDown
+		If KeyDown(56) Or KeyDown(184) Then Modifier = Modifier Or BS_EHTMLKeyModifiers_AltDown
+		
+		Local VK
+		For VK = 0 To 255
+			Local SC = InputEx_User32_MapVirtualKeyEx(VK, 0, 0)
+			
+			Local KeyDownN = KeyDown(SC)
+			If Key[VK] <> KeyDownN Then
+				Key[VK] = KeyDownN
+				
+				If KeyDownN = 1 Then
+					BS_ISteamHTMLSurface_KeyDown BS_SteamHTMLSurface(), myBrowser\Id, VK, Modifier
+				Else 
+					BS_ISteamHTMLSurface_KeyUp BS_SteamHTMLSurface(), myBrowser\Id, VK, Modifier
+				EndIf
+			EndIf
+		Next
+		Local GetKeyC = GetKey()
+		If GetKeyC
+			BS_ISteamHTMLSurface_KeyChar BS_SteamHTMLSurface(), myBrowser\Id, GetKeyC, Modifier
+		EndIf
+		
+	EndIf
+		
 	; Steam: Run any Callbacks
 	; Q: Why before RenderWorld/Flip?
 	; A: If we did any changes, having them available before Rendering helps responsiveness.
 	;    A one-frame Delay is noticeable, even to people claiming the eye only sees 30 fps.
 	;    Please read a Biology book if you are one of those, it doesn't work like that.
-	BS_Steam_RunCallbacks()
+	BS_SteamAPI_RunCallbacks()
 	
 	RenderWorld
 	
-	DrawImage Browser_GetHandle(myBrowser), 0, 0, 0
+	;If (myBrowser\iLastDraw > myBrowser\iLastRequest) Then
+	If Not KeyDown(57)
+		DrawBlock SteamBrowser_GetImageHandle(myBrowser), 0, 0, 0
+		Color 255, 0, 0
+		Rect myBrowser\UpdateRegion[0],myBrowser\UpdateRegion[1],myBrowser\UpdateRegion[2],myBrowser\UpdateRegion[3], 0
+	Else
+		EntityTexture demoCube, SteamBrowser_GetTextureHandle(myBrowser)
+	EndIf
+	;EndIf
 	
 	Flip
+	WaitTimer demoTimer
 Wend
 
 ; Destroy existing Browser
-myBrowser = Browser_Destroy(myBrowser)
+SteamBrowser_Destroy(myBrowser):myBrowser = Null
 
 ; Steam: HTMLSurface API
-BS_HTMLSurface_Shutdown(BS_HTMLSurface())
+BS_ISteamHTMLSurface_Shutdown(BS_SteamHTMLSurface())
+BS_SteamAPI_Shutdown()
 
 EndGraphics
 End
 
 ;~IDEal Editor Parameters:
+;~F#8#19
 ;~C#Blitz3D

@@ -16,6 +16,7 @@
 
 #include "BlitzSteam.h"
 
+#include <windows.h>
 uint32_t WINAPI DllMain(HINSTANCE hinstDLL, DWORD fdwReason, LPVOID lpvReserved) {
 	switch (fdwReason) {
 		case DLL_PROCESS_ATTACH:

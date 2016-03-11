@@ -15,6 +15,8 @@
 ;	along with this program.  If not, see <http:;www.gnu.org/licenses/>.
 
 .lib "BlitzSteam.dll"
-; Generic ---------------------------------------------------------------------
-BS_Helper_FormatUnixTime$(unixTime%, pchFormat$)								:"_BS_Helper_FormatUnixTime@8"
-BS_Helper_CopyMemoryIntMangle(pSource%, pDest%, iMangling%, iSourceW%, iSourceH%, iDestW%, iDestH%, iAreaX%, iAreaY%, iAreaW%, iAreaH%):"_BS_Helper_CopyMemoryIntMangle@44"
+
+; UGC -------------------------------------------------------------------------
+BS_SteamUGC%()																	:"_BS_SteamUGC@0"
+BS_SteamGameServerUGC%()														:"_BS_SteamGameServerUGC@0"
+; Todo

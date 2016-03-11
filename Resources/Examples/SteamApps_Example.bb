@@ -17,7 +17,7 @@
 Include "../BlitzSteam.bb"
 
 ; Initialize Steam before your next call to Graphics.
-If BS_Steam_Init() = False Then
+If BS_SteamAPI_Init() = False Then
 	RuntimeError "Steam: Failed to initialize!"
 EndIf
 
@@ -48,10 +48,10 @@ Function SteamAppsDLC_Fill()
 	Local AvailableBuffer = CreateBank(4)
 	Local NameBuffer = CreateBank(1024)
 	
-	SteamAppsDLC_Count = BS_Apps_GetDLCCount(BS_Apps())
+	SteamAppsDLC_Count = BS_ISteamApps_GetDLCCount(BS_SteamApps())
 	Delete Each SteamAppsDLC
 	For Index = 0 To SteamAppsDLC_Count - 1
-		If BS_Apps_GetDLCDataByIndex(BS_Apps(), Index, IdBuffer, AvailableBuffer, NameBuffer, 1024)
+		If BS_ISteamApps_GetDLCDataByIndex(BS_SteamApps(), Index, IdBuffer, AvailableBuffer, NameBuffer, 1024)
 			Local SAD.SteamAppsDLC = New SteamAppsDLC
 			SAD\Id = PeekInt(IdBuffer, 0)
 			SAD\Available = PeekInt(AvailableBuffer, 0)
@@ -94,16 +94,16 @@ Function PeekCString$(Bank, Offset=0, Length=-1)
 End Function
 
 Local BetaBuffer = CreateBank(1024)
-BS_Apps_GetCurrentBetaName(BS_Apps(), BetaBuffer, 1024)
+BS_ISteamApps_GetCurrentBetaName(BS_SteamApps(), BetaBuffer, 1024)
 Local Beta$ = PeekCString(BetaBuffer, 0, 1024)
 FreeBank BetaBuffer
 
 Local AppInstallDir$, AppInstallDirBuffer = CreateBank(260)
-BS_Apps_GetAppInstallDir(BS_Apps(), 480, AppInstallDirBuffer, 260)
+BS_ISteamApps_GetAppInstallDir(BS_SteamApps(), 480, AppInstallDirBuffer, 260)
 AppInstallDir = PeekCString(AppInstallDirBuffer, 0, 260)
 FreeBank AppInstallDirBuffer
 
-Local llOwner = BS_Apps_GetAppOwner(BS_Apps())
+Local llOwner = BS_ISteamApps_GetAppOwner(BS_SteamApps())
 Local OwnerId$ = "[U:" + BS_CSteamID_GetAccountInstance(llOwner) + ":" + BS_CSteamID_GetAccountID(llOwner) + "] STEAM_" + (BS_CSteamID_GetEAccountType(llOwner) - 1) + ":" + (BS_CSteamID_GetEUniverse(llOwner) - 1) + ":" + (BS_CSteamID_GetAccountID(llOwner) / 2)
 BS_CSteamID_Destroy llOwner
 
@@ -124,32 +124,32 @@ Repeat
 	;! Render 2D
 	Text 0, 0, "Escape to Quit"
 	
-	Text 0, 30, "Is Subscribed? " + BS_Apps_IsSubscribed(BS_Apps())
-	Text 0, 45, "Is Low Violence? " + BS_Apps_IsLowViolence(BS_Apps())
-	Text 0, 60, "Is Cybercafe? " + BS_Apps_IsCybercafe(BS_Apps())
-	Text 0, 75, "Is VAC Banned? " + BS_Apps_IsVACBanned(BS_Apps())
-	Text 0, 90, "Current Game Language: " + BS_Apps_GetCurrentGameLanguage(BS_Apps())
-	Text 0,105, "Available Game Languages: " + BS_Apps_GetAvailableGameLanguages(BS_Apps())
-	Text 0,120, "Is Subscribed App (480)? " + BS_Apps_IsSubscribedApp(BS_Apps(), 480)
-	Text 0,135, "Is DLC (323180) Installed? " + BS_Apps_IsDlcInstalled(BS_Apps(), 323180) ; Portal 2 Soundtrack DLC
-	Text 0,150, "Earliest Purchase Unix Time (480): " + BS_Apps_GetEarliestPurchaseUnixTime(BS_Apps(), 480)
-	Text 0,165, "Is Subscribed from Free Weekend? " + BS_Apps_IsSubscribedFromFreeWeekend(BS_Apps())
-	Text 0,180, "DLC Count: " + BS_Apps_GetDLCCount(BS_Apps())
+	Text 0, 30, "Is Subscribed? " + BS_ISteamApps_IsSubscribed(BS_SteamApps())
+	Text 0, 45, "Is Low Violence? " + BS_ISteamApps_IsLowViolence(BS_SteamApps())
+	Text 0, 60, "Is Cybercafe? " + BS_ISteamApps_IsCybercafe(BS_SteamApps())
+	Text 0, 75, "Is VAC Banned? " + BS_ISteamApps_IsVACBanned(BS_SteamApps())
+	Text 0, 90, "Current Game Language: " + BS_ISteamApps_GetCurrentGameLanguage(BS_SteamApps())
+	Text 0,105, "Available Game Languages: " + BS_ISteamApps_GetAvailableGameLanguages(BS_SteamApps())
+	Text 0,120, "Is Subscribed App (480)? " + BS_ISteamApps_IsSubscribedApp(BS_SteamApps(), 480)
+	Text 0,135, "Is DLC (323180) Installed? " + BS_ISteamApps_IsDlcInstalled(BS_SteamApps(), 323180) ; Portal 2 Soundtrack DLC
+	Text 0,150, "Earliest Purchase Unix Time (480): " + BS_ISteamApps_GetEarliestPurchaseUnixTime(BS_SteamApps(), 480)
+	Text 0,165, "Is Subscribed from Free Weekend? " + BS_ISteamApps_IsSubscribedFromFreeWeekend(BS_SteamApps())
+	Text 0,180, "DLC Count: " + BS_ISteamApps_GetDLCCount(BS_SteamApps())
 	Text 0,195, "Current Beta Name: " + Beta
 	Text 0,210, "App Install Dir: " + AppInstallDir$
-	Text 0,225, "Is App Installed (480): " + BS_Apps_IsAppInstalled(BS_Apps(), 480)
+	Text 0,225, "Is App Installed (480): " + BS_ISteamApps_IsAppInstalled(BS_SteamApps(), 480)
 	Text 0,240, "App Owner Id: " + OwnerId
-	Text 0,255, "App Built Id: " + BS_Apps_GetAppBuildId(BS_Apps())
+	Text 0,255, "App Built Id: " + BS_ISteamApps_GetAppBuildId(BS_SteamApps())
 	
-	; BS_Apps_GetLanchQueryParam$(BS_Apps(), pchKey$)
+	; BS_ISteamApps_GetLanchQueryParam$(BS_SteamApps(), pchKey$)
 	;	// Returns the associated launch param if the game is run via steam://run/<appid>//?param1=value1;param2=value2;param3=value3 etc.
 	;	// Parameter names starting with the character '@' are reserved for internal use and will always return and empty string.
 	;	// Parameter names starting with an underscore '_' are reserved for steam features -- they can be queried by the game,
 	;	// but it is advised that you not param names beginning with an underscore for your own features.
 	
-	; BS_Apps_MarkContentCorrupt signals steam that game files are corrupt or missing. Forces a validation after quit and before next start.
+	; BS_ISteamApps_MarkContentCorrupt signals steam that game files are corrupt or missing. Forces a validation after quit and before next start.
 	
-	; How To Use: BS_Apps_RequestProofOfPurchaseKey(BS_Apps(), nAppId)
+	; How To Use: BS_ISteamApps_RequestProofOfPurchaseKey(BS_SteamApps(), nAppId)
 	;	// Request cd-key for yourself or owned DLC. If you are interested in this
 	;	// data then make sure you provide us with a list of valid keys to be distributed
 	;	// to users when they purchase the game, before the game ships.
@@ -161,8 +161,8 @@ Repeat
 	Local Index = 0, SAD.SteamAppsDLC
 	For SAD = Each SteamAppsDLC
 		Text 512, 15 + Index * 15, SAD\Id + "(" + SAD\Available + "): " + SAD\Name
-		; You could install DLCs from the app itself, BS_Apps_InstallDLC, BS_Apps_UninstallDLC
-		; BS_Apps_GetDlcDownloadProgress allows you to check the progress, BlitzUtility's LongLong stuff is useful here.
+		; You could install DLCs from the app itself, BS_ISteamApps_InstallDLC, BS_ISteamApps_UninstallDLC
+		; BS_ISteamApps_GetDlcDownloadProgress allows you to check the progress, BlitzUtility's LongLong stuff is useful here.
 		
 		Index = Index + 1
 	Next
@@ -173,7 +173,7 @@ Repeat
 Until EndGame = True
 
 ; Shut down Steam as the last action of your program.
-BS_Steam_Shutdown()
+BS_SteamAPI_Shutdown()
 End
 ;~IDEal Editor Parameters:
 ;~C#Blitz3D

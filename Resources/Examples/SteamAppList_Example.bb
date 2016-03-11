@@ -17,7 +17,7 @@
 Include "../BlitzSteam.bb"
 
 ; Initialize Steam before your next call to Graphics.
-If BS_Steam_Init() = False Then
+If BS_SteamAPI_Init() = False Then
 	RuntimeError "Steam: Failed to initialize!"
 EndIf
 
@@ -48,24 +48,24 @@ End Type
 Global SteamAppList_Count%
 
 Function SteamAppList_Fill()
-	SteamAppList_Count = BS_AppList_GetNumInstalledApps(BS_AppList())
+	SteamAppList_Count = BS_ISteamAppList_GetNumInstalledApps(BS_SteamAppList())
 	
 	Local Buffer = CreateBank(4 * SteamAppList_Count)
 	Local AppNameBuffer = CreateBank(1024)
 	Local PathBuffer = CreateBank(260)
 	
-	Local AppIdCount = BS_AppList_GetInstalledApps(BS_AppList(), Buffer, SteamAppList_Count)
+	Local AppIdCount = BS_ISteamAppList_GetInstalledApps(BS_SteamAppList(), Buffer, SteamAppList_Count)
 	Delete Each SteamAppList
 	For Index = 0 To AppIdCount - 1
 		Local AppId = PeekInt(Buffer, Index*4)
 		
 		Local SAL.SteamAppList = New SteamAppList
 		SAL\AppId = AppId
-		Local AppNameLen = BS_AppList_GetAppName(BS_AppList(), AppId, AppNameBuffer, 1024)
+		Local AppNameLen = BS_ISteamAppList_GetAppName(BS_SteamAppList(), AppId, AppNameBuffer, 1024)
 		SAL\Name = PeekCString(AppNameBuffer, 0, AppNameLen)
-		Local PathLen = BS_AppList_GetAppInstallDir(BS_AppList(), AppId, PathBuffer, 260)
+		Local PathLen = BS_ISteamAppList_GetAppInstallDir(BS_SteamAppList(), AppId, PathBuffer, 260)
 		SAL\InstallDir = PeekCString(PathBuffer, 0, PathLen)
-		SAL\BuildId = BS_AppList_GetAppBuildId(BS_AppList(), AppId)
+		SAL\BuildId = BS_ISteamAppList_GetAppBuildId(BS_SteamAppList(), AppId)
 	Next
 	
 	FreeBank AppNameBuffer
@@ -122,7 +122,7 @@ Repeat
 Until EndGame = True
 
 ; Shut down Steam as the last action of your program.
-BS_Steam_Shutdown()
+BS_SteamAPI_Shutdown()
 End
 ;~IDEal Editor Parameters:
 ;~C#Blitz3D

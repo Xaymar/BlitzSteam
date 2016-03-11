@@ -16,7 +16,8 @@
 
 #include "BlitzSteam.h"
 
-DLL_FUNCTION(ISteamScreenshots*) BS_Screenshots() {
+DLL_FUNCTION(ISteamScreenshots*) BS_SteamScreenshots() {
 	return SteamScreenshots();
 }
-BS_I
+
+#pragma message("SteamScreenshots is not ported yet. TODO!")

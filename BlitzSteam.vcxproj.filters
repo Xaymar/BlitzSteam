@@ -24,6 +24,15 @@
     <Filter Include="Header Files\Types">
       <UniqueIdentifier>{812e0ab3-866c-4b15-ae9d-a24d92b05c9a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{65d7146d-e626-44dd-bd9e-525ea8e9252f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\Examples">
+      <UniqueIdentifier>{65e28d96-6d00-47b5-8211-0cf2753aef67}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\Decls">
+      <UniqueIdentifier>{59a50312-f52e-475b-9362-7cbb22381620}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Wrapper\SteamClient.cpp">
@@ -101,12 +110,6 @@
     <ClCompile Include="Wrapper\SteamMatchmakingServers.cpp">
       <Filter>Source Files\Wrapper</Filter>
     </ClCompile>
-    <ClCompile Include="Helpers\Memory.cpp">
-      <Filter>Source Files\Helpers</Filter>
-    </ClCompile>
-    <ClCompile Include="Helpers\BlitzCallback.cpp">
-      <Filter>Source Files\Helpers</Filter>
-    </ClCompile>
     <ClCompile Include="Types\Long.cpp">
       <Filter>Source Files\Types</Filter>
     </ClCompile>
@@ -119,21 +122,21 @@
     <ClCompile Include="Wrapper\Steam.cpp">
       <Filter>Source Files\Wrapper</Filter>
     </ClCompile>
+    <ClCompile Include="Types\BlitzCallback.cpp">
+      <Filter>Source Files\Types</Filter>
+    </ClCompile>
+    <ClCompile Include="Types\Memory.cpp">
+      <Filter>Source Files\Types</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BlitzSteam.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Helpers\BlitzCallback.h">
-      <Filter>Header Files\Helpers</Filter>
-    </ClInclude>
     <ClInclude Include="Helpers\BlitzPointer.h">
       <Filter>Header Files\Helpers</Filter>
     </ClInclude>
     <ClInclude Include="Helpers\Helper.h">
-      <Filter>Header Files\Helpers</Filter>
-    </ClInclude>
-    <ClInclude Include="Helpers\Memory.h">
       <Filter>Header Files\Helpers</Filter>
     </ClInclude>
     <ClInclude Include="Types\Long.h">
@@ -145,6 +148,15 @@
     <ClInclude Include="Types\CSteamID.h">
       <Filter>Header Files\Types</Filter>
     </ClInclude>
+    <ClInclude Include="Types\BlitzCallback.h">
+      <Filter>Header Files\Types</Filter>
+    </ClInclude>
+    <ClInclude Include="Types\Memory.h">
+      <Filter>Header Files\Types</Filter>
+    </ClInclude>
+    <ClInclude Include="BlitzSteamInternal.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="$(ProjectDir)\Blitz\*.*" />
@@ -161,5 +173,130 @@
     <None Include="$(ProjectDir)\Blitz\**\*.*" />
     <None Include="$(ProjectDir)\Blitz\**\*.*" />
     <None Include="$(ProjectDir)\Blitz\**\*.*" />
+    <None Include="Resources\BlitzSteam.bb">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="Resources\BlitzSteamUtility.bb">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="Resources\BlitzSteam.ipf">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="Resources\Examples\SteamAPI_Example.bb">
+      <Filter>Resource Files\Examples</Filter>
+    </None>
+    <None Include="Resources\Examples\SteamAppList_Example.bb">
+      <Filter>Resource Files\Examples</Filter>
+    </None>
+    <None Include="Resources\Examples\SteamApps_Example.bb">
+      <Filter>Resource Files\Examples</Filter>
+    </None>
+    <None Include="Resources\Examples\SteamController_Example.bb">
+      <Filter>Resource Files\Examples</Filter>
+    </None>
+    <None Include="Resources\Examples\SteamHTMLSurface_Example.bb">
+      <Filter>Resource Files\Examples</Filter>
+    </None>
+    <None Include="Resources\Decls\BlitzSteam.decls">
+      <Filter>Resource Files\Decls</Filter>
+    </None>
+    <None Include="Resources\Decls\BlitzSteam_BlitzCallback.decls">
+      <Filter>Resource Files\Decls</Filter>
+    </None>
+    <None Include="Resources\Decls\BlitzSteam_CSteamID.decls">
+      <Filter>Resource Files\Decls</Filter>
+    </None>
+    <None Include="Resources\Decls\BlitzSteam_Double.decls">
+      <Filter>Resource Files\Decls</Filter>
+    </None>
+    <None Include="Resources\Decls\BlitzSteam_Long.decls">
+      <Filter>Resource Files\Decls</Filter>
+    </None>
+    <None Include="Resources\Decls\BlitzSteam_Memory.decls">
+      <Filter>Resource Files\Decls</Filter>
+    </None>
+    <None Include="Resources\Decls\BlitzSteam_Steam.decls">
+      <Filter>Resource Files\Decls</Filter>
+    </None>
+    <None Include="Resources\Decls\BlitzSteam_SteamAppList.decls">
+      <Filter>Resource Files\Decls</Filter>
+    </None>
+    <None Include="Resources\Decls\BlitzSteam_SteamApps.decls">
+      <Filter>Resource Files\Decls</Filter>
+    </None>
+    <None Include="Resources\Decls\BlitzSteam_SteamClient.decls">
+      <Filter>Resource Files\Decls</Filter>
+    </None>
+    <None Include="Resources\Decls\BlitzSteam_SteamController.decls">
+      <Filter>Resource Files\Decls</Filter>
+    </None>
+    <None Include="Resources\Decls\BlitzSteam_SteamFriends.decls">
+      <Filter>Resource Files\Decls</Filter>
+    </None>
+    <None Include="Resources\Decls\BlitzSteam_SteamGameServer.decls">
+      <Filter>Resource Files\Decls</Filter>
+    </None>
+    <None Include="Resources\Decls\BlitzSteam_SteamGameServerStats.decls">
+      <Filter>Resource Files\Decls</Filter>
+    </None>
+    <None Include="Resources\Decls\BlitzSteam_SteamHTMLSurface.decls">
+      <Filter>Resource Files\Decls</Filter>
+    </None>
+    <None Include="Resources\Decls\BlitzSteam_SteamHTTP.decls">
+      <Filter>Resource Files\Decls</Filter>
+    </None>
+    <None Include="Resources\Decls\BlitzSteam_SteamInventory.decls">
+      <Filter>Resource Files\Decls</Filter>
+    </None>
+    <None Include="Resources\Decls\BlitzSteam_SteamMatchmaking.decls">
+      <Filter>Resource Files\Decls</Filter>
+    </None>
+    <None Include="Resources\Decls\BlitzSteam_SteamMatchmakingServers.decls">
+      <Filter>Resource Files\Decls</Filter>
+    </None>
+    <None Include="Resources\Decls\BlitzSteam_SteamMusic.decls">
+      <Filter>Resource Files\Decls</Filter>
+    </None>
+    <None Include="Resources\Decls\BlitzSteam_SteamMusicRemote.decls">
+      <Filter>Resource Files\Decls</Filter>
+    </None>
+    <None Include="Resources\Decls\BlitzSteam_SteamNetworking.decls">
+      <Filter>Resource Files\Decls</Filter>
+    </None>
+    <None Include="Resources\Decls\BlitzSteam_SteamRemoteStorage.decls">
+      <Filter>Resource Files\Decls</Filter>
+    </None>
+    <None Include="Resources\Decls\BlitzSteam_SteamScreenshots.decls">
+      <Filter>Resource Files\Decls</Filter>
+    </None>
+    <None Include="Resources\Decls\BlitzSteam_SteamUGC.decls">
+      <Filter>Resource Files\Decls</Filter>
+    </None>
+    <None Include="Resources\Decls\BlitzSteam_SteamUnifiedMessages.decls">
+      <Filter>Resource Files\Decls</Filter>
+    </None>
+    <None Include="Resources\Decls\BlitzSteam_SteamUser.decls">
+      <Filter>Resource Files\Decls</Filter>
+    </None>
+    <None Include="Resources\Decls\BlitzSteam_SteamUserStats.decls">
+      <Filter>Resource Files\Decls</Filter>
+    </None>
+    <None Include="Resources\Decls\BlitzSteam_SteamUtils.decls">
+      <Filter>Resource Files\Decls</Filter>
+    </None>
+    <None Include="Resources\Decls\BlitzSteam_SteamVideo.decls">
+      <Filter>Resource Files\Decls</Filter>
+    </None>
+    <None Include="Resources\BlitzSteam.LICENSE">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="Resources\BlitzSteam.LICENSE.lesser">
+      <Filter>Resource Files</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="Resources\Examples\steam_appid.txt">
+      <Filter>Resource Files\Examples</Filter>
+    </Text>
   </ItemGroup>
 </Project>

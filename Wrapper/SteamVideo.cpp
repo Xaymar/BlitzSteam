@@ -16,7 +16,8 @@
 
 #include "BlitzSteam.h"
 
-DLL_FUNCTION(ISteamVideo*) BS_Video() {
+DLL_FUNCTION(ISteamVideo*) BS_SteamVideo() {
 	return SteamVideo();
 }
-BS_I
+
+#pragma message("SteamVideo is not ported yet. TODO!")

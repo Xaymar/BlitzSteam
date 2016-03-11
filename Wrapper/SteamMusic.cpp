@@ -16,7 +16,8 @@
 
 #include "BlitzSteam.h"
 
-DLL_FUNCTION(ISteamMusic*) BS_Music() {
+DLL_FUNCTION(ISteamMusic*) BS_SteamMusic() {
 	return SteamMusic();
 }
-BS_I
+
+#pragma message("SteamMusic is not ported yet. TODO!")

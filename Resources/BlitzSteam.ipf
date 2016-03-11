@@ -1,7 +1,7 @@
 [IDEal Project file]
 <Settings>
  Version="1"
- Expanded="True"
+ Expanded="False"
  Icon=""
  MainFile="SteamHTMLSurface_Example.bb"
  Compiler="Blitz3D"

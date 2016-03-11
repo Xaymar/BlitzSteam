@@ -16,7 +16,12 @@
 
 #include "BlitzSteam.h"
 
-DLL_FUNCTION(ISteamUtils*) BS_Utils() {
+DLL_FUNCTION(ISteamUtils*) BS_SteamUtils() {
 	return SteamUtils();
 }
-BS_I
+
+DLL_FUNCTION(ISteamUtils*) BS_SteamGameServerUtils() {
+	return SteamGameServerUtils();
+}
+
+#pragma message("SteamUtils is not ported yet. TODO!")

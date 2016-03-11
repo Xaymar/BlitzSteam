@@ -19,7 +19,7 @@ Include "../BlitzSteam.bb"
 ;! Example is incomplete, I do not own a Steam Controller.
 
 ; Initialize Steam before your next call to Graphics.
-If BS_Steam_Init() = False Then
+If BS_SteamAPI_Init() = False Then
 	RuntimeError "Steam: Failed to initialize!"
 EndIf
 
@@ -30,7 +30,7 @@ Const FPS_MULT# = 1.0 / FPS
 Graphics3D 1024, 768, 32, 2
 SetBuffer BackBuffer()
 
-Local tickTimer = CreateTimer(FPS)
+Local demoTimer = CreateTimer(FPS)
 
 Local demoRoot = CreatePivot()
 
@@ -62,7 +62,7 @@ Repeat
 Until EndGame = True
 
 ; Shut down Steam as the last action of your program.
-BS_Steam_Shutdown()
+BS_SteamAPI_Shutdown()
 End
 ;~IDEal Editor Parameters:
 ;~C#Blitz3D

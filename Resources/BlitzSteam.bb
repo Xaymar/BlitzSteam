@@ -398,6 +398,88 @@ Const BS_EFriendFlags_ChatMember							= $1000
 Const BS_EFriendFlags_All									= $FFFF
 ;[End Block]
 
+;[Block] Enumeration: EHTTPMethod
+;------------------------------------------------------------------------------
+;! Enumeration - EHTTPMethod
+;------------------------------------------------------------------------------
+; This enum is used in client API methods, do not re-number existing values.
+
+Const BS_EHTTPMethod_Invalid = 0
+Const BS_EHTTPMethod_GET = 1
+Const BS_EHTTPMethod_HEAD = 2
+Const BS_EHTTPMethod_POST = 3
+Const BS_EHTTPMethod_PUT = 4
+Const BS_EHTTPMethod_DELETE = 5
+Const BS_EHTTPMethod_OPTIONS = 6
+;Const BS_EHTTPMethod_TRACE = 7
+;Const BS_EHTTPMethod_CONNECT = 8
+;[End Block]
+
+;[Block] Enumeration: EHTTPStatusCode
+;------------------------------------------------------------------------------
+;! Enumeration - EHTTPStatusCode
+;------------------------------------------------------------------------------
+; HTTP Status codes that the server can send in response to a request, see rfc2616 section 10.3 for descriptions
+; of each of these.
+
+; Invalid status code (this isn't defined in HTTP, used to indicate unset in our code)
+Const BS_EHTTPStatusCode_Invalid =					0
+
+; Informational codes
+Const BS_EHTTPStatusCode_100Continue =				100
+Const BS_EHTTPStatusCode_101SwitchingProtocols =	101
+
+; Success codes
+Const BS_EHTTPStatusCode_200OK =					200
+Const BS_EHTTPStatusCode_201Created =				201
+Const BS_EHTTPStatusCode_202Accepted =				202
+Const BS_EHTTPStatusCode_203NonAuthoritative =		203
+Const BS_EHTTPStatusCode_204NoContent =				204
+Const BS_EHTTPStatusCode_205ResetContent =			205
+Const BS_EHTTPStatusCode_206PartialContent =		206
+
+; Redirection codes
+Const BS_EHTTPStatusCode_300MultipleChoices =		300
+Const BS_EHTTPStatusCode_301MovedPermanently =		301
+Const BS_EHTTPStatusCode_302Found =					302
+Const BS_EHTTPStatusCode_303SeeOther =				303
+Const BS_EHTTPStatusCode_304NotModified =			304
+Const BS_EHTTPStatusCode_305UseProxy =				305
+;k_EHTTPStatusCode306Unused =				306, (used in old HTTP spec, now unused in 1.1)
+Const BS_EHTTPStatusCode_307TemporaryRedirect =		307
+
+; Error codes
+Const BS_EHTTPStatusCode_400BadRequest =			400
+Const BS_EHTTPStatusCode_401Unauthorized =			401 ; You probably want 403 or something else. 401 implies you're sending a WWW-Authenticate header and the client can sent an Authorization header in response.
+Const BS_EHTTPStatusCode_402PaymentRequired =		402 ; This is reserved for future HTTP specs, not really supported by clients
+Const BS_EHTTPStatusCode_403Forbidden =				403
+Const BS_EHTTPStatusCode_404NotFound =				404
+Const BS_EHTTPStatusCode_405MethodNotAllowed =		405
+Const BS_EHTTPStatusCode_406NotAcceptable =			406
+Const BS_EHTTPStatusCode_407ProxyAuthRequired =		407
+Const BS_EHTTPStatusCode_408RequestTimeout =		408
+Const BS_EHTTPStatusCode_409Conflict =				409
+Const BS_EHTTPStatusCode_410Gone =					410
+Const BS_EHTTPStatusCode_411LengthRequired =		411
+Const BS_EHTTPStatusCode_412PreconditionFailed =	412
+Const BS_EHTTPStatusCode_413RequestEntityTooLarge =	413
+Const BS_EHTTPStatusCode_414RequestURITooLong =		414
+Const BS_EHTTPStatusCode_415UnsupportedMediaType =	415
+Const BS_EHTTPStatusCode_416RequestedRangeNotSatisfiable = 416
+Const BS_EHTTPStatusCode_417ExpectationFailed =		417
+Const BS_EHTTPStatusCode_4xxUnknown = 				418 ; 418 is reserved, so we'll use it to mean unknown
+Const BS_EHTTPStatusCode_429TooManyRequests	=		429
+
+; Server error codes
+Const BS_EHTTPStatusCode_500InternalServerError =	500
+Const BS_EHTTPStatusCode_501NotImplemented =		501
+Const BS_EHTTPStatusCode_502BadGateway =			502
+Const BS_EHTTPStatusCode_503ServiceUnavailable =	503
+Const BS_EHTTPStatusCode_504GatewayTimeout =		504
+Const BS_EHTTPStatusCode_505HTTPVersionNotSupported = 505
+Const BS_EHTTPStatusCode_5xxUnknown =				599
+;[End Block]
+
 ;[Block] Enumeration: EHTMLMouseButton
 ;------------------------------------------------------------------------------
 ;! Enumeration - EHTMLMouseButton
@@ -752,6 +834,19 @@ Const BS_ESteamControllerPad_Left							= 0
 Const BS_ESteamControllerPad_Right							= 1
 ;[End Block]
 
+;[Block] Enumeration: ESteamItemFlags
+;------------------------------------------------------------------------------
+;! Enumeration - ESteamItemFlags
+;------------------------------------------------------------------------------
+;// Item status flags - these flags are permanently attached to specific item instances
+Const BS_ESteamItemFlags_NoTrade = 1 Shl 0 ;// This item is account-locked and cannot be traded or given away.
+;// Action confirmation flags - these flags are set one time only, as part of a result set
+Const BS_ESteamItemFlags_Removed = 1 Shl 8;// The item has been destroyed, traded away, expired, or otherwise invalidated
+Const BS_ESteamItemFlags_Consumed = 1 Shl 9;// The item quantity has been decreased by 1 via ConsumeItem API.
+;// All other flag bits are currently reserved for internal Steam use at this time.
+;// Do not assume anything about the state of other flags which are not defined here.
+;[End Block]
+
 ;[Block] Enumeration: ESteamUserStatType
 ;------------------------------------------------------------------------------
 ;! Enumeration - ESteamUserStatType
@@ -839,7 +934,7 @@ Const BS_EVoiceResult_ReceiverDidNotAnswer					= 9
 ;//---------------------------------------------------------------------------------
 ;// Purpose: Sent when a new app is installed
 ;//---------------------------------------------------------------------------------
-Const BS_AppList_AppInstalled								= BS_ECallback_SteamAppListCallbacks + 1
+Const BS_SteamAppList_AppInstalled							= BS_ECallback_SteamAppListCallbacks + 1
 ;DEFINE_CALLBACK( SteamAppInstalled_t, k_iSteamAppListCallbacks + 1 );
 ;	CALLBACK_MEMBER( 0,	AppId_t,	m_nAppID )			// ID of the app that installs
 ;END_DEFINE_CALLBACK_1()
@@ -847,7 +942,7 @@ Const BS_AppList_AppInstalled								= BS_ECallback_SteamAppListCallbacks + 1
 ;//---------------------------------------------------------------------------------
 ;// Purpose: Sent when an app is uninstalled
 ;//---------------------------------------------------------------------------------
-Const BS_AppList_AppUninstalled								= BS_ECallback_SteamAppListCallbacks + 2
+Const BS_SteamAppList_AppUninstalled							= BS_ECallback_SteamAppListCallbacks + 2
 ;DEFINE_CALLBACK( SteamAppUninstalled_t, k_iSteamAppListCallbacks + 2 );
 ;	CALLBACK_MEMBER( 0,	AppId_t,	m_nAppID )			// ID of the app that installs
 ;END_DEFINE_CALLBACK_1()
@@ -857,12 +952,12 @@ Const BS_AppList_AppUninstalled								= BS_ECallback_SteamAppListCallbacks + 2
 ;------------------------------------------------------------------------------
 ;! Apps
 ;------------------------------------------------------------------------------
-Const BS_Apps_AppProofOfPurchaseKeyMax = 64;			// max bytes of a legacy cd key we support
+Const BS_SteamApps_AppProofOfPurchaseKeyMax = 64;			// max bytes of a legacy cd key we support
 
 ;//-----------------------------------------------------------------------------
 ;// Purpose: posted after the user gains ownership of DLC & that DLC is installed
 ;//-----------------------------------------------------------------------------
-Const BS_Apps_DLCInstalled									= BS_ECallback_SteamAppsCallbacks + 5
+Const BS_SteamApps_DLCInstalled									= BS_ECallback_SteamAppsCallbacks + 5
 ;struct DlcInstalled_t
 ;{
 ;	enum { k_iCallback = k_iSteamAppsCallbacks + 5 };
@@ -872,7 +967,7 @@ Const BS_Apps_DLCInstalled									= BS_ECallback_SteamAppsCallbacks + 5
 ;//-----------------------------------------------------------------------------
 ;// Purpose: response to RegisterActivationCode()
 ;//-----------------------------------------------------------------------------
-Const BS_Apps_RegisterActivationCodeResponse				= BS_ECallback_SteamAppsCallbacks + 8
+Const BS_SteamApps_RegisterActivationCodeResponse				= BS_ECallback_SteamAppsCallbacks + 8
 ;;struct RegisterActivationCodeResponse_t
 ;{
 ;	enum { k_iCallback = k_iSteamAppsCallbacks + 8 };
@@ -883,7 +978,7 @@ Const BS_Apps_RegisterActivationCodeResponse				= BS_ECallback_SteamAppsCallback
 ;//-----------------------------------------------------------------------------
 ;// Purpose: response to RegisterActivationCode()
 ;//-----------------------------------------------------------------------------
-Const BS_Apps_AppProofOfPurchaseKeyResponse					= BS_ECallback_SteamAppsCallbacks + 13
+Const BS_SteamApps_AppProofOfPurchaseKeyResponse					= BS_ECallback_SteamAppsCallbacks + 13
 ;struct AppProofOfPurchaseKeyResponse_t
 ;{
 ;	enum { k_iCallback = k_iSteamAppsCallbacks + 13 };
@@ -898,7 +993,7 @@ Const BS_Apps_AppProofOfPurchaseKeyResponse					= BS_ECallback_SteamAppsCallback
 ;// while the game is already running.  The new params can be queried
 ;// with GetLaunchQueryParam.
 ;//---------------------------------------------------------------------------------
-Const BS_Apps_NewLaunchQueryParameters						= BS_ECallback_SteamAppsCallbacks + 14
+Const BS_SteamApps_NewLaunchQueryParameters						= BS_ECallback_SteamAppsCallbacks + 14
 ;struct NewLaunchQueryParameters_t
 ;{
 ;	enum { k_iCallback = k_iSteamAppsCallbacks + 14 };
@@ -909,31 +1004,31 @@ Const BS_Apps_NewLaunchQueryParameters						= BS_ECallback_SteamAppsCallbacks + 
 ;------------------------------------------------------------------------------
 ;! Client
 ;------------------------------------------------------------------------------
-Const BS_Client_SteamAccountIDMask = $FFFFFFFF
-Const BS_Client_SteamAccountInstanceMask = $0000FFFF
-Const BS_Client_SteamUserDesktopInstance = 1
-Const BS_Client_SteamUserConsoleInstance = 2
-Const BS_Client_SteamUserWebInstance = 4
+Const BS_SteamClient_SteamAccountIDMask = $FFFFFFFF
+Const BS_SteamClient_SteamAccountInstanceMask = $0000FFFF
+Const BS_SteamClient_SteamUserDesktopInstance = 1
+Const BS_SteamClient_SteamUserConsoleInstance = 2
+Const BS_SteamClient_SteamUserWebInstance = 4
 
 ; generic invalid CSteamID
-Global BS_Client_SteamIDNil = BS_CSteamID_New()
+Global BS_SteamClient_SteamIDNil = BS_CSteamID_New()
 ; This steamID comes from a user game connection to an out of date GS that hasnt implemented the protocol
 ; to provide its steamID
-Global BS_Client_SteamIDOutOfDateGS = BS_CSteamID_FromIDInstance(0, 0, BS_EUniverse_Invalid, BS_EAccountType_Invalid)
+Global BS_SteamClient_SteamIDOutOfDateGS = BS_CSteamID_New_IdInstanceUniverseType(0, 0, BS_EUniverse_Invalid, BS_EAccountType_Invalid)
 ; This steamID comes from a user game connection to an sv_lan GS
-Global BS_Client_SteamIDLanModeGS = BS_CSteamID_FromIDInstance(0, 0, BS_EUniverse_Public, BS_EAccountType_Invalid)
+Global BS_SteamClient_SteamIDLanModeGS = BS_CSteamID_New_IdInstanceUniverseType(0, 0, BS_EUniverse_Public, BS_EAccountType_Invalid)
 ; This steamID can come from a user game connection to a GS that has just booted but hasnt yet even initialized
 ; its steam3 component and started logging on.
-Global BS_Client_SteamIDNotInitYetGS = BS_CSteamID_FromIDInstance(1, 0, BS_EUniverse_Invalid, BS_EAccountType_Invalid)
+Global BS_SteamClient_SteamIDNotInitYetGS = BS_CSteamID_New_IdInstanceUniverseType(1, 0, BS_EUniverse_Invalid, BS_EAccountType_Invalid)
 ; This steamID can come from a user game connection to a GS that isn't using the steam authentication system but still
 ; wants to support the "Join Game" option in the friends list
-Global BS_Client_SteamIDNonSteamGS = BS_CSteamID_FromIDInstance(2, 0, BS_EUniverse_Invalid, BS_EAccountType_Invalid)
+Global BS_SteamClient_SteamIDNonSteamGS = BS_CSteamID_New_IdInstanceUniverseType(2, 0, BS_EUniverse_Invalid, BS_EAccountType_Invalid)
 
 ; Constants used for query ports.
-Const BS_Client_Query_Port_Not_Initialized = $FFFF ;We haven't asked the GS for this query port's actual value yet.
-Const BS_Client_Query_Port_Error = $FFFE ;We were unable to get the query port for this server.
+Const BS_SteamClient_Query_Port_Not_Initialized = $FFFF ;We haven't asked the GS for this query port's actual value yet.
+Const BS_SteamClient_Query_Port_Error = $FFFE ;We were unable to get the query port for this server.
 
-Const BS_Client_GameExtraInfoMax = 64
+Const BS_SteamClient_GameExtraInfoMax = 64
 
 ;[End Block]
 
@@ -941,14 +1036,14 @@ Const BS_Client_GameExtraInfoMax = 64
 ;------------------------------------------------------------------------------
 ;! Controller
 ;------------------------------------------------------------------------------
-Const BS_Controller_Max_Count								= 16
-Const BS_Controller_Max_Analog_Actions						= 16
-Const BS_Controller_Max_Digital_Actions						= 128
-Const BS_Controller_Max_Origins								= 8
+Const BS_SteamController_Max_Count								= 16
+Const BS_SteamController_Max_Analog_Actions						= 16
+Const BS_SteamController_Max_Digital_Actions						= 128
+Const BS_SteamController_Max_Origins								= 8
 ;// When sending an option to a specific controller handle, you can send to all controllers via this command
-Global BS_Controller_Handle_All_Controllers					= BS_Long_FromII($FFFFFFFF, $FFFFFFFF)
-Const BS_Controller_Min_Analog_Action_Data#					= -1.0
-Const BS_Controller_Max_Analog_Action_Data#					=  1.0
+Global BS_SteamController_Handle_All_Controllers					= BS_Long_FromII($FFFFFFFF, $FFFFFFFF)
+Const BS_SteamController_Min_Analog_Action_Data#					= -1.0
+Const BS_SteamController_Max_Analog_Action_Data#					=  1.0
 
 ; Memory Structure: ControllerAnalogActionData_t
 ; Offs.	Len	Description
@@ -973,23 +1068,23 @@ Const BS_Controller_Max_Analog_Action_Data#					=  1.0
 ;! Friends
 ;------------------------------------------------------------------------------
 ;// maximum length of friend group name (not including terminating nul!)
-Const BS_Friends_MaxFriendsGroupName						= 64
+Const BS_SteamFriends_MaxFriendsGroupName						= 64
 ;// maximum number of groups a single user is allowed
-Const BS_Friends_FriendsGroupLimit							= 100
+Const BS_SteamFriends_FriendsGroupLimit							= 100
 ;// invalid friends group identifier constant
-Const BS_Friends_GroupID_Invalid							= -1
-Const BS_Friends_EnumerateFollowersMax						= 50
+Const BS_SteamFriends_GroupID_Invalid							= -1
+Const BS_SteamFriends_EnumerateFollowersMax						= 50
 ;// maximum number of characters in a user's name. Two flavors; one for UTF-8 and one for UTF-16.
 ;// The UTF-8 version has to be very generous to accomodate characters that get large when encoded
 ;// in UTF-8.
-Const BS_Friends_PersonaNameMax								= 128
-Const BS_Friends_PersonaNameMaxW							= 32
+Const BS_SteamFriends_PersonaNameMax								= 128
+Const BS_SteamFriends_PersonaNameMaxW							= 32
 ;// size limit on chat room or member metadata
-Const BS_Friends_ChatMetadataMax							= 8192
+Const BS_SteamFriends_ChatMetadataMax							= 8192
 ;// size limits on Rich Presence data
-Const BS_Friends_MaxRichPresenceKeys						= 20
-Const BS_Friends_MaxRichPresenceKeyLength					= 64
-Const BS_Friends_MaxRichPresenceValueLength					= 256
+Const BS_SteamFriends_MaxRichPresenceKeys						= 20
+Const BS_SteamFriends_MaxRichPresenceKeyLength					= 64
+Const BS_SteamFriends_MaxRichPresenceValueLength					= 256
 
 ;// friend game played information
 ; Memory Structure: FriendGameInfo_t
@@ -1013,7 +1108,7 @@ Const BS_Friends_MaxRichPresenceValueLength					= 256
 ;//-----------------------------------------------------------------------------
 ;// Purpose: called when a friends' status changes
 ;//-----------------------------------------------------------------------------
-Const BS_Friends_PersonaStateChange							= BS_ECallback_SteamFriendsCallbacks + 4
+Const BS_SteamFriends_PersonaStateChange							= BS_ECallback_SteamFriendsCallbacks + 4
 ;struct PersonaStateChange_t
 ;{
 ;	enum { k_iCallback = k_iSteamFriendsCallbacks + 4 };
@@ -1026,7 +1121,7 @@ Const BS_Friends_PersonaStateChange							= BS_ECallback_SteamFriendsCallbacks +
 ;// Purpose: posted when game overlay activates or deactivates
 ;//			the game can use this to be pause or resume single player games
 ;//-----------------------------------------------------------------------------
-Const BS_Friends_GameOverlayActivated						= BS_ECallback_SteamFriendsCallbacks + 31
+Const BS_SteamFriends_GameOverlayActivated						= BS_ECallback_SteamFriendsCallbacks + 31
 ;struct GameOverlayActivated_t
 ;{
 ;	enum { k_iCallback = k_iSteamFriendsCallbacks + 31 };
@@ -1037,7 +1132,7 @@ Const BS_Friends_GameOverlayActivated						= BS_ECallback_SteamFriendsCallbacks 
 ;// Purpose: called when the user tries to join a different game server from their friends list
 ;//			game client should attempt to connect to specified server when this is received
 ;//-----------------------------------------------------------------------------
-Const BS_Friends_GameServerChangeRequested					= BS_ECallback_SteamFriendsCallbacks + 32
+Const BS_SteamFriends_GameServerChangeRequested					= BS_ECallback_SteamFriendsCallbacks + 32
 ;struct GameServerChangeRequested_t
 ;{
 ;	enum { k_iCallback = k_iSteamFriendsCallbacks + 32 };
@@ -1049,7 +1144,7 @@ Const BS_Friends_GameServerChangeRequested					= BS_ECallback_SteamFriendsCallba
 ;// Purpose: called when the user tries to join a lobby from their friends list
 ;//			game client should attempt to connect to specified lobby when this is received
 ;//-----------------------------------------------------------------------------
-Const BS_Friends_GameLobbyJoinRequested						= BS_ECallback_SteamFriendsCallbacks + 33
+Const BS_SteamFriends_GameLobbyJoinRequested						= BS_ECallback_SteamFriendsCallbacks + 33
 ;struct GameLobbyJoinRequested_t
 ;{
 ;	enum { k_iCallback = k_iSteamFriendsCallbacks + 33 };
@@ -1067,7 +1162,7 @@ Const BS_Friends_GameLobbyJoinRequested						= BS_ECallback_SteamFriendsCallback
 ;// Purpose: called when an avatar is loaded in from a previous GetLargeFriendAvatar() call
 ;//			if the image wasn't already available
 ;//-----------------------------------------------------------------------------
-Const BS_Friends_AvatarImageLoaded							= BS_ECallback_SteamFriendsCallbacks + 34
+Const BS_SteamFriends_AvatarImageLoaded							= BS_ECallback_SteamFriendsCallbacks + 34
 ;struct AvatarImageLoaded_t
 ;{
 ;	enum { k_iCallback = k_iSteamFriendsCallbacks + 34 };
@@ -1080,7 +1175,7 @@ Const BS_Friends_AvatarImageLoaded							= BS_ECallback_SteamFriendsCallbacks + 
 ;//-----------------------------------------------------------------------------
 ;// Purpose: marks the return of a request officer list call
 ;//-----------------------------------------------------------------------------
-Const BS_Friends_ClanOfficerListResponse					= BS_ECallback_SteamFriendsCallbacks + 35
+Const BS_SteamFriends_ClanOfficerListResponse					= BS_ECallback_SteamFriendsCallbacks + 35
 ;struct ClanOfficerListResponse_t
 ;{
 ;	enum { k_iCallback = k_iSteamFriendsCallbacks + 35 };
@@ -1092,7 +1187,7 @@ Const BS_Friends_ClanOfficerListResponse					= BS_ECallback_SteamFriendsCallback
 ;//-----------------------------------------------------------------------------
 ;// Purpose: callback indicating updated data about friends rich presence information
 ;//-----------------------------------------------------------------------------
-Const BS_Friends_FriendRichPresenceUpdate					= BS_ECallback_SteamFriendsCallbacks + 36
+Const BS_SteamFriends_FriendRichPresenceUpdate					= BS_ECallback_SteamFriendsCallbacks + 36
 ;struct FriendRichPresenceUpdate_t
 ;{
 ;	enum { k_iCallback = k_iSteamFriendsCallbacks + 36 };
@@ -1104,7 +1199,7 @@ Const BS_Friends_FriendRichPresenceUpdate					= BS_ECallback_SteamFriendsCallbac
 ;// Purpose: called when the user tries to join a game from their friends list
 ;//			rich presence will have been set with the "connect" key which is set here
 ;//-----------------------------------------------------------------------------
-Const BS_Friends_GameRichPresenceJoinRequested				= BS_ECallback_SteamFriendsCallbacks + 37
+Const BS_SteamFriends_GameRichPresenceJoinRequested				= BS_ECallback_SteamFriendsCallbacks + 37
 ;struct GameRichPresenceJoinRequested_t
 ;{
 ;	enum { k_iCallback = k_iSteamFriendsCallbacks + 37 };
@@ -1115,7 +1210,7 @@ Const BS_Friends_GameRichPresenceJoinRequested				= BS_ECallback_SteamFriendsCal
 ;//-----------------------------------------------------------------------------
 ;// Purpose: a chat message has been received for a clan chat the game has joined
 ;//-----------------------------------------------------------------------------
-Const BS_Friends_GameConnectedClanChatMsg					= BS_ECallback_SteamFriendsCallbacks + 38
+Const BS_SteamFriends_GameConnectedClanChatMsg					= BS_ECallback_SteamFriendsCallbacks + 38
 ;struct GameConnectedClanChatMsg_t
 ;{
 ;	enum { k_iCallback = k_iSteamFriendsCallbacks + 38 };
@@ -1127,7 +1222,7 @@ Const BS_Friends_GameConnectedClanChatMsg					= BS_ECallback_SteamFriendsCallbac
 ;//-----------------------------------------------------------------------------
 ;// Purpose: a user has joined a clan chat
 ;//-----------------------------------------------------------------------------
-Const BS_Friends_GameConnectedChatJoin						= BS_ECallback_SteamFriendsCallbacks + 39
+Const BS_SteamFriends_GameConnectedChatJoin						= BS_ECallback_SteamFriendsCallbacks + 39
 ;struct GameConnectedChatJoin_t
 ;{
 ;	enum { k_iCallback = k_iSteamFriendsCallbacks + 39 };
@@ -1138,7 +1233,7 @@ Const BS_Friends_GameConnectedChatJoin						= BS_ECallback_SteamFriendsCallbacks
 ;//-----------------------------------------------------------------------------
 ;// Purpose: a user has left the chat we're in
 ;//-----------------------------------------------------------------------------
-Const BS_Friends_GameConnectedChatLeave						= BS_ECallback_SteamFriendsCallbacks + 40
+Const BS_SteamFriends_GameConnectedChatLeave						= BS_ECallback_SteamFriendsCallbacks + 40
 ;struct GameConnectedChatLeave_t
 ;{
 ;	enum { k_iCallback = k_iSteamFriendsCallbacks + 40 };
@@ -1151,7 +1246,7 @@ Const BS_Friends_GameConnectedChatLeave						= BS_ECallback_SteamFriendsCallback
 ;//-----------------------------------------------------------------------------
 ;// Purpose: a DownloadClanActivityCounts() call has finished
 ;//-----------------------------------------------------------------------------
-Const BS_Friends_DownloadClanActivityCountsResult			= BS_ECallback_SteamFriendsCallbacks + 41
+Const BS_SteamFriends_DownloadClanActivityCountsResult			= BS_ECallback_SteamFriendsCallbacks + 41
 ;struct DownloadClanActivityCountsResult_t
 ;{
 ;	enum { k_iCallback = k_iSteamFriendsCallbacks + 41 };
@@ -1161,7 +1256,7 @@ Const BS_Friends_DownloadClanActivityCountsResult			= BS_ECallback_SteamFriendsC
 ;//-----------------------------------------------------------------------------
 ;// Purpose: a JoinClanChatRoom() call has finished
 ;//-----------------------------------------------------------------------------
-Const BS_Friends_JoinClanChatRoomCompletionResult			= BS_ECallback_SteamFriendsCallbacks + 42
+Const BS_SteamFriends_JoinClanChatRoomCompletionResult			= BS_ECallback_SteamFriendsCallbacks + 42
 ;struct JoinClanChatRoomCompletionResult_t
 ;{
 ;	enum { k_iCallback = k_iSteamFriendsCallbacks + 42 };
@@ -1172,7 +1267,7 @@ Const BS_Friends_JoinClanChatRoomCompletionResult			= BS_ECallback_SteamFriendsC
 ;//-----------------------------------------------------------------------------
 ;// Purpose: a chat message has been received from a user
 ;//-----------------------------------------------------------------------------
-Const BS_Friends_GameConnectedFriendChatMsg					= BS_ECallback_SteamFriendsCallbacks + 43
+Const BS_SteamFriends_GameConnectedFriendChatMsg					= BS_ECallback_SteamFriendsCallbacks + 43
 ;struct GameConnectedFriendChatMsg_t
 ;{
 ;	enum { k_iCallback = k_iSteamFriendsCallbacks + 43 };
@@ -1180,7 +1275,7 @@ Const BS_Friends_GameConnectedFriendChatMsg					= BS_ECallback_SteamFriendsCallb
 ;	int m_iMessageID;
 ;};
 
-Const BS_Friends_FriendsGetFollowerCount					= BS_ECallback_SteamFriendsCallbacks + 44
+Const BS_SteamFriends_FriendsGetFollowerCount					= BS_ECallback_SteamFriendsCallbacks + 44
 ;struct FriendsGetFollowerCount_t
 ;{
 ;	enum { k_iCallback = k_iSteamFriendsCallbacks + 44 };
@@ -1189,7 +1284,7 @@ Const BS_Friends_FriendsGetFollowerCount					= BS_ECallback_SteamFriendsCallback
 ;	int m_nCount;
 ;};
 
-Const BS_Friends_FriendsIsFollowing							= BS_ECallback_SteamFriendsCallbacks + 45
+Const BS_SteamFriends_FriendsIsFollowing							= BS_ECallback_SteamFriendsCallbacks + 45
 ;struct FriendsIsFollowing_t
 ;{
 ;	enum { k_iCallback = k_iSteamFriendsCallbacks + 45 };
@@ -1198,7 +1293,7 @@ Const BS_Friends_FriendsIsFollowing							= BS_ECallback_SteamFriendsCallbacks +
 ;	bool m_bIsFollowing;
 ;};
 
-Const BS_Friends_FriendsEnumerateFollowingList				= BS_ECallback_SteamFriendsCallbacks + 46
+Const BS_SteamFriends_FriendsEnumerateFollowingList				= BS_ECallback_SteamFriendsCallbacks + 46
 ;struct FriendsEnumerateFollowingList_t
 ;{
 ;	enum { k_iCallback = k_iSteamFriendsCallbacks + 46 };
@@ -1208,7 +1303,7 @@ Const BS_Friends_FriendsEnumerateFollowingList				= BS_ECallback_SteamFriendsCal
 ;	int32 m_nTotalResultCount;
 ;};
 
-Const BS_Friends_SetPersonaNameResponse						= BS_ECallback_SteamFriendsCallbacks + 47
+Const BS_SteamFriends_SetPersonaNameResponse						= BS_ECallback_SteamFriendsCallbacks + 47
 ;struct SetPersonaNameResponse_t
 ;{
 ;	enum { k_iCallback = k_iSteamFriendsCallbacks + 47 };
@@ -1223,6 +1318,58 @@ Const BS_Friends_SetPersonaNameResponse						= BS_ECallback_SteamFriendsCallback
 ;------------------------------------------------------------------------------
 ;! GameServer
 ;------------------------------------------------------------------------------
+Const BS_SteamGameServer_MASTERSERVERUPDATERPORT_USEGAMESOCKETSHARE = $FFFF
+
+;// client has been approved to connect to this game server
+Const BS_SteamGameServer_GSClientApprove = BS_ECallback_SteamGameServerCallbacks + 1
+;// client has been denied to connection to this game server
+Const BS_SteamGameServer_GSClientDeny = BS_ECallback_SteamGameServerCallbacks + 2
+;// request the game server should kick the user
+Const BS_SteamGameServer_GSClientKick = BS_ECallback_SteamGameServerCallbacks + 3
+;// client achievement info
+Const BS_SteamGameServer_GSClientAchievementStatus = BS_ECallback_SteamGameServerCallbacks + 6
+;// received when the game server requests to be displayed as secure (VAC protected)
+;// m_bSecure is true if the game server should display itself as secure to users, false otherwise
+Const BS_SteamGameServer_GSPolicyResponse = BS_ECallback_SteamUserCallbacks + 15
+;// GS gameplay stats info
+Const BS_SteamGameServer_GSGameplayStats = BS_ECallback_SteamGameServerCallbacks + 7
+;// send as a reply to RequestUserGroupStatus()
+Const BS_SteamGameServer_GSClientGroupStatus = BS_ECallback_SteamGameServerCallbacks + 8
+;// Sent as a reply to GetServerReputation()
+Const BS_SteamGameServer_GSReputation = BS_ECallback_SteamGameServerCallbacks + 9
+;// Sent as a reply to AssociateWithClan()
+Const BS_SteamGameServer_AssociateWithClanResult = BS_ECallback_SteamGameServerCallbacks + 10
+;// Sent as a reply to ComputeNewPlayerCompatibility()
+Const BS_SteamGameServer_ComputeNewPlayerCompatibilityResult = BS_ECallback_SteamGameServerCallbacks + 11
+
+;[End Block]
+
+;[Block] API: GameServerStats
+;------------------------------------------------------------------------------
+;! GameServerStats
+;------------------------------------------------------------------------------
+
+; Purpose: called when the latests stats and achievements have been received
+;			from the server
+Const BS_SteamGameServerStats_GSStatsReceived = BS_ECallback_SteamUserStatsCallbacks
+; Purpose: result of a request to store the user stats for a game
+Const BS_SteamGameServerStats_GSStatsStored = BS_ECallback_SteamUserStatsCallbacks + 1
+; Purpose: Callback indicating that a user's stats have been unloaded.
+;  Call RequestUserStats again to access stats for this user
+Const BS_SteamGameServerStats_GSStatsUnloaded = BS_ECallback_SteamUserStatsCallbacks + 8
+
+;[End Block]
+
+;[Block] API: HTTP
+;------------------------------------------------------------------------------
+;! HTTP
+;------------------------------------------------------------------------------
+Const BS_SteamHTTP_INVALID_HTTPREQUEST_HANDLE = 0
+Const BS_SteamHTTP_INVALID_HTTPCOOKIE_HANDLE = 0
+
+Const BS_SteamHTTP_HTTPRequestCompleted							= BS_ECallback_ClientHTTPCallbacks + 1				
+Const BS_SteamHTTP_HTTPRequestHeadersReceived					= BS_ECallback_ClientHTTPCallbacks + 2
+Const BS_SteamHTTP_HTTPRequestDataReceived						= BS_ECallback_ClientHTTPCallbacks + 3
 
 ;[End Block]
 
@@ -1234,7 +1381,7 @@ Const BS_Friends_SetPersonaNameResponse						= BS_ECallback_SteamFriendsCallback
 ;//-----------------------------------------------------------------------------
 ;// Purpose: The browser is ready for use
 ;//-----------------------------------------------------------------------------
-Const BS_HTMLSurface_BrowserReady							= BS_ECallback_SteamHTMLSurfaceCallbacks + 1
+Const BS_SteamHTMLSurface_BrowserReady							= BS_ECallback_SteamHTMLSurfaceCallbacks + 1
 ;DEFINE_CALLBACK( HTML_BrowserReady_t, k_iSteamHTMLSurfaceCallbacks + 1 )
 ;CALLBACK_MEMBER( 0, HHTMLBrowser, unBrowserHandle ) // this browser is now fully created and ready to navigate to pages
 ;END_DEFINE_CALLBACK_1()
@@ -1242,7 +1389,7 @@ Const BS_HTMLSurface_BrowserReady							= BS_ECallback_SteamHTMLSurfaceCallbacks
 ;//-----------------------------------------------------------------------------
 ;// Purpose: the browser has a pending paint
 ;//-----------------------------------------------------------------------------
-Const BS_HTMLSurface_NeedsPaint								= BS_ECallback_SteamHTMLSurfaceCallbacks + 2
+Const BS_SteamHTMLSurface_NeedsPaint								= BS_ECallback_SteamHTMLSurfaceCallbacks + 2
 ;DEFINE_CALLBACK(HTML_NeedsPaint_t, k_iSteamHTMLSurfaceCallbacks + 2)
 ;CALLBACK_MEMBER(0, HHTMLBrowser, unBrowserHandle) // the browser that needs the paint
 ;CALLBACK_MEMBER(1, const char *, pBGRA ) // a pointer to the B8G8R8A8 data for this surface, valid until SteamAPI_RunCallbacks is next called
@@ -1262,7 +1409,7 @@ Const BS_HTMLSurface_NeedsPaint								= BS_ECallback_SteamHTMLSurfaceCallbacks 
 ;// Purpose: The browser wanted to navigate to a new page
 ;//   NOTE - you MUST call AllowStartRequest in response to this callback
 ;//-----------------------------------------------------------------------------
-Const BS_HTMLSurface_StartRequest							= BS_ECallback_SteamHTMLSurfaceCallbacks + 3
+Const BS_SteamHTMLSurface_StartRequest							= BS_ECallback_SteamHTMLSurfaceCallbacks + 3
 ;DEFINE_CALLBACK(HTML_StartRequest_t, k_iSteamHTMLSurfaceCallbacks + 3)
 ;CALLBACK_MEMBER(0, HHTMLBrowser, unBrowserHandle) // the handle of the surface navigating
 ;CALLBACK_MEMBER(1, const char *, pchURL) // the url they wish to navigate to 
@@ -1274,7 +1421,7 @@ Const BS_HTMLSurface_StartRequest							= BS_ECallback_SteamHTMLSurfaceCallbacks
 ;//-----------------------------------------------------------------------------
 ;// Purpose: The browser has been requested to close due to user interaction (usually from a javascript window.close() call)
 ;//-----------------------------------------------------------------------------
-Const BS_HTMLSurface_CloseBrowser							= BS_ECallback_SteamHTMLSurfaceCallbacks + 4
+Const BS_SteamHTMLSurface_CloseBrowser							= BS_ECallback_SteamHTMLSurfaceCallbacks + 4
 ;DEFINE_CALLBACK(HTML_CloseBrowser_t, k_iSteamHTMLSurfaceCallbacks + 4)
 ;CALLBACK_MEMBER(0, HHTMLBrowser, unBrowserHandle) // the handle of the surface 
 ;END_DEFINE_CALLBACK_1()
@@ -1282,7 +1429,7 @@ Const BS_HTMLSurface_CloseBrowser							= BS_ECallback_SteamHTMLSurfaceCallbacks
 ;//-----------------------------------------------------------------------------
 ;// Purpose: the browser is navigating to a new url
 ;//-----------------------------------------------------------------------------
-Const BS_HTMLSurface_URLChanged 							= BS_ECallback_SteamHTMLSurfaceCallbacks + 5
+Const BS_SteamHTMLSurface_URLChanged 							= BS_ECallback_SteamHTMLSurfaceCallbacks + 5
 ;DEFINE_CALLBACK( HTML_URLChanged_t, k_iSteamHTMLSurfaceCallbacks + 5 )
 ;CALLBACK_MEMBER( 0, HHTMLBrowser, unBrowserHandle ) // the handle of the surface navigating
 ;CALLBACK_MEMBER( 1, const char *, pchURL ) // the url they wish to navigate to 
@@ -1295,7 +1442,7 @@ Const BS_HTMLSurface_URLChanged 							= BS_ECallback_SteamHTMLSurfaceCallbacks 
 ;//-----------------------------------------------------------------------------
 ;// Purpose: A page is finished loading
 ;//-----------------------------------------------------------------------------
-Const BS_HTMLSurface_FinishedRequest						= BS_ECallback_SteamHTMLSurfaceCallbacks + 6
+Const BS_SteamHTMLSurface_FinishedRequest						= BS_ECallback_SteamHTMLSurfaceCallbacks + 6
 ;DEFINE_CALLBACK( HTML_FinishedRequest_t, k_iSteamHTMLSurfaceCallbacks + 6 )
 ;CALLBACK_MEMBER( 0, HHTMLBrowser, unBrowserHandle ) // the Handle of the surface 
 ;CALLBACK_MEMBER( 1, Const char *, pchURL ) // 
@@ -1305,7 +1452,7 @@ Const BS_HTMLSurface_FinishedRequest						= BS_ECallback_SteamHTMLSurfaceCallbac
 ;//-----------------------------------------------------------------------------
 ;// Purpose: a request To load this url in a New tab
 ;//-----------------------------------------------------------------------------
-Const BS_HTMLSurface_OpenLinkInNewTab						= BS_ECallback_SteamHTMLSurfaceCallbacks + 7
+Const BS_SteamHTMLSurface_OpenLinkInNewTab						= BS_ECallback_SteamHTMLSurfaceCallbacks + 7
 ;DEFINE_CALLBACK( HTML_OpenLinkInNewTab_t, k_iSteamHTMLSurfaceCallbacks + 7 )
 ;CALLBACK_MEMBER( 0, HHTMLBrowser, unBrowserHandle ) // the Handle of the surface 
 ;CALLBACK_MEMBER( 1, Const char *, pchURL ) // 
@@ -1314,7 +1461,7 @@ Const BS_HTMLSurface_OpenLinkInNewTab						= BS_ECallback_SteamHTMLSurfaceCallba
 ;//-----------------------------------------------------------------------------
 ;// Purpose: the page has a New title now
 ;//-----------------------------------------------------------------------------
-Const BS_HTMLSurface_ChangedTitle							= BS_ECallback_SteamHTMLSurfaceCallbacks + 8
+Const BS_SteamHTMLSurface_ChangedTitle							= BS_ECallback_SteamHTMLSurfaceCallbacks + 8
 ;DEFINE_CALLBACK( HTML_ChangedTitle_t, k_iSteamHTMLSurfaceCallbacks + 8 )
 ;CALLBACK_MEMBER( 0, HHTMLBrowser, unBrowserHandle ) // the Handle of the surface 
 ;CALLBACK_MEMBER( 1, Const char *, pchTitle ) // 
@@ -1323,7 +1470,7 @@ Const BS_HTMLSurface_ChangedTitle							= BS_ECallback_SteamHTMLSurfaceCallbacks
 ;//-----------------------------------------------------------------------------
 ;// Purpose: results from a search
 ;//-----------------------------------------------------------------------------
-Const BS_HTMLSurface_SearchResults							= BS_ECallback_SteamHTMLSurfaceCallbacks + 9
+Const BS_SteamHTMLSurface_SearchResults							= BS_ECallback_SteamHTMLSurfaceCallbacks + 9
 ;DEFINE_CALLBACK( HTML_SearchResults_t, k_iSteamHTMLSurfaceCallbacks + 9 )
 ;CALLBACK_MEMBER( 0, HHTMLBrowser, unBrowserHandle ) // the Handle of the surface 
 ;CALLBACK_MEMBER( 1, uint32, unResults ) // 
@@ -1333,7 +1480,7 @@ Const BS_HTMLSurface_SearchResults							= BS_ECallback_SteamHTMLSurfaceCallback
 ;//-----------------------------------------------------------------------------
 ;// Purpose: page history status changed on the ability To go backwards And forward
 ;//-----------------------------------------------------------------------------
-Const BS_HTMLSurface_CanGoBackAndForward					= BS_ECallback_SteamHTMLSurfaceCallbacks + 10
+Const BS_SteamHTMLSurface_CanGoBackAndForward					= BS_ECallback_SteamHTMLSurfaceCallbacks + 10
 ;DEFINE_CALLBACK( HTML_CanGoBackAndForward_t, k_iSteamHTMLSurfaceCallbacks + 10 )
 ;CALLBACK_MEMBER( 0, HHTMLBrowser, unBrowserHandle ) // the Handle of the surface 
 ;CALLBACK_MEMBER( 1, bool, bCanGoBack ) // 
@@ -1343,7 +1490,7 @@ Const BS_HTMLSurface_CanGoBackAndForward					= BS_ECallback_SteamHTMLSurfaceCall
 ;//-----------------------------------------------------------------------------
 ;// Purpose: details on the visibility And size of the horizontal scrollbar
 ;//-----------------------------------------------------------------------------
-Const BS_HTMLSurface_HorizontalScroll						= BS_ECallback_SteamHTMLSurfaceCallbacks + 11
+Const BS_SteamHTMLSurface_HorizontalScroll						= BS_ECallback_SteamHTMLSurfaceCallbacks + 11
 ;DEFINE_CALLBACK( HTML_HorizontalScroll_t, k_iSteamHTMLSurfaceCallbacks + 11 )
 ;CALLBACK_MEMBER( 0, HHTMLBrowser, unBrowserHandle ) // the Handle of the surface 
 ;CALLBACK_MEMBER( 1, uint32, unScrollMax ) // 
@@ -1356,7 +1503,7 @@ Const BS_HTMLSurface_HorizontalScroll						= BS_ECallback_SteamHTMLSurfaceCallba
 ;//-----------------------------------------------------------------------------
 ;// Purpose: details on the visibility And size of the vertical scrollbar
 ;//-----------------------------------------------------------------------------
-Const BS_HTMLSurface_VerticalScroll							= BS_ECallback_SteamHTMLSurfaceCallbacks + 12
+Const BS_SteamHTMLSurface_VerticalScroll							= BS_ECallback_SteamHTMLSurfaceCallbacks + 12
 ;DEFINE_CALLBACK( HTML_VerticalScroll_t, k_iSteamHTMLSurfaceCallbacks + 12 )
 ;CALLBACK_MEMBER( 0, HHTMLBrowser, unBrowserHandle ) // the Handle of the surface 
 ;CALLBACK_MEMBER( 1, uint32, unScrollMax ) // 
@@ -1369,7 +1516,7 @@ Const BS_HTMLSurface_VerticalScroll							= BS_ECallback_SteamHTMLSurfaceCallbac
 ;//-----------------------------------------------------------------------------
 ;// Purpose: response To GetLinkAtPosition call 
 ;//-----------------------------------------------------------------------------
-Const BS_HTMLSurface_LinkAtPosition							= BS_ECallback_SteamHTMLSurfaceCallbacks + 13
+Const BS_SteamHTMLSurface_LinkAtPosition							= BS_ECallback_SteamHTMLSurfaceCallbacks + 13
 ;DEFINE_CALLBACK( HTML_LinkAtPosition_t, k_iSteamHTMLSurfaceCallbacks + 13 )
 ;CALLBACK_MEMBER( 0, HHTMLBrowser, unBrowserHandle ) // the Handle of the surface 
 ;CALLBACK_MEMBER( 1, uint32, x ) // NOTE - Not currently set
@@ -1383,7 +1530,7 @@ Const BS_HTMLSurface_LinkAtPosition							= BS_ECallback_SteamHTMLSurfaceCallbac
 ;// Purpose: show a Javascript alert dialog, call JSDialogResponse 
 ;//   when the user dismisses this dialog (Or Right away To ignore it)
 ;//-----------------------------------------------------------------------------
-Const BS_HTMLSurface_JSAlert								= BS_ECallback_SteamHTMLSurfaceCallbacks + 14
+Const BS_SteamHTMLSurface_JSAlert								= BS_ECallback_SteamHTMLSurfaceCallbacks + 14
 ;DEFINE_CALLBACK( HTML_JSAlert_t, k_iSteamHTMLSurfaceCallbacks + 14 )
 ;CALLBACK_MEMBER( 0, HHTMLBrowser, unBrowserHandle ) // the Handle of the surface 
 ;CALLBACK_MEMBER( 1, Const char *, pchMessage ) // 
@@ -1393,7 +1540,7 @@ Const BS_HTMLSurface_JSAlert								= BS_ECallback_SteamHTMLSurfaceCallbacks + 1
 ;// Purpose: show a Javascript confirmation dialog, call JSDialogResponse 
 ;//   when the user dismisses this dialog (Or Right away To ignore it)
 ;//-----------------------------------------------------------------------------
-Const BS_HTMLSurface_JSConfirm								= BS_ECallback_SteamHTMLSurfaceCallbacks + 15
+Const BS_SteamHTMLSurface_JSConfirm								= BS_ECallback_SteamHTMLSurfaceCallbacks + 15
 ;DEFINE_CALLBACK( HTML_JSConfirm_t, k_iSteamHTMLSurfaceCallbacks + 15 )
 ;CALLBACK_MEMBER( 0, HHTMLBrowser, unBrowserHandle ) // the Handle of the surface 
 ;CALLBACK_MEMBER( 1, Const char *, pchMessage ) // 
@@ -1403,7 +1550,7 @@ Const BS_HTMLSurface_JSConfirm								= BS_ECallback_SteamHTMLSurfaceCallbacks +
 ;// Purpose: when received show a file open dialog
 ;//   Then call FileLoadDialogResponse with the file(s) the user selected.
 ;//-----------------------------------------------------------------------------
-Const BS_HTMLSurface_FileOpenDialog							= BS_ECallback_SteamHTMLSurfaceCallbacks + 16
+Const BS_SteamHTMLSurface_FileOpenDialog							= BS_ECallback_SteamHTMLSurfaceCallbacks + 16
 ;DEFINE_CALLBACK( HTML_FileOpenDialog_t, k_iSteamHTMLSurfaceCallbacks + 16 )
 ;CALLBACK_MEMBER( 0, HHTMLBrowser, unBrowserHandle ) // the Handle of the surface 
 ;CALLBACK_MEMBER( 1, Const char *, pchTitle ) // 
@@ -1413,7 +1560,7 @@ Const BS_HTMLSurface_FileOpenDialog							= BS_ECallback_SteamHTMLSurfaceCallbac
 ;//-----------------------------------------------------------------------------
 ;// Purpose: a New html window has been created 
 ;//-----------------------------------------------------------------------------
-Const BS_HTMLSurface_NewWindow								= BS_ECallback_SteamHTMLSurfaceCallbacks + 21
+Const BS_SteamHTMLSurface_NewWindow								= BS_ECallback_SteamHTMLSurfaceCallbacks + 21
 ;DEFINE_CALLBACK( HTML_NewWindow_t, k_iSteamHTMLSurfaceCallbacks + 21 )
 ;CALLBACK_MEMBER( 0, HHTMLBrowser, unBrowserHandle ) // the Handle of the current surface 
 ;CALLBACK_MEMBER( 1, Const char *, pchURL ) // the page To load
@@ -1427,7 +1574,7 @@ Const BS_HTMLSurface_NewWindow								= BS_ECallback_SteamHTMLSurfaceCallbacks +
 ;//-----------------------------------------------------------------------------
 ;// Purpose: change the cursor To display
 ;//-----------------------------------------------------------------------------
-Const BS_HTMLSurface_SetCursor								= BS_ECallback_SteamHTMLSurfaceCallbacks + 22
+Const BS_SteamHTMLSurface_SetCursor								= BS_ECallback_SteamHTMLSurfaceCallbacks + 22
 ;DEFINE_CALLBACK( HTML_SetCursor_t, k_iSteamHTMLSurfaceCallbacks + 22 )
 ;CALLBACK_MEMBER( 0, HHTMLBrowser, unBrowserHandle ) // the Handle of the surface 
 ;CALLBACK_MEMBER( 1, uint32, eMouseCursor ) // the EMouseCursor To display
@@ -1436,7 +1583,7 @@ Const BS_HTMLSurface_SetCursor								= BS_ECallback_SteamHTMLSurfaceCallbacks +
 ;//-----------------------------------------------------------------------------
 ;// Purpose: informational message from the browser
 ;//-----------------------------------------------------------------------------
-Const BS_HTMLSurface_StatusText								= BS_ECallback_SteamHTMLSurfaceCallbacks + 23
+Const BS_SteamHTMLSurface_StatusText								= BS_ECallback_SteamHTMLSurfaceCallbacks + 23
 ;DEFINE_CALLBACK( HTML_StatusText_t, k_iSteamHTMLSurfaceCallbacks + 23 )
 ;CALLBACK_MEMBER( 0, HHTMLBrowser, unBrowserHandle ) // the Handle of the surface 
 ;CALLBACK_MEMBER( 1, Const char *, pchMsg ) // the EMouseCursor To display
@@ -1445,7 +1592,7 @@ Const BS_HTMLSurface_StatusText								= BS_ECallback_SteamHTMLSurfaceCallbacks 
 ;//-----------------------------------------------------------------------------
 ;// Purpose: show a tooltip
 ;//-----------------------------------------------------------------------------
-Const BS_HTMLSurface_ShowToolTip							= BS_ECallback_SteamHTMLSurfaceCallbacks + 24
+Const BS_SteamHTMLSurface_ShowToolTip							= BS_ECallback_SteamHTMLSurfaceCallbacks + 24
 ;DEFINE_CALLBACK( HTML_ShowToolTip_t, k_iSteamHTMLSurfaceCallbacks + 24 )
 ;CALLBACK_MEMBER( 0, HHTMLBrowser, unBrowserHandle ) // the Handle of the surface 
 ;CALLBACK_MEMBER( 1, Const char *, pchMsg ) // the EMouseCursor To display
@@ -1454,7 +1601,7 @@ Const BS_HTMLSurface_ShowToolTip							= BS_ECallback_SteamHTMLSurfaceCallbacks 
 ;//-----------------------------------------------------------------------------
 ;// Purpose: update the Text of an existing tooltip
 ;//-----------------------------------------------------------------------------
-Const BS_HTMLSurface_UpdateToolTip							= BS_ECallback_SteamHTMLSurfaceCallbacks + 25
+Const BS_SteamHTMLSurface_UpdateToolTip							= BS_ECallback_SteamHTMLSurfaceCallbacks + 25
 ;DEFINE_CALLBACK( HTML_UpdateToolTip_t, k_iSteamHTMLSurfaceCallbacks + 25 )
 ;CALLBACK_MEMBER( 0, HHTMLBrowser, unBrowserHandle ) // the Handle of the surface 
 ;CALLBACK_MEMBER( 1, Const char *, pchMsg ) // the EMouseCursor To display
@@ -1463,84 +1610,131 @@ Const BS_HTMLSurface_UpdateToolTip							= BS_ECallback_SteamHTMLSurfaceCallback
 ;//-----------------------------------------------------------------------------
 ;// Purpose: hide the tooltip you are showing
 ;//-----------------------------------------------------------------------------
-Const BS_HTMLSurface_HideToolTip							= BS_ECallback_SteamHTMLSurfaceCallbacks + 26
+Const BS_SteamHTMLSurface_HideToolTip							= BS_ECallback_SteamHTMLSurfaceCallbacks + 26
 ;DEFINE_CALLBACK( HTML_HideToolTip_t, k_iSteamHTMLSurfaceCallbacks + 26 )
 ;CALLBACK_MEMBER( 0, HHTMLBrowser, unBrowserHandle ) // the Handle of the surface 
 ;END_DEFINE_CALLBACK_1()
 ;[End Block]
 
-;[Block] API: GameServer
+;[Block] API: Inventory
 ;------------------------------------------------------------------------------
-;! GameServer
+;! Inventory
 ;------------------------------------------------------------------------------
-Const BS_CALLBACK_GSClientApprove							= BS_ECallback_SteamGameServerCallbacks + 1	; client has been approved to connect to this game server
-Type BS_GSClientApprove_t
-	Field SteamIDHigh%, SteamIDLow%					; SteamID of approved player
-	Field OwnerSteamIDHigh%, OwnerSteamIDLow%		; SteamID of original owner for game license
+Global BS_SteamInventory_SteamItemInstanceIDInvalid = BS_Long_FromII($FFFFFFFF, $FFFFFFFF)
+Const BS_SteamInventory_ResultInvalid = -1
+
+;// Types of items in your game are identified by a 32-bit "item definition number".
+;// Valid definition numbers are between 1 and 999999999; numbers less than or equal to
+;// zero are invalid, and numbers greater than or equal to one billion (1x10^9) are
+;// reserved for internal Steam use.
+
+Type BS_SteamInventory_SteamItemDetails
+	Field m_ItemIdHigh%, m_ItemIdLow%
+	Field m_iDefinition%, m_pad0%
+	Field m_unQuantity%, m_pad1%
+	Field m_unFlags%, m_pad2%
 End Type
-Const BS_CALLBACK_GSClientDeny								= BS_ECallback_SteamGameServerCallbacks + 2	; client has been denied to connection to this game server
-Type BS_GSClientDeny_t
-	Field SteamIDHigh%, SteamIDLow%
-	Field eDenyReason%, pad0%
-	Field rgchOptionalText%[31]						; 128 Bytes of Optional Text
+
+; SteamInventoryResultReady_t callbacks are fired whenever asynchronous
+; results transition from "Pending" to "OK" or an error state. There will
+; always be exactly one callback per handle.
+Const BS_SteamInventory_SteamInventoryResultReady = BS_ECallback_ClientInventoryCallbacks
+
+; SteamInventoryFullUpdate_t callbacks are triggered when GetAllItems
+; successfully returns a result which is newer / fresher than the last
+; known result. (It will not trigger if the inventory hasn't changed,
+; or if results from two overlapping calls are reversed in flight and
+; the earlier result is already known to be stale/out-of-date.)
+; The normal ResultReady callback will still be triggered immediately
+; afterwards; this is an additional notification for your convenience.
+Const BS_SteamInventory_SteamInventoryFullUpdate = BS_ECallback_ClientInventoryCallbacks + 1
+
+; A SteamInventoryDefinitionUpdate_t callback is triggered whenever
+; item definitions have been updated, which could be in response to 
+; LoadItemDefinitions() or any other async request which required
+; a definition update in order to process results from the server.
+Const BS_SteamInventoryDefinitionUpdate = BS_ECallback_ClientInventoryCallbacks + 2
+
+;[End Block]
+
+;[Block] API: Matchmaking
+;------------------------------------------------------------------------------
+;! Matchmaking
+;------------------------------------------------------------------------------
+;[End Block]
+
+;[Block] API: MatchmakingServers
+;------------------------------------------------------------------------------
+;! MatchmakingServers
+;------------------------------------------------------------------------------
+;[End Block]
+
+;[Block] API: Music
+;------------------------------------------------------------------------------
+;! Music
+;------------------------------------------------------------------------------
+;[End Block]
+
+;[Block] API: MusicRemote
+;------------------------------------------------------------------------------
+;! MusicRemote
+;------------------------------------------------------------------------------
+;[End Block]
+
+;[Block] API: Networking
+;------------------------------------------------------------------------------
+;! Networking
+;------------------------------------------------------------------------------
+Type BS_P2PSessionState_t
+	Field bConnectionActive%, m_pad0%
+	Field bConnecting%, m_pad1%
+	Field eP2PSessionError%, m_pad2%
+	Field bUsingRelay%, m_pad3%
+	Field nBytesQueuedForSend%, m_pad4%
+	Field nPacketsQueuedForSend%, m_pad5%
+	Field nRemoteIP%, m_pad6%
+	Field nRemotePort%, m_pad7%
 End Type
-Const BS_CALLBACK_GSClientKick								= BS_ECallback_SteamGameServerCallbacks + 3	; request the game server should kick the user
-Type BS_GSClientKick_t
-	Field SteamIDHigh%, SteamIDLow%
-	Field eDenyReason%, pad0%
+
+; callback notification - a user wants to talk to us over the P2P channel via the SendP2PPacket() API
+; in response, a call to AcceptP2PPacketsFromUser() needs to be made, if you want to talk with them
+Const BS_SteamNetworking_P2PSessionRequest					= BS_ECallback_SteamNetworkingCallbacks + 2
+Type BS_P2PSessionRequest_t
+	Field steamIDRemoteHigh%, steamIDRemoteLow%				; user who wants to talk to us
 End Type
-Const BS_CALLBACK_GSClientAchievementStatus					= BS_ECallback_SteamGameServerCallbacks + 6	; client achievement info
-Type BS_GSClientAchievementStatus_t
-	Field SteamIDHigh%, SteamIDLow%
-	Field pchAchievement[31]						; 128 byte C-String Achievement
-	Field bUnlocked%, pad0%
+
+; callback notification - packets can't get through to the specified user via the SendP2PPacket() API
+; all packets queued packets unsent at this point will be dropped
+; further attempts to send will retry making the connection (but will be dropped if we fail again)
+Const BS_SteamNetworking_P2PSessionConnectFail				= BS_ECallback_SteamNetworkingCallbacks + 3
+Type BS_P2PSessionConnectFail_t
+	Field steamIDRemoteHigh%, steamIDRemoteLow%				; user we were sending packets to
+	Field eP2PSessionError									; EP2PSessionError indicating why we're having trouble
 End Type
-Const BS_CALLBACK_GSPolicyResponse							= BS_ECallback_SteamUserCallbacks + 15		; received when the game server requests to be displayed as secure (VAC protected)
-Type BS_GSPolicyResponse_t																				; m_bSecure is true if the game server should display itself as secure to users, false otherwise
-	Field m_bSecure%, pad0%
-End Type
-Const BS_CALLBACK_GSGameplayStats							= BS_ECallback_SteamGameServerCallbacks + 7	; GS gameplay stats info
-Type BS_GSGameplayStats_t
-	Field eResult%, pad0%							; Result of the call
-	Field nRank%, pad1%							; Overall rank of the server (0-based)
-	Field unTotalConnects%, pad2%					; Total number of clients who have ever connected to the server
-	Field unTotalMinutesPlayed%, pad3%				; Total number of minutes ever played on the server
-End Type
-Const BS_CALLBACK_GSClientGroupStatus						= BS_ECallback_SteamGameServerCallbacks + 8	; Sent as a reply to RequestUserGroupStatus()
-Type BS_GSClientGroupStatus_t
-	Field SteamIDUserHigh%, SteamIDUserLow%
-	Field SteamIDGroupHigh%, SteamIDGroupLow%
-	Field bMember%, pad0%
-	Field bOfficer%, pad1%
-End Type
-Const BS_CALLBACK_GSReputation								= BS_ECallback_SteamGameServerCallbacks + 9	; Sent as a reply to GetServerReputation()
-Type BS_GSReputation_t
-	Field eResult%, pad0%							; Result of the call
-	Field unReputationScore%, pad1%				; The reputation score for the game server
-	Field bBanned%, pad2%							; True if the server is banned from the Steam
-													; master servers
-	
-	; The following members are only filled out if m_bBanned is true. They will all 
-	; be set to zero otherwise. Master server bans are by IP so it is possible to be
-	; banned even when the score is good high if there is a bad server on another port.
-	; This information can be used to determine which server is bad.
-	Field unBannedIP%, pad3%						; The IP of the banned server
-	Field usBannedPort%, pad4%					; The port of the banned server
-	Field ulBannedGameIDHigh%, ulBannedGameIDLow%	; The game ID the banned server is serving
-	Field unBanExpires%, pad5%					; Time the ban expires, expressed in the Unix epoch (seconds since 1/1/1970)
-End Type
-Const BS_CALLBACK_AssociateWithClanResult					= BS_ECallback_SteamGameServerCallbacks + 10; Sent as a reply to AssociateWithClan()
-Type BS_AssociateWithClanResult_t
-	Field eResult%									; Result of the call
-End Type
-Const BS_CALLBACK_ComputeNewPlayerCompatibilityResult		= BS_ECallback_SteamGameServerCallbacks + 11; Sent as a reply to ComputeNewPlayerCompatibility()
-Type BS_ComputeNewPlayerCompatibilityResult_t
-	Field eResult%, pad0%							; Result of the call
-	Field cPlayersThatDontLikeCandidate%, pad1%
-	Field cPlayersThatCandidateDoesntLike%, pad2%
-	Field cClanPlayersThatDontLikeCandidate%, pad3%
-	Field SteamIDCandidateHigh%, SteamIDCandidateLow%
-End Type
+;[End Block]
+
+;[Block] API: RemoteStorage
+;------------------------------------------------------------------------------
+;! RemoteStorage
+;------------------------------------------------------------------------------
+;[End Block]
+
+;[Block] API: Screenshots
+;------------------------------------------------------------------------------
+;! Screenshots
+;------------------------------------------------------------------------------
+;[End Block]
+
+;[Block] API: UGC
+;------------------------------------------------------------------------------
+;! UGC
+;------------------------------------------------------------------------------
+;[End Block]
+
+;[Block] API: UnifiedMessages
+;------------------------------------------------------------------------------
+;! UnifiedMessages
+;------------------------------------------------------------------------------
 ;[End Block]
 
 ;[Block] API: User
@@ -1682,37 +1876,20 @@ Type BS_GlobalStatsReceived_t
 End Type
 ;[End Block]
 
-;[Block] API: Networking
+;[Block] API: Utils
 ;------------------------------------------------------------------------------
-;! Networking
+;! Utils
 ;------------------------------------------------------------------------------
-Type BS_P2PSessionState_t
-	Field bConnectionActive%, pad0%
-	Field bConnecting%, pad1%
-	Field eP2PSessionError%, pad2%
-	Field bUsingRelay%, pad3%
-	Field nBytesQueuedForSend%, pad4%
-	Field nPacketsQueuedForSend%, pad5%
-	Field nRemoteIP%, pad6%
-	Field nRemotePort%, pad7%
-End Type
+;[End Block]
 
-; callback notification - a user wants to talk to us over the P2P channel via the SendP2PPacket() API
-; in response, a call to AcceptP2PPacketsFromUser() needs to be made, if you want to talk with them
-Const BS_CALLBACK_P2PSessionRequest							= BS_ECallback_SteamNetworkingCallbacks + 2
-Type BS_P2PSessionRequest_t
-	Field steamIDRemoteHigh%, steamIDRemoteLow%				; user who wants to talk to us
-End Type
-
-; callback notification - packets can't get through to the specified user via the SendP2PPacket() API
-; all packets queued packets unsent at this point will be dropped
-; further attempts to send will retry making the connection (but will be dropped if we fail again)
-Const BS_CALLBACK_P2PSessionConnectFail						= BS_ECallback_SteamNetworkingCallbacks + 3
-Type BS_P2PSessionConnectFail_t
-	Field steamIDRemoteHigh%, steamIDRemoteLow%				; user we were sending packets to
-	Field eP2PSessionError									; EP2PSessionError indicating why we're having trouble
-End Type
+;[Block] API: Video
+;------------------------------------------------------------------------------
+;! Video
+;------------------------------------------------------------------------------
 ;[End Block]
 
 ;~IDEal Editor Parameters:
+;~F#13#26#31#49#60#71#7E#93#C8#E0#F5#101#110#121#14F#166#178#190#1A1#1E2
+;~F#1EB#1F5#20C#216#220#229#232#240#24B#255#26B#27C#295#2A5#314#322#32C#33C#344#351
+;~F#360#36E#378#389#39D#3A0#3B6#3EA#40A#429#525#543#553#560#653#6CC#6FF
 ;~C#Blitz3D

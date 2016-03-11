@@ -16,7 +16,8 @@
 
 #include "BlitzSteam.h"
 
-DLL_FUNCTION(ISteamMusicRemote*) BS_MusicRemote() {
+DLL_FUNCTION(ISteamMusicRemote*) BS_SteamMusicRemote() {
 	return SteamMusicRemote();
 }
-BS_I
+
+#pragma message("SteamMusicRemote is not ported yet. TODO!")

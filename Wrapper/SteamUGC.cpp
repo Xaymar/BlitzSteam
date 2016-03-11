@@ -16,11 +16,13 @@
 
 #include "BlitzSteam.h"
 
-DLL_FUNCTION(ISteamUGC*) BS_UGC() {
+DLL_FUNCTION(ISteamUGC*) BS_SteamUGC() {
 	return SteamUGC();
 }
 
-DLL_FUNCTION(ISteamUGC*) BS_GameServerUGC() {
+DLL_FUNCTION(ISteamUGC*) BS_SteamGameServerUGC() {
 	return SteamGameServerUGC();
 }
+
+#pragma message("SteamUGC is not ported yet. TODO!")
 
