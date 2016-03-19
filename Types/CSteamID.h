@@ -20,9 +20,9 @@
 //-----------------------------------------------------------------------------
 // Purpose: Constructor
 //-----------------------------------------------------------------------------
-DLL_FUNCTION(CSteamID*) BS_CSteamID_New();
-DLL_FUNCTION(CSteamID*) BS_CSteamID_Copy(CSteamID* pOther);
-DLL_FUNCTION(void) BS_CSteamID_Destroy(CSteamID* pThis);
+DLL(CSteamID*) BS_CSteamID_New();
+DLL(CSteamID*) BS_CSteamID_Copy(CSteamID* pOther);
+DLL(void) BS_CSteamID_Destroy(CSteamID* pThis);
 
 //-----------------------------------------------------------------------------
 // Purpose: Constructor
@@ -30,7 +30,7 @@ DLL_FUNCTION(void) BS_CSteamID_Destroy(CSteamID* pThis);
 //			eUniverse -		Universe this account belongs to
 //			eAccountType -	Type of account
 //-----------------------------------------------------------------------------
-DLL_FUNCTION(CSteamID*) BS_CSteamID_New_IdUniverseType(AccountID_t iAccountId, EUniverse eUniverse, EAccountType eAccountType);
+DLL(CSteamID*) BS_CSteamID_New_IdUniverseType(AccountID_t iAccountId, EUniverse eUniverse, EAccountType eAccountType);
 
 //-----------------------------------------------------------------------------
 // Purpose: Constructor
@@ -39,7 +39,7 @@ DLL_FUNCTION(CSteamID*) BS_CSteamID_New_IdUniverseType(AccountID_t iAccountId, E
 //			eUniverse -		Universe this account belongs to
 //			eAccountType -	Type of account
 //-----------------------------------------------------------------------------
-DLL_FUNCTION(CSteamID*) BS_CSteamID_New_IdInstanceUniverseType(AccountID_t iAccountId, uint32_t iInstance, EUniverse eUniverse, EAccountType eAccountType);
+DLL(CSteamID*) BS_CSteamID_New_IdInstanceUniverseType(AccountID_t iAccountId, uint32_t iInstance, EUniverse eUniverse, EAccountType eAccountType);
 
 //-----------------------------------------------------------------------------
 // Purpose: Constructor
@@ -47,8 +47,8 @@ DLL_FUNCTION(CSteamID*) BS_CSteamID_New_IdInstanceUniverseType(AccountID_t iAcco
 // Note:	Will not accept a uint32 or int32 as input, as that is a probable mistake.
 //			See the stubbed out overloads in the private: section for more info.
 //-----------------------------------------------------------------------------
-DLL_FUNCTION(CSteamID*) BS_CSteamID_FromL(int64_t* pOther);
-DLL_FUNCTION(int64_t*) BS_CSteamID_ToL(CSteamID* pThis);
+DLL(CSteamID*) BS_CSteamID_FromL(int64_t* pOther);
+DLL(int64_t*) BS_CSteamID_ToL(CSteamID* pThis);
 
 //-----------------------------------------------------------------------------
 // Purpose: Sets parameters for steam ID
@@ -56,7 +56,7 @@ DLL_FUNCTION(int64_t*) BS_CSteamID_ToL(CSteamID* pThis);
 //			eUniverse -		Universe this account belongs to
 //			eAccountType -	Type of account
 //-----------------------------------------------------------------------------
-DLL_FUNCTION(void) BS_CSteamID_Set(CSteamID* pThis, AccountID_t iAccountID, EUniverse eUniverse, EAccountType eAccountType);
+DLL(void) BS_CSteamID_Set(CSteamID* pThis, AccountID_t iAccountID, EUniverse eUniverse, EAccountType eAccountType);
 
 //-----------------------------------------------------------------------------
 // Purpose: Sets parameters for steam ID
@@ -64,24 +64,24 @@ DLL_FUNCTION(void) BS_CSteamID_Set(CSteamID* pThis, AccountID_t iAccountID, EUni
 //			eUniverse -		Universe this account belongs to
 //			eAccountType -	Type of account
 //-----------------------------------------------------------------------------
-DLL_FUNCTION(void) BS_CSteamID_InstancedSet(CSteamID* pThis, AccountID_t iAccountId, uint32_t iInstance, EUniverse eUniverse, EAccountType eAccountType);
+DLL(void) BS_CSteamID_InstancedSet(CSteamID* pThis, AccountID_t iAccountId, uint32_t iInstance, EUniverse eUniverse, EAccountType eAccountType);
 
 //-----------------------------------------------------------------------------
 // Purpose: Initializes a steam ID from its 52 bit parts and universe/type
 // Input  : ulIdentifier - 52 bits of goodness
 //-----------------------------------------------------------------------------
-DLL_FUNCTION(void) BS_CSteamID_FullSet(CSteamID* pThis, int64_t* plIdentifier, EUniverse eUniverse, EAccountType eAccountType);
+DLL(void) BS_CSteamID_FullSet(CSteamID* pThis, int64_t* plIdentifier, EUniverse eUniverse, EAccountType eAccountType);
 
 //-----------------------------------------------------------------------------
 // Purpose: Initializes a steam ID from its 64-bit representation
 // Input  : ulSteamID -		64-bit representation of a Steam ID
 //-----------------------------------------------------------------------------
-DLL_FUNCTION(void) BS_CSteamID_SetFromLong(CSteamID* pThis, int64_t* plSteamID);
+DLL(void) BS_CSteamID_SetFromLong(CSteamID* pThis, int64_t* plSteamID);
 
 //-----------------------------------------------------------------------------
 // Purpose: Clear all fields, leaving an invalid ID.
 //-----------------------------------------------------------------------------
-DLL_FUNCTION(void) BS_CSteamID_Clear(CSteamID* pThis);
+DLL(void) BS_CSteamID_Clear(CSteamID* pThis);
 
 //-----------------------------------------------------------------------------
 // Purpose: Converts the static parts of a steam ID to a 64-bit representation.
@@ -90,90 +90,90 @@ DLL_FUNCTION(void) BS_CSteamID_Clear(CSteamID* pThis);
 //			account key.
 // Output : 64-bit static account key
 //-----------------------------------------------------------------------------
-DLL_FUNCTION(int64_t*) BS_CSteamID_GetStaticAccountKey(CSteamID* pThis);
+DLL(int64_t*) BS_CSteamID_GetStaticAccountKey(CSteamID* pThis);
 
 //-----------------------------------------------------------------------------
 // Purpose: create an anonymous game server login to be filled in by the AM
 //-----------------------------------------------------------------------------
-DLL_FUNCTION(void) BS_CSteamID_CreateBlankAnonLogon(CSteamID* pThis, EUniverse eUniverse);
+DLL(void) BS_CSteamID_CreateBlankAnonLogon(CSteamID* pThis, EUniverse eUniverse);
 
 //-----------------------------------------------------------------------------
 // Purpose: create an anonymous game server login to be filled in by the AM
 //-----------------------------------------------------------------------------
-DLL_FUNCTION(void) BS_CSteamID_CreateBlankAnonUserLogon(CSteamID* pThis, EUniverse eUniverse);
+DLL(void) BS_CSteamID_CreateBlankAnonUserLogon(CSteamID* pThis, EUniverse eUniverse);
 
 //-----------------------------------------------------------------------------
 // Purpose: Is this an anonymous game server login that will be filled in?
 //-----------------------------------------------------------------------------
-DLL_FUNCTION(int32_t) BS_CSteamID_IsBlankAnonAccount(CSteamID* pThis);
+DLL(int32_t) BS_CSteamID_IsBlankAnonAccount(CSteamID* pThis);
 
 //-----------------------------------------------------------------------------
 // Purpose: Is this a game server account id?  (Either persistent or anonymous)
 //-----------------------------------------------------------------------------
-DLL_FUNCTION(int32_t) BS_CSteamID_IsGameServerAccount(CSteamID* pThis);
+DLL(int32_t) BS_CSteamID_IsGameServerAccount(CSteamID* pThis);
 
 //-----------------------------------------------------------------------------
 // Purpose: Is this a persistent (not anonymous) game server account id?
 //-----------------------------------------------------------------------------
-DLL_FUNCTION(int32_t) BS_CSteamID_IsPersistentGameServerAccount(CSteamID* pThis);
+DLL(int32_t) BS_CSteamID_IsPersistentGameServerAccount(CSteamID* pThis);
 
 //-----------------------------------------------------------------------------
 // Purpose: Is this an anonymous game server account id?
 //-----------------------------------------------------------------------------
-DLL_FUNCTION(int32_t) BS_CSteamID_IsAnonGameServerAccount(CSteamID* pThis);
+DLL(int32_t) BS_CSteamID_IsAnonGameServerAccount(CSteamID* pThis);
 
 //-----------------------------------------------------------------------------
 // Purpose: Is this a content server account id?
 //-----------------------------------------------------------------------------
-DLL_FUNCTION(int32_t) BS_CSteamID_IsContentServerAccount(CSteamID* pThis);
+DLL(int32_t) BS_CSteamID_IsContentServerAccount(CSteamID* pThis);
 
 //-----------------------------------------------------------------------------
 // Purpose: Is this a clan account id?
 //-----------------------------------------------------------------------------
-DLL_FUNCTION(int32_t) BS_CSteamID_IsClanAccount(CSteamID* pThis);
+DLL(int32_t) BS_CSteamID_IsClanAccount(CSteamID* pThis);
 
 //-----------------------------------------------------------------------------
 // Purpose: Is this a chat account id?
 //-----------------------------------------------------------------------------
-DLL_FUNCTION(int32_t) BS_CSteamID_IsChatAccount(CSteamID* pThis);
+DLL(int32_t) BS_CSteamID_IsChatAccount(CSteamID* pThis);
 
 //-----------------------------------------------------------------------------
 // Purpose: Is this a Lobby?
 //-----------------------------------------------------------------------------
-DLL_FUNCTION(int32_t) BS_CSteamID_IsLobby(CSteamID* pThis);
+DLL(int32_t) BS_CSteamID_IsLobby(CSteamID* pThis);
 
 //-----------------------------------------------------------------------------
 // Purpose: Is this an individual user account id?
 //-----------------------------------------------------------------------------
-DLL_FUNCTION(int32_t) BS_CSteamID_IsIndividualAccount(CSteamID* pThis);
+DLL(int32_t) BS_CSteamID_IsIndividualAccount(CSteamID* pThis);
 
 //-----------------------------------------------------------------------------
 // Purpose: Is this an anonymous account?
 //-----------------------------------------------------------------------------
-DLL_FUNCTION(int32_t) BS_CSteamID_IsAnonAccount(CSteamID* pThis);
+DLL(int32_t) BS_CSteamID_IsAnonAccount(CSteamID* pThis);
 
 //-----------------------------------------------------------------------------
 // Purpose: Is this an anonymous user account? ( used to create an account or reset a password )
 //-----------------------------------------------------------------------------
-DLL_FUNCTION(int32_t) BS_CSteamID_IsAnonUserAccount(CSteamID* pThis);
+DLL(int32_t) BS_CSteamID_IsAnonUserAccount(CSteamID* pThis);
 
 //-----------------------------------------------------------------------------
 // Purpose: Is this a faked up Steam ID for a PSN friend account?
 //-----------------------------------------------------------------------------
-DLL_FUNCTION(int32_t) BS_CSteamID_IsConsoleUserAccount(CSteamID* pThis);
+DLL(int32_t) BS_CSteamID_IsConsoleUserAccount(CSteamID* pThis);
 
 // simple accessors
-DLL_FUNCTION(void) BS_CSteamID_SetAccountID(CSteamID* pThis, AccountID_t iAccountId);
-DLL_FUNCTION(AccountID_t) BS_CSteamID_GetAccountID(CSteamID* pThis);
+DLL(void) BS_CSteamID_SetAccountID(CSteamID* pThis, AccountID_t iAccountId);
+DLL(AccountID_t) BS_CSteamID_GetAccountID(CSteamID* pThis);
 
-DLL_FUNCTION(void) BS_CSteamID_SetAccountInstance(CSteamID* pThis, uint32_t iInstance);
-DLL_FUNCTION(void) BS_CSteamID_ClearIndividualInstance(CSteamID* pThis);
-DLL_FUNCTION(int32_t) BS_CSteamID_HasNoIndividualInstance(CSteamID* pThis);
-DLL_FUNCTION(uint32_t) BS_CSteamID_GetAccountInstance(CSteamID* pThis);
+DLL(void) BS_CSteamID_SetAccountInstance(CSteamID* pThis, uint32_t iInstance);
+DLL(void) BS_CSteamID_ClearIndividualInstance(CSteamID* pThis);
+DLL(int32_t) BS_CSteamID_HasNoIndividualInstance(CSteamID* pThis);
+DLL(uint32_t) BS_CSteamID_GetAccountInstance(CSteamID* pThis);
 
-DLL_FUNCTION(EAccountType) BS_CSteamID_GetEAccountType(CSteamID* pThis);
+DLL(EAccountType) BS_CSteamID_GetEAccountType(CSteamID* pThis);
 
-DLL_FUNCTION(void) BS_CSteamID_SetEUniverse(CSteamID* pThis, EUniverse eUniverse);
-DLL_FUNCTION(EUniverse) BS_CSteamID_GetEUniverse(CSteamID* pThis);
+DLL(void) BS_CSteamID_SetEUniverse(CSteamID* pThis, EUniverse eUniverse);
+DLL(EUniverse) BS_CSteamID_GetEUniverse(CSteamID* pThis);
 
-DLL_FUNCTION(int32_t) BS_CSteamID_Compare(CSteamID* pThis, CSteamID* pOther);
+DLL(int32_t) BS_CSteamID_Compare(CSteamID* pThis, CSteamID* pOther);

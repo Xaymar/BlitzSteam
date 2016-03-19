@@ -29,23 +29,23 @@
 //		UDP packets for the master  server updater. See references to GameSocketShare in isteamgameserver.h.
 // - The version string is usually in the form x.x.x.x, and is used by the master server to detect when the
 //		server is out of date.  (Only servers with the latest version will be listed.)
-DLL_FUNCTION(uint32_t) BS_SteamGameServer_Init(uint32_t unIP, uint16_t usSteamPort, uint16_t usGamePort, uint16_t usQueryPort, EServerMode eServerMode, const char *pchVersionString) {
+DLL(uint32_t) BS_SteamGameServer_Init(uint32_t unIP, uint16_t usSteamPort, uint16_t usGamePort, uint16_t usQueryPort, EServerMode eServerMode, const char *pchVersionString) {
 	return SteamGameServer_Init(unIP, usSteamPort, usGamePort, usQueryPort, eServerMode, pchVersionString);
 }
 
-DLL_FUNCTION(void) BS_SteamGameServer_Shutdown() {
+DLL(void) BS_SteamGameServer_Shutdown() {
 	SteamGameServer_Shutdown();
 }
 
-DLL_FUNCTION(void) BS_SteamGameServer_RunCallbacks() {
+DLL(void) BS_SteamGameServer_RunCallbacks() {
 	SteamGameServer_RunCallbacks();
 }
 
-DLL_FUNCTION(uint32_t) BS_SteamGameServer_IsSecure() {
+DLL(uint32_t) BS_SteamGameServer_IsSecure() {
 	return SteamGameServer_BSecure();
 }
 
-DLL_FUNCTION(CSteamID*) BS_SteamGameServer_GetSteamID() {
+DLL(CSteamID*) BS_SteamGameServer_GetSteamID() {
 	return new CSteamID(SteamGameServer_GetSteamID());
 }
 
@@ -54,7 +54,7 @@ DLL_FUNCTION(CSteamID*) BS_SteamGameServer_GetSteamID() {
 //
 //	The following functions are part of abstracting API access to the steamclient.dll, but should only be used in very specific cases
 //----------------------------------------------------------------------------------------------------------------------------------------------------------//
-DLL_FUNCTION(HSteamPipe) BS_SteamGameServer_GetHSteamPipe() {
+DLL(HSteamPipe) BS_SteamGameServer_GetHSteamPipe() {
 	return SteamGameServer_GetHSteamPipe();
 }
 
@@ -62,7 +62,7 @@ DLL_FUNCTION(HSteamPipe) BS_SteamGameServer_GetHSteamPipe() {
 //-----------------------------------------------------------------------------
 // Purpose: Functions for authenticating users via Steam to play on a game server
 //-----------------------------------------------------------------------------
-DLL_FUNCTION(ISteamGameServer*) BS_SteamGameServer() {
+DLL(ISteamGameServer*) BS_SteamGameServer() {
 	return SteamGameServer();
 }
 
@@ -72,19 +72,19 @@ DLL_FUNCTION(ISteamGameServer*) BS_SteamGameServer() {
 //
 
 /// This is called by SteamGameServer_Init, and you will usually not need to call it directly
-DLL_FUNCTION(uint32_t) BS_ISteamGameServer_InitGameServer(ISteamGameServer* pSteamGameServer, uint32_t unIP, uint16_t usGamePort, uint16_t usQueryPort, uint32_t unFlags, AppId_t nGameAppId, const char *pchVersionString) {
+DLL(uint32_t) BS_ISteamGameServer_InitGameServer(ISteamGameServer* pSteamGameServer, uint32_t unIP, uint16_t usGamePort, uint16_t usQueryPort, uint32_t unFlags, AppId_t nGameAppId, const char *pchVersionString) {
 	return pSteamGameServer->InitGameServer(unIP, usGamePort, usQueryPort, unFlags, nGameAppId, pchVersionString);
 }
 
 /// Game product identifier.  This is currently used by the master server for version checking purposes.
 /// It's a required field, but will eventually will go away, and the AppID will be used for this purpose.
-DLL_FUNCTION(void) BS_ISteamGameServer_SetProduct(ISteamGameServer* pSteamGameServer, const char *pszProduct) {
+DLL(void) BS_ISteamGameServer_SetProduct(ISteamGameServer* pSteamGameServer, const char *pszProduct) {
 	pSteamGameServer->SetProduct(pszProduct);
 }
 
 /// Description of the game.  This is a required field and is displayed in the steam server browser....for now.
 /// This is a required field, but it will go away eventually, as the data should be determined from the AppID.
-DLL_FUNCTION(void) BS_ISteamGameServer_SetGameDescription(ISteamGameServer* pSteamGameServer, const char *pszGameDescription) {
+DLL(void) BS_ISteamGameServer_SetGameDescription(ISteamGameServer* pSteamGameServer, const char *pszGameDescription) {
 	pSteamGameServer->SetGameDescription(pszGameDescription);
 }
 
@@ -92,12 +92,12 @@ DLL_FUNCTION(void) BS_ISteamGameServer_SetGameDescription(ISteamGameServer* pSte
 /// this application is the original game, not a mod.
 ///
 /// @see k_cbMaxGameServerGameDir
-DLL_FUNCTION(void) BS_ISteamGameServer_SetModDir(ISteamGameServer* pSteamGameServer, const char *pszModDir) {
+DLL(void) BS_ISteamGameServer_SetModDir(ISteamGameServer* pSteamGameServer, const char *pszModDir) {
 	pSteamGameServer->SetModDir(pszModDir);
 }
 
 /// Is this is a dedicated server?  The default value is false.
-DLL_FUNCTION(void) BS_ISteamGameServer_SetDedicatedServer(ISteamGameServer* pSteamGameServer, uint32_t bDedicated) {
+DLL(void) BS_ISteamGameServer_SetDedicatedServer(ISteamGameServer* pSteamGameServer, uint32_t bDedicated) {
 	pSteamGameServer->SetDedicatedServer(!!bDedicated);
 }
 
@@ -111,7 +111,7 @@ DLL_FUNCTION(void) BS_ISteamGameServer_SetDedicatedServer(ISteamGameServer* pSte
 /// @see SteamServersConnected_t
 /// @see SteamServerConnectFailure_t
 /// @see SteamServersDisconnected_t
-DLL_FUNCTION(void) BS_ISteamGameServer_LogOn(ISteamGameServer* pSteamGameServer, const char *pszToken) {
+DLL(void) BS_ISteamGameServer_LogOn(ISteamGameServer* pSteamGameServer, const char *pszToken) {
 	pSteamGameServer->LogOn(pszToken);
 }
 
@@ -119,31 +119,31 @@ DLL_FUNCTION(void) BS_ISteamGameServer_LogOn(ISteamGameServer* pSteamGameServer,
 ///
 /// Note: in previous versions of the SDK, this was automatically called within SteamGameServer_Init,
 /// but this is no longer the case.
-DLL_FUNCTION(void) BS_ISteamGameServer_LogOnAnonymous(ISteamGameServer* pSteamGameServer) {
+DLL(void) BS_ISteamGameServer_LogOnAnonymous(ISteamGameServer* pSteamGameServer) {
 	pSteamGameServer->LogOnAnonymous();
 }
 
 /// Begin process of logging game server out of steam
-DLL_FUNCTION(void) BS_ISteamGameServer_LogOff(ISteamGameServer* pSteamGameServer) {
+DLL(void) BS_ISteamGameServer_LogOff(ISteamGameServer* pSteamGameServer) {
 	pSteamGameServer->LogOff();
 }
 
 // status functions
-DLL_FUNCTION(uint32_t) BS_ISteamGameServer_IsLoggedOn(ISteamGameServer* pSteamGameServer) {
+DLL(uint32_t) BS_ISteamGameServer_IsLoggedOn(ISteamGameServer* pSteamGameServer) {
 	return pSteamGameServer->BLoggedOn();
 }
 
-DLL_FUNCTION(uint32_t) BS_ISteamGameServer_IsSecure(ISteamGameServer* pSteamGameServer) {
+DLL(uint32_t) BS_ISteamGameServer_IsSecure(ISteamGameServer* pSteamGameServer) {
 	return pSteamGameServer->BSecure();
 }
 
-DLL_FUNCTION(CSteamID*) BS_ISteamGameServer_GetSteamID(ISteamGameServer* pSteamGameServer) {
+DLL(CSteamID*) BS_ISteamGameServer_GetSteamID(ISteamGameServer* pSteamGameServer) {
 	return new CSteamID(pSteamGameServer->GetSteamID());
 }
 
 /// Returns true if the master server has requested a restart.
 /// Only returns true once per request.
-DLL_FUNCTION(uint32_t) BS_ISteamGameServer_WasRestartRequested(ISteamGameServer* pSteamGameServer) {
+DLL(uint32_t) BS_ISteamGameServer_WasRestartRequested(ISteamGameServer* pSteamGameServer) {
 	return pSteamGameServer->WasRestartRequested();
 }
 
@@ -152,54 +152,54 @@ DLL_FUNCTION(uint32_t) BS_ISteamGameServer_WasRestartRequested(ISteamGameServer*
 //
 
 /// Max player count that will be reported to server browser and client queries
-DLL_FUNCTION(void) BS_ISteamGameServer_SetMaxPlayerCount(ISteamGameServer* pSteamGameServer, int32_t cPlayersMax) {
+DLL(void) BS_ISteamGameServer_SetMaxPlayerCount(ISteamGameServer* pSteamGameServer, int32_t cPlayersMax) {
 	pSteamGameServer->SetMaxPlayerCount(cPlayersMax);
 }
 
 /// Number of bots.  Default value is zero
-DLL_FUNCTION(void) BS_ISteamGameServer_SetBotPlayerCount(ISteamGameServer* pSteamGameServer, int32_t cBotplayers) {
+DLL(void) BS_ISteamGameServer_SetBotPlayerCount(ISteamGameServer* pSteamGameServer, int32_t cBotplayers) {
 	pSteamGameServer->SetBotPlayerCount(cBotplayers);
 }
 
 /// Set the name of server as it will appear in the server browser
 ///
 /// @see k_cbMaxGameServerName
-DLL_FUNCTION(void) BS_ISteamGameServer_SetServerName(ISteamGameServer* pSteamGameServer, const char *pszServerName) {
+DLL(void) BS_ISteamGameServer_SetServerName(ISteamGameServer* pSteamGameServer, const char *pszServerName) {
 	pSteamGameServer->SetServerName(pszServerName);
 }
 
 /// Set name of map to report in the server browser
 ///
 /// @see k_cbMaxGameServerName
-DLL_FUNCTION(void) BS_ISteamGameServer_SetMapName(ISteamGameServer* pSteamGameServer, const char *pszMapName) {
+DLL(void) BS_ISteamGameServer_SetMapName(ISteamGameServer* pSteamGameServer, const char *pszMapName) {
 	pSteamGameServer->SetMapName(pszMapName);
 }
 
 /// Let people know if your server will require a password
-DLL_FUNCTION(void) BS_ISteamGameServer_SetPasswordProtected(ISteamGameServer* pSteamGameServer, uint32_t bPasswordProtected) {
+DLL(void) BS_ISteamGameServer_SetPasswordProtected(ISteamGameServer* pSteamGameServer, uint32_t bPasswordProtected) {
 	pSteamGameServer->SetPasswordProtected(!!bPasswordProtected);
 }
 
 /// Spectator server.  The default value is zero, meaning the service
 /// is not used.
-DLL_FUNCTION(void) BS_ISteamGameServer_SetSpectatorPort(ISteamGameServer* pSteamGameServer, uint16_t unSpectatorPort) {
+DLL(void) BS_ISteamGameServer_SetSpectatorPort(ISteamGameServer* pSteamGameServer, uint16_t unSpectatorPort) {
 	pSteamGameServer->SetSpectatorPort(unSpectatorPort);
 }
 
 /// Name of the spectator server.  (Only used if spectator port is nonzero.)
 ///
 /// @see k_cbMaxGameServerMapName
-DLL_FUNCTION(void) BS_ISteamGameServer_SetSpectatorServerName(ISteamGameServer* pSteamGameServer, const char *pszSpectatorServerName) {
+DLL(void) BS_ISteamGameServer_SetSpectatorServerName(ISteamGameServer* pSteamGameServer, const char *pszSpectatorServerName) {
 	pSteamGameServer->SetSpectatorServerName(pszSpectatorServerName);
 }
 
 /// Call this to clear the whole list of key/values that are sent in rules queries.
-DLL_FUNCTION(void) BS_ISteamGameServer_ClearAllKeyValues(ISteamGameServer* pSteamGameServer) {
+DLL(void) BS_ISteamGameServer_ClearAllKeyValues(ISteamGameServer* pSteamGameServer) {
 	pSteamGameServer->ClearAllKeyValues();
 }
 
 /// Call this to add/update a key/value pair.
-DLL_FUNCTION(void) BS_ISteamGameServer_SetKeyValue(ISteamGameServer* pSteamGameServer, const char *pKey, const char *pValue) {
+DLL(void) BS_ISteamGameServer_SetKeyValue(ISteamGameServer* pSteamGameServer, const char *pKey, const char *pValue) {
 	pSteamGameServer->SetKeyValue(pKey, pValue);
 }
 
@@ -207,7 +207,7 @@ DLL_FUNCTION(void) BS_ISteamGameServer_SetKeyValue(ISteamGameServer* pSteamGameS
 /// it allows users to filter in the matchmaking/server-browser interfaces based on the value
 ///
 /// @see k_cbMaxGameServerTags
-DLL_FUNCTION(void) BS_ISteamGameServer_SetGameTags(ISteamGameServer* pSteamGameServer, const char *pchGameTags) {
+DLL(void) BS_ISteamGameServer_SetGameTags(ISteamGameServer* pSteamGameServer, const char *pchGameTags) {
 	pSteamGameServer->SetGameTags(pchGameTags);
 }
 
@@ -217,12 +217,12 @@ DLL_FUNCTION(void) BS_ISteamGameServer_SetGameTags(ISteamGameServer* pSteamGameS
 /// acknowledged)
 ///
 /// @see k_cbMaxGameServerGameData
-DLL_FUNCTION(void) BS_ISteamGameServer_SetGameData(ISteamGameServer* pSteamGameServer, const char *pchGameData) {
+DLL(void) BS_ISteamGameServer_SetGameData(ISteamGameServer* pSteamGameServer, const char *pchGameData) {
 	pSteamGameServer->SetGameData(pchGameData);
 }
 
 /// Region identifier.  This is an optional field, the default value is empty, meaning the "world" region
-DLL_FUNCTION(void) BS_ISteamGameServer_SetRegion(ISteamGameServer* pSteamGameServer, const char *pszRegion) {
+DLL(void) BS_ISteamGameServer_SetRegion(ISteamGameServer* pSteamGameServer, const char *pszRegion) {
 	pSteamGameServer->SetRegion(pszRegion);
 }
 
@@ -239,7 +239,7 @@ DLL_FUNCTION(void) BS_ISteamGameServer_SetRegion(ISteamGameServer* pSteamGameSer
 // Return Value: returns true if the users ticket passes basic checks. pSteamIDUser will contain the Steam ID of this user. pSteamIDUser must NOT be NULL
 // If the call succeeds then you should expect a GSClientApprove_t or GSClientDeny_t callback which will tell you whether authentication
 // for the user has succeeded or failed (the steamid in the callback will match the one returned by this call)
-DLL_FUNCTION(uint32_t) BS_ISteamGameServer_SendUserConnectAndAuthenticate(ISteamGameServer* pSteamGameServer, uint32_t unIPClient, const void *pvAuthBlob, uint32_t cubAuthBlobSize, CSteamID *pSteamIDUser) {
+DLL(uint32_t) BS_ISteamGameServer_SendUserConnectAndAuthenticate(ISteamGameServer* pSteamGameServer, uint32_t unIPClient, const void *pvAuthBlob, uint32_t cubAuthBlobSize, CSteamID *pSteamIDUser) {
 	return pSteamGameServer->SendUserConnectAndAuthenticate(unIPClient, pvAuthBlob, cubAuthBlobSize, pSteamIDUser);
 }
 
@@ -247,14 +247,14 @@ DLL_FUNCTION(uint32_t) BS_ISteamGameServer_SendUserConnectAndAuthenticate(ISteam
 // 
 // Return Value: Returns a SteamID for the user to be tracked with, you should call HandleUserDisconnect()
 // when this user leaves the server just like you would for a real user.
-DLL_FUNCTION(CSteamID*) BS_ISteamGameServer_CreateUnauthenticatedUserConnection(ISteamGameServer* pSteamGameServer) {
+DLL(CSteamID*) BS_ISteamGameServer_CreateUnauthenticatedUserConnection(ISteamGameServer* pSteamGameServer) {
 	return new CSteamID(pSteamGameServer->CreateUnauthenticatedUserConnection());
 }
 
 // Should be called whenever a user leaves our game server, this lets Steam internally
 // track which users are currently on which servers for the purposes of preventing a single
 // account being logged into multiple servers, showing who is currently on a server, etc.
-DLL_FUNCTION(void) BS_ISteamGameServer_SendUserDisconnect(ISteamGameServer* pSteamGameServer, CSteamID* pSteamIDUser) {
+DLL(void) BS_ISteamGameServer_SendUserDisconnect(ISteamGameServer* pSteamGameServer, CSteamID* pSteamIDUser) {
 	pSteamGameServer->SendUserDisconnect(*pSteamIDUser);
 }
 
@@ -263,7 +263,7 @@ DLL_FUNCTION(void) BS_ISteamGameServer_SendUserDisconnect(ISteamGameServer* pSte
 // GSUserValidationSuccess callback.
 // 
 // Return Value: true if successful, false if failure (ie, steamIDUser wasn't for an active player)
-DLL_FUNCTION(uint32_t) BS_ISteamGameServer_UpdateUserData(ISteamGameServer* pSteamGameServer, CSteamID* pSteamIDUser, const char *pchPlayerName, uint32_t uScore) {
+DLL(uint32_t) BS_ISteamGameServer_UpdateUserData(ISteamGameServer* pSteamGameServer, CSteamID* pSteamIDUser, const char *pchPlayerName, uint32_t uScore) {
 	return pSteamGameServer->BUpdateUserData(*pSteamIDUser, pchPlayerName, uScore);
 }
 
@@ -272,42 +272,42 @@ DLL_FUNCTION(uint32_t) BS_ISteamGameServer_UpdateUserData(ISteamGameServer* pSte
 
 // Retrieve ticket to be sent to the entity who wishes to authenticate you ( using BeginAuthSession API ). 
 // pcbTicket retrieves the length of the actual ticket.
-DLL_FUNCTION(HAuthTicket) BS_ISteamGameServer_GetAuthSessionTicket(ISteamGameServer* pSteamGameServer, void *pTicket, int32_t cbMaxTicket, uint32_t *pcbTicket) {
+DLL(HAuthTicket) BS_ISteamGameServer_GetAuthSessionTicket(ISteamGameServer* pSteamGameServer, void *pTicket, int32_t cbMaxTicket, uint32_t *pcbTicket) {
 	return pSteamGameServer->GetAuthSessionTicket(pTicket, cbMaxTicket, pcbTicket);
 }
 
 // Authenticate ticket ( from GetAuthSessionTicket ) from entity steamID to be sure it is valid and isnt reused
 // Registers for callbacks if the entity goes offline or cancels the ticket ( see ValidateAuthTicketResponse_t callback and EAuthSessionResponse )
-DLL_FUNCTION(EBeginAuthSessionResult) BS_ISteamGameServer_BeginAuthSession(ISteamGameServer* pSteamGameServer, const void *pAuthTicket, int32_t cbAuthTicket, CSteamID* pSteamID) {
+DLL(EBeginAuthSessionResult) BS_ISteamGameServer_BeginAuthSession(ISteamGameServer* pSteamGameServer, const void *pAuthTicket, int32_t cbAuthTicket, CSteamID* pSteamID) {
 	return pSteamGameServer->BeginAuthSession(pAuthTicket, cbAuthTicket, *pSteamID);
 }
 
 // Stop tracking started by BeginAuthSession - called when no longer playing game with this entity
-DLL_FUNCTION(void) BS_ISteamGameServer_EndAuthSession(ISteamGameServer* pSteamGameServer, CSteamID* pSteamID) {
+DLL(void) BS_ISteamGameServer_EndAuthSession(ISteamGameServer* pSteamGameServer, CSteamID* pSteamID) {
 	pSteamGameServer->EndAuthSession(*pSteamID);
 }
 
 // Cancel auth ticket from GetAuthSessionTicket, called when no longer playing game with the entity you gave the ticket to
-DLL_FUNCTION(void) BS_ISteamGameServer_CancelAuthTicket(ISteamGameServer* pSteamGameServer, HAuthTicket hAuthTicket) {
+DLL(void) BS_ISteamGameServer_CancelAuthTicket(ISteamGameServer* pSteamGameServer, HAuthTicket hAuthTicket) {
 	pSteamGameServer->CancelAuthTicket(hAuthTicket);
 }
 
 // After receiving a user's authentication data, and passing it to SendUserConnectAndAuthenticate, use this function
 // to determine if the user owns downloadable content specified by the provided AppID.
-DLL_FUNCTION(EUserHasLicenseForAppResult) BS_ISteamGameServer_UserHasLicenseForApp(ISteamGameServer* pSteamGameServer, CSteamID* pSteamID, AppId_t appID) {
+DLL(EUserHasLicenseForAppResult) BS_ISteamGameServer_UserHasLicenseForApp(ISteamGameServer* pSteamGameServer, CSteamID* pSteamID, AppId_t appID) {
 	return pSteamGameServer->UserHasLicenseForApp(*pSteamID, appID);
 }
 
 // Ask if a user in in the specified group, results returns async by GSUserGroupStatus_t
 // returns false if we're not connected to the steam servers and thus cannot ask
-DLL_FUNCTION(uint32_t) BS_ISteamGameServer_RequestUserGroupStatus(ISteamGameServer* pSteamGameServer, CSteamID* pSteamIDUser, CSteamID* pSteamIDGroup) {
+DLL(uint32_t) BS_ISteamGameServer_RequestUserGroupStatus(ISteamGameServer* pSteamGameServer, CSteamID* pSteamIDUser, CSteamID* pSteamIDGroup) {
 	return pSteamGameServer->RequestUserGroupStatus(*pSteamIDUser, *pSteamIDGroup);
 }
 
 // Returns the public IP of the server according to Steam, useful when the server is 
 // behind NAT and you want to advertise its IP in a lobby for other clients to directly
 // connect to
-DLL_FUNCTION(uint32_t) BS_ISteamGameServer_GetPublicIP(ISteamGameServer* pSteamGameServer) {
+DLL(uint32_t) BS_ISteamGameServer_GetPublicIP(ISteamGameServer* pSteamGameServer) {
 	return pSteamGameServer->GetPublicIP();
 }
 
@@ -326,7 +326,7 @@ DLL_FUNCTION(uint32_t) BS_ISteamGameServer_GetPublicIP(ISteamGameServer* pSteamG
 
 // Call this when a packet that starts with 0xFFFFFFFF comes in. That means
 // it's for us.
-DLL_FUNCTION(uint32_t) BS_ISteamGameServer_HandleIncomingPacket(ISteamGameServer* pSteamGameServer, const void *pData, int32_t cbData, uint32_t srcIP, uint16_t srcPort) {
+DLL(uint32_t) BS_ISteamGameServer_HandleIncomingPacket(ISteamGameServer* pSteamGameServer, const void *pData, int32_t cbData, uint32_t srcIP, uint16_t srcPort) {
 	return pSteamGameServer->HandleIncomingPacket(pData, cbData, srcIP, srcPort);
 }
 
@@ -334,7 +334,7 @@ DLL_FUNCTION(uint32_t) BS_ISteamGameServer_HandleIncomingPacket(ISteamGameServer
 // This gets a packet that the master server updater needs to send out on UDP.
 // It returns the length of the packet it wants to send, or 0 if there are no more packets to send.
 // Call this each frame until it returns 0.
-DLL_FUNCTION(uint32_t) BS_ISteamGameServer_GetNextOutgoingPacket(ISteamGameServer* pSteamGameServer, void *pOut, int32_t cbMaxOut, uint32_t *pNetAdr, uint16_t *pPort) {
+DLL(uint32_t) BS_ISteamGameServer_GetNextOutgoingPacket(ISteamGameServer* pSteamGameServer, void *pOut, int32_t cbMaxOut, uint32_t *pNetAdr, uint16_t *pPort) {
 	return pSteamGameServer->GetNextOutgoingPacket(pOut, cbMaxOut, pNetAdr, pPort);
 }
 
@@ -344,28 +344,28 @@ DLL_FUNCTION(uint32_t) BS_ISteamGameServer_GetNextOutgoingPacket(ISteamGameServe
 
 // Call this as often as you like to tell the master server updater whether or not
 // you want it to be active (default: off).
-DLL_FUNCTION(void) BS_ISteamGameServer_EnableHeartbeats(ISteamGameServer* pSteamGameServer, uint32_t bActive) {
+DLL(void) BS_ISteamGameServer_EnableHeartbeats(ISteamGameServer* pSteamGameServer, uint32_t bActive) {
 	pSteamGameServer->EnableHeartbeats(!!bActive);
 }
 
 // You usually don't need to modify this.
 // Pass -1 to use the default value for iHeartbeatInterval.
 // Some mods change this.
-DLL_FUNCTION(void) BS_ISteamGameServer_SetHeartbeatInterval(ISteamGameServer* pSteamGameServer, int32_t iHeartbeatInterval) {
+DLL(void) BS_ISteamGameServer_SetHeartbeatInterval(ISteamGameServer* pSteamGameServer, int32_t iHeartbeatInterval) {
 	pSteamGameServer->SetHeartbeatInterval(iHeartbeatInterval);
 }
 
 // Force a heartbeat to steam at the next opportunity
-DLL_FUNCTION(void) BS_ISteamGameServer_ForceHeartbeat(ISteamGameServer* pSteamGameServer) {
+DLL(void) BS_ISteamGameServer_ForceHeartbeat(ISteamGameServer* pSteamGameServer) {
 	pSteamGameServer->ForceHeartbeat();
 }
 
 // associate this game server with this clan for the purposes of computing player compat
-DLL_FUNCTION(SteamAPICall_t*) BS_ISteamGameServer_AssociateWithClan(ISteamGameServer* pSteamGameServer, CSteamID* pSteamIDClan) {
+DLL(SteamAPICall_t*) BS_ISteamGameServer_AssociateWithClan(ISteamGameServer* pSteamGameServer, CSteamID* pSteamIDClan) {
 	return new SteamAPICall_t(pSteamGameServer->AssociateWithClan(*pSteamIDClan));
 }
 
 // ask if any of the current players dont want to play with this new player - or vice versa
-DLL_FUNCTION(SteamAPICall_t*) BS_ISteamGameServer_ComputeNewPlayerCompatibility(ISteamGameServer* pSteamGameServer, CSteamID* pSteamIDNewPlayer) {
+DLL(SteamAPICall_t*) BS_ISteamGameServer_ComputeNewPlayerCompatibility(ISteamGameServer* pSteamGameServer, CSteamID* pSteamIDNewPlayer) {
 	return new SteamAPICall_t(pSteamGameServer->ComputeNewPlayerCompatibility(*pSteamIDNewPlayer));
 }

@@ -16,7 +16,7 @@
 
 #include "BlitzSteam.h"
 
-DLL_FUNCTION(ISteamVideo*) BS_SteamVideo() {
+DLL(ISteamVideo*) BS_SteamVideo() {
 	return SteamVideo();
 }
 

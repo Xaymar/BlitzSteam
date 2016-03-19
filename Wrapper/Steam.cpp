@@ -23,16 +23,16 @@
 //
 //----------------------------------------------------------------------------------------------------------------------------------------------------------//
 
-DLL_FUNCTION(int32_t) BS_SteamAPI_Init() {
+DLL(int32_t) BS_SteamAPI_Init() {
 	return SteamAPI_Init();
 }
 
-DLL_FUNCTION(void) BS_SteamAPI_Shutdown() {
+DLL(void) BS_SteamAPI_Shutdown() {
 	SteamAPI_Shutdown();
 }
 
 // checks if a local Steam client is running 
-DLL_FUNCTION(int32_t) BS_SteamAPI_IsSteamRunning() {
+DLL(int32_t) BS_SteamAPI_IsSteamRunning() {
 	return SteamAPI_IsSteamRunning();
 }
 
@@ -47,16 +47,16 @@ DLL_FUNCTION(int32_t) BS_SteamAPI_IsSteamRunning() {
 //
 // NOTE: This function should be used only if you are using CEG or not using Steam's DRM. Once applied
 //       to your executable, Steam's DRM will handle restarting through Steam if necessary.
-DLL_FUNCTION(int32_t) BS_SteamAPI_RestartAppIfNecessary(uint32_t unOwnAppID) {
+DLL(int32_t) BS_SteamAPI_RestartAppIfNecessary(uint32_t unOwnAppID) {
 	return SteamAPI_RestartAppIfNecessary(unOwnAppID);
 }
 
 // crash dump recording functions
-DLL_FUNCTION(void) BS_SteamAPI_WriteMiniDump(uint32_t uStructuredExceptionCode, void* pvExceptionInfo, uint32_t uBuildID) {
+DLL(void) BS_SteamAPI_WriteMiniDump(uint32_t uStructuredExceptionCode, void* pvExceptionInfo, uint32_t uBuildID) {
 	SteamAPI_WriteMiniDump(uStructuredExceptionCode, pvExceptionInfo, uBuildID);
 }
 
-DLL_FUNCTION(void) BS_SteamAPI_SetMiniDumpComment(const char* pchMsg) {
+DLL(void) BS_SteamAPI_SetMiniDumpComment(const char* pchMsg) {
 	SteamAPI_SetMiniDumpComment(pchMsg);
 }
 
@@ -65,7 +65,7 @@ DLL_FUNCTION(void) BS_SteamAPI_SetMiniDumpComment(const char* pchMsg) {
 // will free all API-related memory associated with the calling thread.
 // This memory is also released automatically by SteamAPI_RunCallbacks(), so
 // a single-threaded program does not need to explicitly call this function.
-DLL_FUNCTION(void) BS_SteamAPI_ReleaseCurrentThreadMemory() {
+DLL(void) BS_SteamAPI_ReleaseCurrentThreadMemory() {
 	return SteamAPI_ReleaseCurrentThreadMemory();
 }
 
@@ -94,6 +94,6 @@ DLL_FUNCTION(void) BS_SteamAPI_ReleaseCurrentThreadMemory() {
 
 // SteamAPI_RunCallbacks is safe to call from multiple threads simultaneously,
 // but if you choose to do this, callback code may be executed on any thread.
-DLL_FUNCTION(void) BS_SteamAPI_RunCallbacks() {
+DLL(void) BS_SteamAPI_RunCallbacks() {
 	SteamAPI_RunCallbacks();
 }

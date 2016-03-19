@@ -16,11 +16,11 @@
 
 #include "BlitzSteam.h"
 
-DLL_FUNCTION(ISteamUtils*) BS_SteamUtils() {
+DLL(ISteamUtils*) BS_SteamUtils() {
 	return SteamUtils();
 }
 
-DLL_FUNCTION(ISteamUtils*) BS_SteamGameServerUtils() {
+DLL(ISteamUtils*) BS_SteamGameServerUtils() {
 	return SteamGameServerUtils();
 }
 

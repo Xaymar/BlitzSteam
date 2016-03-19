@@ -16,7 +16,7 @@
 
 #include "BlitzSteam.h"
 
-DLL_FUNCTION(ISteamMusic*) BS_SteamMusic() {
+DLL(ISteamMusic*) BS_SteamMusic() {
 	return SteamMusic();
 }
 

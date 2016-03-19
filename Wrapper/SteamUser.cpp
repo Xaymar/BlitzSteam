@@ -20,26 +20,26 @@
 // Purpose: Functions for accessing and manipulating a steam account
 //			associated with one client instance
 //-----------------------------------------------------------------------------
-DLL_FUNCTION(ISteamUser*) BS_SteamUser() {
+DLL(ISteamUser*) BS_SteamUser() {
 	return SteamUser();
 }
 
 // returns the HSteamUser this interface represents
 // this is only used internally by the API, and by a few select interfaces that support multi-user
-DLL_FUNCTION(HSteamUser) BS_ISteamUser_GetHSteamUser( ISteamUser* lpSteamUser ) {
+DLL(HSteamUser) BS_ISteamUser_GetHSteamUser( ISteamUser* lpSteamUser ) {
 	return lpSteamUser->GetHSteamUser( );
 }
 
 // returns true if the Steam client current has a live connection to the Steam servers. 
 // If false, it means there is no active connection due to either a networking issue on the local machine, or the Steam server is down/busy.
 // The Steam client will automatically be trying to recreate the connection as often as possible.
-DLL_FUNCTION(uint32_t) BS_ISteamUser_IsLoggedOn( ISteamUser* lpSteamUser ) {
+DLL(uint32_t) BS_ISteamUser_IsLoggedOn( ISteamUser* lpSteamUser ) {
 	return lpSteamUser->BLoggedOn( );
 }
 
 // returns the CSteamID of the account currently logged into the Steam client
 // a CSteamID is a unique identifier for an account, and used to differentiate users in all parts of the Steamworks API
-DLL_FUNCTION(CSteamID*) BS_ISteamUser_GetSteamID( ISteamUser* lpSteamUser ) {
+DLL(CSteamID*) BS_ISteamUser_GetSteamID( ISteamUser* lpSteamUser ) {
 	return &(lpSteamUser->GetSteamID( ));
 }
 
@@ -58,38 +58,38 @@ DLL_FUNCTION(CSteamID*) BS_ISteamUser_GetSteamID( ISteamUser* lpSteamUser ) {
 //
 // return value - returns the number of bytes written to pBlob. If the return is 0, then the buffer passed in was too small, and the call has failed
 // The contents of pBlob should then be sent to the game server, for it to use to complete the authentication process.
-DLL_FUNCTION(uint32_t) BS_ISteamUser_InitiateGameConnection( ISteamUser* lpSteamUser, void* pAuthBlob, uint32_t cbMaxAuthBlob, CSteamID* SteamIDGameServer, uint32_t unIPServer, uint16_t usPortServer, uint32_t bSecure ) {
+DLL(uint32_t) BS_ISteamUser_InitiateGameConnection( ISteamUser* lpSteamUser, void* pAuthBlob, uint32_t cbMaxAuthBlob, CSteamID* SteamIDGameServer, uint32_t unIPServer, uint16_t usPortServer, uint32_t bSecure ) {
 	return lpSteamUser->InitiateGameConnection( pAuthBlob, cbMaxAuthBlob, *SteamIDGameServer, unIPServer, usPortServer, bSecure != 0 );
 }
 
 // notify of disconnect
 // needs to occur when the game client leaves the specified game server, needs to match with the InitiateGameConnection() call
-DLL_FUNCTION(void) BS_ISteamUser_TerminateGameConnection( ISteamUser* lpSteamUser, uint32_t unIPServer, uint16_t usPortServer ) {
+DLL(void) BS_ISteamUser_TerminateGameConnection( ISteamUser* lpSteamUser, uint32_t unIPServer, uint16_t usPortServer ) {
 	lpSteamUser->TerminateGameConnection( unIPServer, usPortServer );
 }
 
 // Legacy functions
 
 // used by only a few games to track usage events
-DLL_FUNCTION(void) BS_ISteamUser_TrackAppUsageEvent( ISteamUser* lpSteamUser, CGameID* gameId, uint32_t eAppUsageEvent, const char* pchExtraInfo ) {
+DLL(void) BS_ISteamUser_TrackAppUsageEvent( ISteamUser* lpSteamUser, CGameID* gameId, uint32_t eAppUsageEvent, const char* pchExtraInfo ) {
 	lpSteamUser->TrackAppUsageEvent( *gameId, eAppUsageEvent, pchExtraInfo );
 }
 
 // get the local storage folder for current Steam account to write application data, e.g. save games, configs etc.
 // this will usually be something like "C:\Progam Files\Steam\userdata\<SteamID>\<AppID>\local"
-DLL_FUNCTION(uint32_t) BS_ISteamUser_GetUserDataFolder( ISteamUser* lpSteamUser, char* pchBuffer, uint32_t cubBuffer ) {
+DLL(uint32_t) BS_ISteamUser_GetUserDataFolder( ISteamUser* lpSteamUser, char* pchBuffer, uint32_t cubBuffer ) {
 	return lpSteamUser->GetUserDataFolder( pchBuffer, cubBuffer );
 }
 
 // Starts voice recording. Once started, use GetVoice() to get the data
-DLL_FUNCTION(void) BS_ISteamUser_StartVoiceRecording( ISteamUser* lpSteamUser ) {
+DLL(void) BS_ISteamUser_StartVoiceRecording( ISteamUser* lpSteamUser ) {
 	lpSteamUser->StartVoiceRecording( );
 }
 
 // Stops voice recording. Because people often release push-to-talk keys early, the system will keep recording for
 // a little bit after this function is called. GetVoice() should continue to be called until it returns
 // k_eVoiceResultNotRecording
-DLL_FUNCTION(void) BS_ISteamUser_StopVoiceRecording( ISteamUser* lpSteamUser ) {
+DLL(void) BS_ISteamUser_StopVoiceRecording( ISteamUser* lpSteamUser ) {
 	lpSteamUser->StopVoiceRecording( );
 }
 
@@ -99,7 +99,7 @@ DLL_FUNCTION(void) BS_ISteamUser_StopVoiceRecording( ISteamUser* lpSteamUser ) {
 // levels of speech are detected.
 // nUncompressedVoiceDesiredSampleRate is necessary to know the number of bytes to return in pcbUncompressed - can be set to 0 if you don't need uncompressed (the usual case)
 // If you're upgrading from an older Steamworks API, you'll want to pass in 11025 to nUncompressedVoiceDesiredSampleRate
-DLL_FUNCTION(EVoiceResult) BS_ISteamUser_GetAvailableVoice( ISteamUser* lpSteamUser, uint32_t* pcbCompressed, uint32_t* pcbUncompressed, uint32_t nUncompressedVoiceDesiredSampleRate ) {
+DLL(EVoiceResult) BS_ISteamUser_GetAvailableVoice( ISteamUser* lpSteamUser, uint32_t* pcbCompressed, uint32_t* pcbUncompressed, uint32_t nUncompressedVoiceDesiredSampleRate ) {
 	return lpSteamUser->GetAvailableVoice( pcbCompressed, pcbUncompressed, nUncompressedVoiceDesiredSampleRate );
 }
 
@@ -114,7 +114,7 @@ DLL_FUNCTION(EVoiceResult) BS_ISteamUser_GetAvailableVoice( ISteamUser* lpSteamU
 // Matching data that is not read during this call will be thrown away.
 // GetAvailableVoice() can be used to determine how much data is actually available.
 // If you're upgrading from an older Steamworks API, you'll want to pass in 11025 to nUncompressedVoiceDesiredSampleRate
-DLL_FUNCTION(EVoiceResult) BS_ISteamUser_GetVoice( ISteamUser* lpSteamUser, uint32_t bWantCompressed, void *pDestBuffer, uint32_t cbDestBufferSize, uint32_t *nBytesWritten, uint32_t bWantUncompressed, void *pUncompressedDestBuffer, uint32_t cbUncompressedDestBufferSize, uint32_t *nUncompressBytesWritten, uint32_t nUncompressedVoiceDesiredSampleRate ) {
+DLL(EVoiceResult) BS_ISteamUser_GetVoice( ISteamUser* lpSteamUser, uint32_t bWantCompressed, void *pDestBuffer, uint32_t cbDestBufferSize, uint32_t *nBytesWritten, uint32_t bWantUncompressed, void *pUncompressedDestBuffer, uint32_t cbUncompressedDestBufferSize, uint32_t *nUncompressBytesWritten, uint32_t nUncompressedVoiceDesiredSampleRate ) {
 	return lpSteamUser->GetVoice( bWantCompressed != 0, pDestBuffer, cbDestBufferSize, nBytesWritten, bWantUncompressed != 0, pUncompressedDestBuffer, cbUncompressedDestBufferSize, nUncompressBytesWritten, nUncompressedVoiceDesiredSampleRate );
 }
 
@@ -124,53 +124,53 @@ DLL_FUNCTION(EVoiceResult) BS_ISteamUser_GetVoice( ISteamUser* lpSteamUser, uint
 // data. The suggested buffer size for the destination buffer is 22 kilobytes.
 // The output format of the data is 16-bit signed at the requested samples per second.
 // If you're upgrading from an older Steamworks API, you'll want to pass in 11025 to nDesiredSampleRate
-DLL_FUNCTION(EVoiceResult) BS_ISteamUser_DecompressVoice( ISteamUser* lpSteamUser, const void *pCompressed, uint32_t cbCompressed, void *pDestBuffer, uint32_t cbDestBufferSize, uint32_t *nBytesWritten, uint32_t nDesiredSampleRate ) {
+DLL(EVoiceResult) BS_ISteamUser_DecompressVoice( ISteamUser* lpSteamUser, const void *pCompressed, uint32_t cbCompressed, void *pDestBuffer, uint32_t cbDestBufferSize, uint32_t *nBytesWritten, uint32_t nDesiredSampleRate ) {
 	return lpSteamUser->DecompressVoice( pCompressed, cbCompressed, pDestBuffer, cbDestBufferSize, nBytesWritten, nDesiredSampleRate );
 }
 
 // This returns the frequency of the voice data as it's stored internally; calling DecompressVoice() with this size will yield the best results
-DLL_FUNCTION(uint32_t) BS_ISteamUser_GetVoiceOptimalSampleRate( ISteamUser* lpSteamUser ) {
+DLL(uint32_t) BS_ISteamUser_GetVoiceOptimalSampleRate( ISteamUser* lpSteamUser ) {
 	return lpSteamUser->GetVoiceOptimalSampleRate( );
 }
 
 // Retrieve ticket to be sent to the entity who wishes to authenticate you. 
 // pcbTicket retrieves the length of the actual ticket.
-DLL_FUNCTION(HAuthTicket) BS_ISteamUser_GetAuthSessionTicket( ISteamUser* lpSteamUser, void* pTicket, uint32_t cbMaxTicket, uint32_t* pcbTicket ) {
+DLL(HAuthTicket) BS_ISteamUser_GetAuthSessionTicket( ISteamUser* lpSteamUser, void* pTicket, uint32_t cbMaxTicket, uint32_t* pcbTicket ) {
 	return lpSteamUser->GetAuthSessionTicket( pTicket, cbMaxTicket, pcbTicket );
 }
 
 // Authenticate ticket from entity steamID to be sure it is valid and isnt reused
 // Registers for callbacks if the entity goes offline or cancels the ticket ( see ValidateAuthTicketResponse_t callback and EAuthSessionResponse )
-DLL_FUNCTION(EBeginAuthSessionResult) BS_ISteamUser_BeginAuthSession( ISteamUser* lpSteamUser, const void *pAuthTicket, uint32_t cbAuthTicket, CSteamID* steamID ) {
+DLL(EBeginAuthSessionResult) BS_ISteamUser_BeginAuthSession( ISteamUser* lpSteamUser, const void *pAuthTicket, uint32_t cbAuthTicket, CSteamID* steamID ) {
 	return lpSteamUser->BeginAuthSession( pAuthTicket, cbAuthTicket, *steamID );
 }
 
 // Stop tracking started by BeginAuthSession - called when no longer playing game with this entity
-DLL_FUNCTION(void) BS_ISteamUser_EndAuthSession( ISteamUser* lpSteamUser, CSteamID* steamID ) {
+DLL(void) BS_ISteamUser_EndAuthSession( ISteamUser* lpSteamUser, CSteamID* steamID ) {
 	lpSteamUser->EndAuthSession( *steamID );
 }
 
 // Cancel auth ticket from GetAuthSessionTicket, called when no longer playing game with the entity you gave the ticket to
-DLL_FUNCTION(void) BS_ISteamUser_CancelAuthTicket( ISteamUser* lpSteamUser, HAuthTicket hAuthTicket ) {
+DLL(void) BS_ISteamUser_CancelAuthTicket( ISteamUser* lpSteamUser, HAuthTicket hAuthTicket ) {
 	lpSteamUser->CancelAuthTicket( hAuthTicket );
 }
 
 // After receiving a user's authentication data, and passing it to BeginAuthSession, use this function
 // to determine if the user owns downloadable content specified by the provided AppID.
-DLL_FUNCTION(EUserHasLicenseForAppResult) BS_ISteamUser_UserHasLicenseForApp( ISteamUser* lpSteamUser, CSteamID* steamID, AppId_t appID ) {
+DLL(EUserHasLicenseForAppResult) BS_ISteamUser_UserHasLicenseForApp( ISteamUser* lpSteamUser, CSteamID* steamID, AppId_t appID ) {
 	return lpSteamUser->UserHasLicenseForApp( *steamID, appID );
 }
 
 // returns true if this users looks like they are behind a NAT device. Only valid once the user has connected to steam 
 // (i.e a SteamServersConnected_t has been issued) and may not catch all forms of NAT.
-DLL_FUNCTION(uint32_t) BS_ISteamUser_IsBehindNAT( ISteamUser* lpSteamUser ) {
+DLL(uint32_t) BS_ISteamUser_IsBehindNAT( ISteamUser* lpSteamUser ) {
 	return lpSteamUser->BIsBehindNAT( );
 }
 
 // set data to be replicated to friends so that they can join your game
 // CSteamID steamIDGameServer - the steamID of the game server, received from the game server by the client
 // uint32 unIPServer, uint16 usPortServer - the IP address of the game server
-DLL_FUNCTION(void) BS_ISteamUser_AdvertiseGame( ISteamUser* lpSteamUser, CSteamID* steamIDGameServer, uint32_t unIPServer, uint16_t usPortServer ) {
+DLL(void) BS_ISteamUser_AdvertiseGame( ISteamUser* lpSteamUser, CSteamID* steamIDGameServer, uint32_t unIPServer, uint16_t usPortServer ) {
 	lpSteamUser->AdvertiseGame( *steamIDGameServer, unIPServer, usPortServer );
 }
 
@@ -178,24 +178,24 @@ DLL_FUNCTION(void) BS_ISteamUser_AdvertiseGame( ISteamUser* lpSteamUser, CSteamI
 // pDataToInclude, cbDataToInclude will be encrypted into the ticket
 // ( This is asynchronous, you must wait for the ticket to be completed by the server )
 //CALL_RESULT( EncryptedAppTicketResponse_t )
-DLL_FUNCTION(SteamAPICall_t*) BS_ISteamUser_RequestEncryptedAppTicket( ISteamUser* lpSteamUser, void* pDataToInclude, uint32_t cbDataToInclude ) {
+DLL(SteamAPICall_t*) BS_ISteamUser_RequestEncryptedAppTicket( ISteamUser* lpSteamUser, void* pDataToInclude, uint32_t cbDataToInclude ) {
 	return new uint64_t(lpSteamUser->RequestEncryptedAppTicket( pDataToInclude, cbDataToInclude ));
 }
 
 // retrieve a finished ticket
-DLL_FUNCTION(uint32_t) BS_ISteamUser_GetEncryptedAppTicket( ISteamUser* lpSteamUser, void *pTicket, uint32_t cbMaxTicket, uint32_t* pcbTicket ) {
+DLL(uint32_t) BS_ISteamUser_GetEncryptedAppTicket( ISteamUser* lpSteamUser, void *pTicket, uint32_t cbMaxTicket, uint32_t* pcbTicket ) {
 	return lpSteamUser->GetEncryptedAppTicket( pTicket, cbMaxTicket, pcbTicket );
 }
 
 // Trading Card badges data access
 // if you only have one set of cards, the series will be 1
 // the user has can have two different badges for a series; the regular (max level 5) and the foil (max level 1)
-DLL_FUNCTION(uint32_t) BS_ISteamUser_GetGameBadgeLevel( ISteamUser* lpSteamUser, uint32_t nSeries, uint32_t bFoil ) {
+DLL(uint32_t) BS_ISteamUser_GetGameBadgeLevel( ISteamUser* lpSteamUser, uint32_t nSeries, uint32_t bFoil ) {
 	return lpSteamUser->GetGameBadgeLevel( nSeries, bFoil != 0 );
 }
 
 // gets the Steam Level of the user, as shown on their profile
-DLL_FUNCTION(uint32_t) BS_ISteamUser_GetPlayerSteamLevel( ISteamUser* lpSteamUser ) {
+DLL(uint32_t) BS_ISteamUser_GetPlayerSteamLevel( ISteamUser* lpSteamUser ) {
 	return lpSteamUser->GetPlayerSteamLevel( );
 }
 
@@ -209,6 +209,6 @@ DLL_FUNCTION(uint32_t) BS_ISteamUser_GetPlayerSteamLevel( ISteamUser* lpSteamUse
 // or else immediately navigate to the result URL using a hidden browser window.
 // NOTE 2: The resulting authorization cookie has an expiration time of one day,
 // so it would be a good idea to request and visit a new auth URL every 12 hours.
-DLL_FUNCTION(SteamAPICall_t*) BS_ISteamUser_RequestStoreAuthURL( ISteamUser* lpSteamUser, const char* pchRedirectURL ) {
+DLL(SteamAPICall_t*) BS_ISteamUser_RequestStoreAuthURL( ISteamUser* lpSteamUser, const char* pchRedirectURL ) {
 	return new uint64_t(lpSteamUser->RequestStoreAuthURL( pchRedirectURL ));
 }

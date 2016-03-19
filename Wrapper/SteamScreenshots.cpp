@@ -16,7 +16,7 @@
 
 #include "BlitzSteam.h"
 
-DLL_FUNCTION(ISteamScreenshots*) BS_SteamScreenshots() {
+DLL(ISteamScreenshots*) BS_SteamScreenshots() {
 	return SteamScreenshots();
 }
 

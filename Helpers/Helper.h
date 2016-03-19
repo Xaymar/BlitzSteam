@@ -18,4 +18,4 @@
 #include "BlitzSteam.h"
 #include <time.h>
 
-DLL_FUNCTION(const char*) BS_Helper_FormatUnixTime(uint32_t unTime, const char* pchFormat);
+DLL(const char*) BS_Helper_FormatUnixTime(uint32_t unTime, const char* pchFormat);

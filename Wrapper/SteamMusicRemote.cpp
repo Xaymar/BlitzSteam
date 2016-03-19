@@ -16,7 +16,7 @@
 
 #include "BlitzSteam.h"
 
-DLL_FUNCTION(ISteamMusicRemote*) BS_SteamMusicRemote() {
+DLL(ISteamMusicRemote*) BS_SteamMusicRemote() {
 	return SteamMusicRemote();
 }
 

@@ -16,7 +16,7 @@
 
 #include "Helper.h"
 
-DLL_FUNCTION(const char*) BS_Helper_FormatUnixTime(uint32_t unTime, const char* pchFormat) {
+DLL(const char*) BS_Helper_FormatUnixTime(uint32_t unTime, const char* pchFormat) {
 	char* output = new char[strlen(pchFormat) * 4];
 	time_t t = unTime;
 	struct tm *tm = localtime(&t);
@@ -25,7 +25,7 @@ DLL_FUNCTION(const char*) BS_Helper_FormatUnixTime(uint32_t unTime, const char* 
 	return output;
 }
 
-DLL_FUNCTION(void) BS_Helper_CopyMemoryIntMangle(void* pSource, void* pDest, int32_t iMangling,
+DLL(void) BS_Helper_CopyMemoryIntMangle(void* pSource, void* pDest, int32_t iMangling,
 												 uint32_t iSourceW, uint32_t iSourceH, uint32_t iDestW, uint32_t iDestH,
 												 uint32_t iAreaX, uint32_t iAreaY, uint32_t iAreaW, uint32_t iAreaH) {
 	int8_t iMangleByte0 = static_cast<int8_t>((iMangling & 0xFF));

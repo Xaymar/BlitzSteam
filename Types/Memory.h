@@ -19,24 +19,24 @@
 #include <stdlib.h>
 
 
-DLL_FUNCTION(void*) BS_Memory_Alloc(uint32_t iSize);
-DLL_FUNCTION(void*) BS_Memory_ReAlloc(void* pMemory, uint32_t iNewSize);
-DLL_FUNCTION(void) BS_Memory_Free(void* pMemory);
+DLL(void*) BS_Memory_Alloc(uint32_t iSize);
+DLL(void*) BS_Memory_ReAlloc(void* pMemory, uint32_t iNewSize);
+DLL(void) BS_Memory_Free(void* pMemory);
 
-DLL_FUNCTION(void) BS_Memory_PokeByte(void* pMemory, uint32_t offset, int8_t value);
-DLL_FUNCTION(int32_t) BS_Memory_PeekByte(void* pMemory, uint32_t offset);
+DLL(void) BS_Memory_PokeByte(void* pMemory, uint32_t offset, int8_t value);
+DLL(int32_t) BS_Memory_PeekByte(void* pMemory, uint32_t offset);
 
-DLL_FUNCTION(void) BS_Memory_PokeShort(void* pMemory, uint32_t offset, int16_t value);
-DLL_FUNCTION(int32_t) BS_Memory_PeekShort(void* pMemory, uint32_t offset);
+DLL(void) BS_Memory_PokeShort(void* pMemory, uint32_t offset, int16_t value);
+DLL(int32_t) BS_Memory_PeekShort(void* pMemory, uint32_t offset);
 
-DLL_FUNCTION(void) BS_Memory_PokeInt(void* pMemory, uint32_t offset, int32_t value);
-DLL_FUNCTION(int32_t) BS_Memory_PeekInt(void* pMemory, uint32_t offset);
+DLL(void) BS_Memory_PokeInt(void* pMemory, uint32_t offset, int32_t value);
+DLL(int32_t) BS_Memory_PeekInt(void* pMemory, uint32_t offset);
 
-DLL_FUNCTION(void) BS_Memory_PokeFloat(void* pMemory, uint32_t offset, float_t value);
-DLL_FUNCTION(float_t) BS_Memory_PeekFloat(void* pMemory, uint32_t offset);
+DLL(void) BS_Memory_PokeFloat(void* pMemory, uint32_t offset, float_t value);
+DLL(float_t) BS_Memory_PeekFloat(void* pMemory, uint32_t offset);
 
-DLL_FUNCTION(void) BS_Memory_PokeLong(void* pMemory, uint32_t offset, int64_t* value);
-DLL_FUNCTION(int64_t*) BS_Memory_PeekLong(void* pMemory, uint32_t offset);
+DLL(void) BS_Memory_PokeLong(void* pMemory, uint32_t offset, int64_t* value);
+DLL(int64_t*) BS_Memory_PeekLong(void* pMemory, uint32_t offset);
 
-DLL_FUNCTION(void) BS_Memory_PokeDouble(void* pMemory, uint32_t offset, double_t* value);
-DLL_FUNCTION(double_t*) BS_Memory_PeekDouble(void* pMemory, uint32_t offset);
+DLL(void) BS_Memory_PokeDouble(void* pMemory, uint32_t offset, double_t* value);
+DLL(double_t*) BS_Memory_PeekDouble(void* pMemory, uint32_t offset);

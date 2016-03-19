@@ -16,7 +16,7 @@
 
 #include "BlitzSteam.h"
 
-DLL_FUNCTION(ISteamUnifiedMessages*) BS_SteamUnifiedMessages() {
+DLL(ISteamUnifiedMessages*) BS_SteamUnifiedMessages() {
 	return SteamUnifiedMessages();
 }
 

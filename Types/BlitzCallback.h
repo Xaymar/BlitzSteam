@@ -77,20 +77,20 @@ class BlitzCallback : public CCallbackBase {
 //-----------------------------------------------------------------------------
 // C-Callables
 //-----------------------------------------------------------------------------
-DLL_FUNCTION(BlitzCallback*) BS_Callback_New(BP_BlitzFunction3_t pFunctionPointer);
-DLL_FUNCTION(void) BS_Callback_Destroy(BlitzCallback* pCallback);
+DLL(BlitzCallback*) BS_Callback_New(BP_BlitzFunction3_t pFunctionPointer);
+DLL(void) BS_Callback_Destroy(BlitzCallback* pCallback);
 
-DLL_FUNCTION(int32_t) BS_Callback_GetCallbackSizeBytes(BlitzCallback* pCallback);
-DLL_FUNCTION(void) BS_Callback_SetCallback(BlitzCallback* pCallback, int32_t iCallback);
-DLL_FUNCTION(int32_t) BS_Callback_GetCallback(BlitzCallback* pCallback);
-DLL_FUNCTION(void) BS_Callback_SetFunction(BlitzCallback* pCallback, BP_BlitzFunction3_t pFunction);
-DLL_FUNCTION(BP_BlitzFunction3_t) BS_Callback_GetFunction(BlitzCallback* pCallback);
-DLL_FUNCTION(void) BS_Callback_SetRegistered(BlitzCallback* pCallback, int32_t bIsRegistered);
-DLL_FUNCTION(int32_t) BS_Callback_IsRegistered(BlitzCallback* pCallback);
-DLL_FUNCTION(void) BS_Callback_SetGameServer(BlitzCallback* pCallback, int32_t bIsGameServer);
-DLL_FUNCTION(int32_t) BS_Callback_IsGameServer(BlitzCallback* pCallback);
+DLL(int32_t) BS_Callback_GetCallbackSizeBytes(BlitzCallback* pCallback);
+DLL(void) BS_Callback_SetCallback(BlitzCallback* pCallback, int32_t iCallback);
+DLL(int32_t) BS_Callback_GetCallback(BlitzCallback* pCallback);
+DLL(void) BS_Callback_SetFunction(BlitzCallback* pCallback, BP_BlitzFunction3_t pFunction);
+DLL(BP_BlitzFunction3_t) BS_Callback_GetFunction(BlitzCallback* pCallback);
+DLL(void) BS_Callback_SetRegistered(BlitzCallback* pCallback, int32_t bIsRegistered);
+DLL(int32_t) BS_Callback_IsRegistered(BlitzCallback* pCallback);
+DLL(void) BS_Callback_SetGameServer(BlitzCallback* pCallback, int32_t bIsGameServer);
+DLL(int32_t) BS_Callback_IsGameServer(BlitzCallback* pCallback);
 
-DLL_FUNCTION(void) BS_Callback_Register(BlitzCallback* pCallback, uint32_t iCallback);
-DLL_FUNCTION(void) BS_Callback_Unregister(BlitzCallback* pCallback);
-DLL_FUNCTION(void) BS_Callback_RegisterResult(BlitzCallback* pCallback, SteamAPICall_t* pSteamAPICall, uint32_t iCallback);
-DLL_FUNCTION(void) BS_Callback_UnregisterResult(BlitzCallback* pCallback);
+DLL(void) BS_Callback_Register(BlitzCallback* pCallback, uint32_t iCallback);
+DLL(void) BS_Callback_Unregister(BlitzCallback* pCallback);
+DLL(void) BS_Callback_RegisterResult(BlitzCallback* pCallback, SteamAPICall_t* pSteamAPICall, uint32_t iCallback);
+DLL(void) BS_Callback_UnregisterResult(BlitzCallback* pCallback);

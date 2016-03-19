@@ -20,11 +20,11 @@
 // Purpose: Functions for making connections and sending data between clients,
 //			traversing NAT's where possible
 //-----------------------------------------------------------------------------
-DLL_FUNCTION(ISteamNetworking*) BS_SteamNetworking() {
+DLL(ISteamNetworking*) BS_SteamNetworking() {
 	return SteamNetworking();
 }
 
-DLL_FUNCTION(ISteamNetworking*) BS_SteamGameServerNetworking() {
+DLL(ISteamNetworking*) BS_SteamGameServerNetworking() {
 	return SteamGameServerNetworking();
 }
 
@@ -41,12 +41,12 @@ DLL_FUNCTION(ISteamNetworking*) BS_SteamGameServerNetworking() {
 // nChannel is a routing number you can use to help route message to different systems 	- you'll have to call ReadP2PPacket() 
 // with the same channel number in order to retrieve the data on the other end
 // using different channels to talk to the same user will still use the same underlying p2p connection, saving on resources
-DLL_FUNCTION(uint32_t) BS_ISteamNetworking_SendP2PPacket(ISteamNetworking* pThis, CSteamID* pSteamIDRemote, const void* pubData, uint32_t cubData, EP2PSend eP2PSendType, uint32_t nChannel) {
+DLL(uint32_t) BS_ISteamNetworking_SendP2PPacket(ISteamNetworking* pThis, CSteamID* pSteamIDRemote, const void* pubData, uint32_t cubData, EP2PSend eP2PSendType, uint32_t nChannel) {
 	return pThis->SendP2PPacket(*pSteamIDRemote, pubData, cubData, eP2PSendType, nChannel);
 }
 
 // returns true if any data is available for read, and the amount of data that will need to be read
-DLL_FUNCTION(uint32_t) BS_ISteamNetworking_IsP2PPacketAvailable(ISteamNetworking* pThis, uint32_t* pcubMsgSize, uint32_t nChannel) {
+DLL(uint32_t) BS_ISteamNetworking_IsP2PPacketAvailable(ISteamNetworking* pThis, uint32_t* pcubMsgSize, uint32_t nChannel) {
 	return pThis->IsP2PPacketAvailable(pcubMsgSize, nChannel);
 }
 
@@ -54,7 +54,7 @@ DLL_FUNCTION(uint32_t) BS_ISteamNetworking_IsP2PPacketAvailable(ISteamNetworking
 // returns the size of the message and the steamID of the user who sent it in the last two parameters
 // if the buffer passed in is too small, the message will be truncated
 // this call is not blocking, and will return false if no data is available
-DLL_FUNCTION(uint32_t) BS_ISteamNetworking_ReadP2PPacket(ISteamNetworking* pThis, void* pubDest, uint32_t cubDest, uint32_t* pcubMsgSize, CSteamID* pSteamIDRemote, uint32_t nChannel) {
+DLL(uint32_t) BS_ISteamNetworking_ReadP2PPacket(ISteamNetworking* pThis, void* pubDest, uint32_t cubDest, uint32_t* pcubMsgSize, CSteamID* pSteamIDRemote, uint32_t nChannel) {
 	return pThis->ReadP2PPacket(pubDest, cubDest, pcubMsgSize, pSteamIDRemote, nChannel);
 }
 
@@ -64,27 +64,27 @@ DLL_FUNCTION(uint32_t) BS_ISteamNetworking_ReadP2PPacket(ISteamNetworking* pThis
 // if the user continues to send you packets, another P2PSessionRequest_t will be posted periodically
 // this may be called multiple times for a single user
 // (if you've called SendP2PPacket() on the other user, this implicitly accepts the session request)
-DLL_FUNCTION(uint32_t) BS_ISteamNetworking_AcceptP2PSessionWithUser(ISteamNetworking* pThis, CSteamID* pSteamIDRemote) {
+DLL(uint32_t) BS_ISteamNetworking_AcceptP2PSessionWithUser(ISteamNetworking* pThis, CSteamID* pSteamIDRemote) {
 	return pThis->AcceptP2PSessionWithUser(*pSteamIDRemote);
 }
 
 // call CloseP2PSessionWithUser() when you're done talking to a user, will free up resources under-the-hood
 // if the remote user tries to send data to you again, another P2PSessionRequest_t callback will be posted
-DLL_FUNCTION(uint32_t) BS_ISteamNetworking_CloseP2PSessionWithUser(ISteamNetworking* pThis, CSteamID* pSteamIDRemote) {
+DLL(uint32_t) BS_ISteamNetworking_CloseP2PSessionWithUser(ISteamNetworking* pThis, CSteamID* pSteamIDRemote) {
 	return pThis->CloseP2PSessionWithUser(*pSteamIDRemote);
 }
 
 // call CloseP2PChannelWithUser() when you're done talking to a user on a specific channel. Once all channels
 // open channels to a user have been closed, the open session to the user will be closed and new data from this
 // user will trigger a P2PSessionRequest_t callback
-DLL_FUNCTION(uint32_t) BS_ISteamNetworking_CloseP2PChannelWithUser(ISteamNetworking* pThis, CSteamID* pSteamIDRemote, uint32_t nChannel) {
+DLL(uint32_t) BS_ISteamNetworking_CloseP2PChannelWithUser(ISteamNetworking* pThis, CSteamID* pSteamIDRemote, uint32_t nChannel) {
 	return pThis->CloseP2PChannelWithUser(*pSteamIDRemote, nChannel);
 }
 
 // fills out P2PSessionState_t structure with details about the underlying connection to the user
 // should only needed for debugging purposes
 // returns false if no connection exists to the specified user
-DLL_FUNCTION(uint32_t) BS_ISteamNetworking_GetP2PSessionState(ISteamNetworking* pThis, CSteamID* pSteamIDRemote, P2PSessionState_t* pConnectionState) {
+DLL(uint32_t) BS_ISteamNetworking_GetP2PSessionState(ISteamNetworking* pThis, CSteamID* pSteamIDRemote, P2PSessionState_t* pConnectionState) {
 	return pThis->GetP2PSessionState(*pSteamIDRemote, pConnectionState);
 }
 
@@ -93,6 +93,6 @@ DLL_FUNCTION(uint32_t) BS_ISteamNetworking_GetP2PSessionState(ISteamNetworking* 
 // or to existing connections that need to automatically reconnect after this value is set.
 //
 // P2P packet relay is allowed by default
-DLL_FUNCTION(uint32_t) BS_ISteamNetworking_AllowP2PPacketRelay(ISteamNetworking* pThis, uint32_t bAllow) {
+DLL(uint32_t) BS_ISteamNetworking_AllowP2PPacketRelay(ISteamNetworking* pThis, uint32_t bAllow) {
 	return pThis->AllowP2PPacketRelay(!!bAllow);
 }

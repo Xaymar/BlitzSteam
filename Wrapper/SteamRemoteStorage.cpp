@@ -16,7 +16,7 @@
 
 #include "BlitzSteam.h"
 
-DLL_FUNCTION(ISteamRemoteStorage*) BS_SteamRemoteStorage() {
+DLL(ISteamRemoteStorage*) BS_SteamRemoteStorage() {
 	return SteamRemoteStorage();
 }
 

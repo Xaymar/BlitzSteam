@@ -22,29 +22,29 @@
 //	This interface lets you detect installed apps for the local Steam client, useful for debugging tools
 //	to offer lists of apps to debug via Steam.
 //-----------------------------------------------------------------------------
-DLL_FUNCTION(ISteamAppList*) BS_SteamAppList() {
+DLL(ISteamAppList*) BS_SteamAppList() {
 	return SteamAppList();
 }
 
-DLL_FUNCTION(int32_t) BS_ISteamAppList_GetNumInstalledApps(ISteamAppList* lpSteamAppList) {
+DLL(int32_t) BS_ISteamAppList_GetNumInstalledApps(ISteamAppList* lpSteamAppList) {
 	return lpSteamAppList->GetNumInstalledApps();
 }
 
-DLL_FUNCTION(int32_t) BS_ISteamAppList_GetInstalledApps(ISteamAppList* lpSteamAppList, AppId_t *pvecAppID, uint32_t unMaxAppIDs) {
+DLL(int32_t) BS_ISteamAppList_GetInstalledApps(ISteamAppList* lpSteamAppList, AppId_t *pvecAppID, uint32_t unMaxAppIDs) {
 	return lpSteamAppList->GetInstalledApps(pvecAppID, unMaxAppIDs);
 }
 
 // returns -1 if no name was found
-DLL_FUNCTION(int32_t) BS_ISteamAppList_GetAppName(ISteamAppList* lpSteamAppList, AppId_t nAppID, const char* pchName, uint32_t cchNameMax) {
+DLL(int32_t) BS_ISteamAppList_GetAppName(ISteamAppList* lpSteamAppList, AppId_t nAppID, const char* pchName, uint32_t cchNameMax) {
 	return lpSteamAppList->GetAppName(nAppID, (char*)pchName, cchNameMax);
 }
 
 // returns -1 if no dir was found
-DLL_FUNCTION(int32_t) BS_ISteamAppList_GetAppInstallDir(ISteamAppList* lpSteamAppList, AppId_t nAppID, char* pchDirectoryBuffer, uint32_t cchDirectoryMax) {
+DLL(int32_t) BS_ISteamAppList_GetAppInstallDir(ISteamAppList* lpSteamAppList, AppId_t nAppID, char* pchDirectoryBuffer, uint32_t cchDirectoryMax) {
 	return lpSteamAppList->GetAppInstallDir(nAppID, pchDirectoryBuffer, cchDirectoryMax);
 }
 
 // return the buildid of this app, may change at any time based on backend updates to the game
-DLL_FUNCTION(int32_t) BS_ISteamAppList_GetAppBuildId(ISteamAppList* lpSteamAppList, AppId_t nAppID) {
+DLL(int32_t) BS_ISteamAppList_GetAppBuildId(ISteamAppList* lpSteamAppList, AppId_t nAppID) {
 	return lpSteamAppList->GetAppBuildId(nAppID);
 }

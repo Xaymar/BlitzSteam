@@ -18,7 +18,7 @@
 
 // Macros
 //#define DLL_FUNCTION(type) extern "C" type __stdcall
-#define DLL_FUNCTION(type) extern "C" __declspec(dllexport) type __stdcall
+#define DLL(type) extern "C" __declspec(dllexport) type __stdcall
 
 // C/C++ Includes
 #include <math.h>

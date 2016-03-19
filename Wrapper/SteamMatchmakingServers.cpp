@@ -16,7 +16,7 @@
 
 #include "BlitzSteam.h"
 
-DLL_FUNCTION(ISteamMatchmakingServers*) BS_SteamMatchmakingServers() {
+DLL(ISteamMatchmakingServers*) BS_SteamMatchmakingServers() {
 	return SteamMatchmakingServers();
 }
 
