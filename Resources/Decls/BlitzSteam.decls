@@ -18,3 +18,6 @@
 ; Generic ---------------------------------------------------------------------
 BS_Helper_FormatUnixTime$(unixTime%, pchFormat$)								:"_BS_Helper_FormatUnixTime@8"
 BS_Helper_CopyMemoryIntMangle(pSource%, pDest%, iMangling%, iSourceW%, iSourceH%, iDestW%, iDestH%, iAreaX%, iAreaY%, iAreaW%, iAreaH%):"_BS_Helper_CopyMemoryIntMangle@44"
+
+BS_BlitzPointer_GetReturnAddress%()												:"_BS_BlitzPointer_GetReturnAddress@0"
+BS_BlitzPointer_GetFunctionPointer%()											:"_BS_BlitzPointer_GetFunctionPointer@0"

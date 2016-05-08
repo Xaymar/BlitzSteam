@@ -35,7 +35,7 @@ BS_ISteamUser_GetVoiceEx%(pThisEx%, bCompressed%, pCompressed%, iCompressedSize%
 BS_ISteamUser_DecompressVoice(pThis%, pCompressed*, iCompressedSize%, pUncompressed*, iUncompressedSize%, iUncompressedBytesWritten*, iSampleRate%):"_BS_ISteamUser_DecompressVoice@28"
 BS_ISteamUser_DecompressVoiceEx(pThis%, pCompressed*, iCompressedSize%, pUncompressed%, iUncompressedSize%, iUncompressedBytesWritten%, iSampleRate%):"_BS_ISteamUser_DecompressVoice@28"
 BS_ISteamUser_GetVoiceOptimalSampleRate%(pThis%)								:"_BS_ISteamUser_GetVoiceOptimalSampleRate@4"
-BS_ISteamUser_GetAuthSessionTicket%(pThis%, pTicket*, iTicketSize%, piTicketSize*):"_BS_ISteamUser_GetAuthSessionTicket@12"
+BS_ISteamUser_GetAuthSessionTicket%(pThis%, pTicket*, iTicketSize%, piTicketSize*):"_BS_ISteamUser_GetAuthSessionTicket@16"
 BS_ISteamUser_BeginAuthSession%(pThis%, pAuthTicket*, iAuthTicketSize%, lSteamId%):"_BS_ISteamUser_BeginAuthSession@16"
 BS_ISteamUser_EndAuthSession(pThis%, lSteamId%)									:"_BS_ISteamUser_EndAuthSession@8"
 BS_ISteamUser_CancelAuthTicket(pThis%, hAuthTicket%)							:"_BS_ISteamUser_CancelAuthTicket@8"

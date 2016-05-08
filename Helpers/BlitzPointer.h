@@ -15,6 +15,10 @@
 //	along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #pragma once
+#include "BlitzSteamInternal.h"
+
+DLL(intptr_t) BS_BlitzPointer_GetReturnAddress();
+DLL(intptr_t) BS_BlitzPointer_GetFunctionPointer();
 
 // Types of Blitz Functions.
 typedef int32_t(__stdcall *BP_BlitzFunction0_t)();
@@ -24,9 +28,9 @@ typedef int32_t(__stdcall *BP_BlitzFunction3_t)(int32_t, int32_t, int32_t);
 typedef int32_t(__stdcall *BP_BlitzFunction4_t)(int32_t, int32_t, int32_t, int32_t);
 typedef int32_t(__stdcall *BP_BlitzFunction5_t)(int32_t, int32_t, int32_t, int32_t, int32_t);
 
-#define BP_CallFunction0(ptr)						(reinterpret_cast<BP_BlitzFunction0_t>(ptr))()
-#define BP_CallFunction1(ptr, p1)					(reinterpret_cast<BP_BlitzFunction1_t>(ptr))(p1)
-#define BP_CallFunction2(ptr, p1, p2)				(reinterpret_cast<BP_BlitzFunction2_t>(ptr))(p1, p2)
-#define BP_CallFunction3(ptr, p1, p2, p3)			(reinterpret_cast<BP_BlitzFunction3_t>(ptr))(p1, p2, p3)
-#define BP_CallFunction4(ptr, p1, p2, p3, p4)		(reinterpret_cast<BP_BlitzFunction4_t>(ptr))(p1, p2, p3, p4)
-#define BP_CallFunction5(ptr, p1, p2, p3, p4, p5)	(reinterpret_cast<BP_BlitzFunction5_t>(ptr))(p1, p2, p3, p4, p5)
+#define BP_CallFunction0(ptr)						(ptr)()
+#define BP_CallFunction1(ptr, p1)					(ptr)(p1)
+#define BP_CallFunction2(ptr, p1, p2)				(ptr)(p1, p2)
+#define BP_CallFunction3(ptr, p1, p2, p3)			(ptr)(p1, p2, p3)
+#define BP_CallFunction4(ptr, p1, p2, p3, p4)		(ptr)(p1, p2, p3, p4)
+#define BP_CallFunction5(ptr, p1, p2, p3, p4, p5)	(ptr)(p1, p2, p3, p4, p5)

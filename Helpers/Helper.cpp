@@ -32,59 +32,29 @@ DLL(void) BS_Helper_CopyMemoryIntMangle(void* pSource, void* pDest, int32_t iMan
 	int8_t iMangleByte1 = static_cast<int8_t>((iMangling & 0xFF00) >> 8);
 	int8_t iMangleByte2 = static_cast<int8_t>((iMangling & 0xFF0000) >> 16);
 	int8_t iMangleByte3 = static_cast<int8_t>((iMangling & 0xFF000000) >> 24);
+	
+	// Start at beginning
+	for (uint32_t iY = iAreaY; iY < (iAreaY + iAreaH); iY++) {
+		// Only do this once per loop
+		for (uint32_t iX = iAreaX; iX < (iAreaX + iAreaW); iX++) {
+			// Could technically optimize the following into single instructions, but this is fast enough for now.
+			uint32_t* pSourceOff = reinterpret_cast<uint32_t*>(pSource) + ((iSourceW * iY) + iX);
+			uint32_t* pDestOff = reinterpret_cast<uint32_t*>(pDest) + ((iDestW * iY) + iX);
 
-	if (pSource > pDest) {
-		// Start at beginning
-		for (uint32_t iY = iAreaY; iY < (iAreaY + iAreaH); iY++) {
-			// Only do this once per loop
-			for (uint32_t iX = iAreaX; iX < (iAreaX + iAreaW); iX++) {
-				// Could technically optimize the following into single instructions, but this is fast enough for now.
-				uint32_t* pSourceOff = reinterpret_cast<uint32_t*>(pSource) + ((iSourceW * iY) + iX);
-				uint32_t* pDestOff = reinterpret_cast<uint32_t*>(pDest) + ((iDestW * iY) + iX);
-
-				// Allow Mangling using just a single integer and checking on the fly if it's positive or negative to branch out to the correct shift.
-				*pDestOff =
-					(iMangleByte0 > 0 ?
-					 (*pSourceOff & 0xFF) >> iMangleByte0 :
-					 (*pSourceOff & 0xFF) << -iMangleByte0)
-					+ (iMangleByte1 > 0 ?
-					 (*pSourceOff & 0xFF00) >> iMangleByte1 :
-					 (*pSourceOff & 0xFF00) << -iMangleByte1) 
-					+ (iMangleByte2 > 0 ?
-					 (*pSourceOff & 0xFF0000) >> iMangleByte2 :
-					 (*pSourceOff & 0xFF0000) << -iMangleByte2)
-					+ (iMangleByte3 > 0 ?
-					 (*pSourceOff & 0xFF000000) >> iMangleByte3 :
-					 (*pSourceOff & 0xFF000000) << -iMangleByte3);
-			}
+			// Allow Mangling using just a single integer and checking on the fly if it's positive or negative to branch out to the correct shift.
+			*pDestOff =
+				(iMangleByte0 > 0 ?
+					(*pSourceOff & 0xFF) >> iMangleByte0 :
+					(*pSourceOff & 0xFF) << -iMangleByte0)
+				+ (iMangleByte1 > 0 ?
+					(*pSourceOff & 0xFF00) >> iMangleByte1 :
+					(*pSourceOff & 0xFF00) << -iMangleByte1) 
+				+ (iMangleByte2 > 0 ?
+					(*pSourceOff & 0xFF0000) >> iMangleByte2 :
+					(*pSourceOff & 0xFF0000) << -iMangleByte2)
+				+ (iMangleByte3 > 0 ?
+					(*pSourceOff & 0xFF000000) >> iMangleByte3 :
+					(*pSourceOff & 0xFF000000) << -iMangleByte3);
 		}
-	} else {
-		//ToDo, mirror the above. Instead of adding we subtract.
-		//// Start at end
-
-		//for (uint32_t iY = y + h; iY >= y; iY--) {
-		//	pSourceOff = reinterpret_cast<uint32_t*>(pSource) + ((tw * iY) + x);
-		//	pDestOff = reinterpret_cast<uint32_t*>(pDest) + ((tw * iY) + x);
-
-		//	for (uint32_t iX = x + w; iX >= x; iX--) {
-		//		*pDestOff =
-		//			(iMangleByte0 > 0 ?
-		//			 (*pSourceOff & 0xFF) >> iMangleByte0 :
-		//			 (*pSourceOff & 0xFF) << -iMangleByte0)
-		//			+ (iMangleByte1 > 0 ?
-		//			   (*pSourceOff & 0xFF00) >> iMangleByte1 :
-		//			   (*pSourceOff & 0xFF00) << -iMangleByte1)
-		//			+ (iMangleByte2 > 0 ?
-		//			   (*pSourceOff & 0xFF0000) >> iMangleByte2 :
-		//			   (*pSourceOff & 0xFF0000) << -iMangleByte2)
-		//			+ (iMangleByte3 > 0 ?
-		//			   (*pSourceOff & 0xFF000000) >> iMangleByte3 :
-		//			   (*pSourceOff & 0xFF000000) << -iMangleByte3);
-
-		//		// Above is some mangling magic i learned in some source code. Allows you to define a byte bit shift using a single integer.
-		//		pSourceOff -= 1;
-		//		pDestOff -= 1;
-		//	}
-		//}
 	}
 }

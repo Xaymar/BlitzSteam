@@ -574,6 +574,15 @@ Const BS_EMarketingMessageFlags_PlatformLinux = 1 Shl 3
 Const BS_EMarketingMessageFlags_PlatformRestrictions = BS_EMarketingMessageFlags_PlatformWindows Or BS_EMarketingMessageFlags_PlatformMac Or BS_EMarketingMessageFlags_PlatformLinux
 ;[End Block]
 
+;[Block] Enumeration: EMatchMakingServerResponse
+;------------------------------------------------------------------------------
+;! Enumeration - EMatchMakingServerResponse
+;------------------------------------------------------------------------------
+Const BS_EMatchMakingServerResponse_ServerResponded = 0
+Const BS_EMatchMakingServerResponse_ServerFailedToRespond = 1
+Const BS_EMatchMakingServerResponse_NoServersListedOnMasterServer = 2
+;[End Block]
+
 ;[Block] Enumeration: ENotificationPosition
 ;------------------------------------------------------------------------------
 ;! Enumeration - ENotificationPosition
@@ -1890,6 +1899,6 @@ End Type
 
 ;~IDEal Editor Parameters:
 ;~F#13#26#31#49#60#71#7E#93#C8#E0#F5#101#110#121#14F#166#178#190#1A1#1E2
-;~F#1EB#1F5#20C#216#220#229#232#240#24B#255#26B#27C#295#2A5#314#322#32C#33C#344#351
-;~F#360#36E#378#389#39D#3A0#3B6#3EA#40A#429#525#543#553#560#653#6CC#6FF
+;~F#1EB#1F5#20C#216#220#229#249#254#25E#274#285#29E#2AE#31D#32B#335#345#34D#35A#369
+;~F#377#381#392#3A6#3A9#3BF#3F3#413#432#52E#54C#55C#569#65C#6D5#708
 ;~C#Blitz3D

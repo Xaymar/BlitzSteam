@@ -161,6 +161,9 @@ DLL(EUniverse) BS_CSteamID_GetEUniverse(CSteamID* pThis) {
 }
 
 DLL(int32_t) BS_CSteamID_Compare(CSteamID* pThis, CSteamID* pOther) {
+	if ((pThis == nullptr) || (pOther == nullptr))
+		return -1;
+
 	return /* It can either be Equal (0) or Smaller or Greater. Easy to check. */
 		   /* Greater */
 		(*pThis > *pOther ? 1 : 0) +

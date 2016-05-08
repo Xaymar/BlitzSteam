@@ -128,6 +128,15 @@
     <ClCompile Include="Types\Memory.cpp">
       <Filter>Source Files\Types</Filter>
     </ClCompile>
+    <ClCompile Include="Types\SteamMatchmakingTypes.cpp">
+      <Filter>Source Files\Types</Filter>
+    </ClCompile>
+    <ClCompile Include="Types\SteamTypes.cpp">
+      <Filter>Source Files\Types</Filter>
+    </ClCompile>
+    <ClCompile Include="Helpers\BlitzPointer.cpp">
+      <Filter>Source Files\Helpers</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BlitzSteam.h">
@@ -156,6 +165,12 @@
     </ClInclude>
     <ClInclude Include="BlitzSteamInternal.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Types\SteamMatchmakingTypes.h">
+      <Filter>Header Files\Types</Filter>
+    </ClInclude>
+    <ClInclude Include="Types\SteamTypes.h">
+      <Filter>Header Files\Types</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -198,9 +213,6 @@
       <Filter>Resource Files\Examples</Filter>
     </None>
     <None Include="Resources\Decls\BlitzSteam.decls">
-      <Filter>Resource Files\Decls</Filter>
-    </None>
-    <None Include="Resources\Decls\BlitzSteam_BlitzCallback.decls">
       <Filter>Resource Files\Decls</Filter>
     </None>
     <None Include="Resources\Decls\BlitzSteam_CSteamID.decls">
@@ -292,6 +304,12 @@
     </None>
     <None Include="Resources\BlitzSteam.LICENSE.lesser">
       <Filter>Resource Files</Filter>
+    </None>
+    <None Include="Resources\Decls\BlitzSteam_SteamMatchmakingTypes.decls">
+      <Filter>Resource Files\Decls</Filter>
+    </None>
+    <None Include="Resources\Decls\BlitzSteam_Callback.decls">
+      <Filter>Resource Files\Decls</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>

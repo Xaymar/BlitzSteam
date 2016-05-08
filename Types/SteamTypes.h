@@ -15,17 +15,5 @@
 //	along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #pragma once
+#include "BlitzSteamInternal.h"
 
-// Macros
-//#define DLL_FUNCTION(type) extern "C" type __stdcall
-#define DLL(type) extern "C" __declspec(dllexport) type __stdcall
-
-// C/C++ Includes
-#include <math.h>
-#include <stddef.h>
-#include <float.h>
-#include <inttypes.h>
-
-// Steam
-#include "SteamworksSDK/public/steam/steam_api.h"
-#include "SteamworksSDK/public/steam/steam_gameserver.h"

@@ -141,7 +141,7 @@ DLL(HAuthTicket) BS_ISteamUser_GetAuthSessionTicket( ISteamUser* lpSteamUser, vo
 
 // Authenticate ticket from entity steamID to be sure it is valid and isnt reused
 // Registers for callbacks if the entity goes offline or cancels the ticket ( see ValidateAuthTicketResponse_t callback and EAuthSessionResponse )
-DLL(EBeginAuthSessionResult) BS_ISteamUser_BeginAuthSession( ISteamUser* lpSteamUser, const void *pAuthTicket, uint32_t cbAuthTicket, CSteamID* steamID ) {
+DLL(EBeginAuthSessionResult) BS_ISteamUser_BeginAuthSession( ISteamUser* lpSteamUser, const void* pAuthTicket, uint32_t cbAuthTicket, CSteamID* steamID ) {
 	return lpSteamUser->BeginAuthSession( pAuthTicket, cbAuthTicket, *steamID );
 }
 

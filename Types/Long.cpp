@@ -76,6 +76,9 @@ DLL(double_t*) BS_Long_ToD(int64_t* pThis) {
 }
 
 DLL(int32_t) BS_Long_Compare(int64_t* pThis, int64_t* pOther) {
+	if ((pThis == nullptr) || (pOther == nullptr))
+		return -1;
+
 	return /* It can either be Equal (0) or Smaller or Greater. Easy to check. */
 		/* Greater */
 		(*pThis > *pOther ? 1 : 0) +

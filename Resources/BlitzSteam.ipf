@@ -1,9 +1,9 @@
 [IDEal Project file]
 <Settings>
  Version="1"
- Expanded="False"
+ Expanded="True"
  Icon=""
- MainFile="SteamHTMLSurface_Example.bb"
+ MainFile="SteamMatchmakingServers_Example.bb"
  Compiler="Blitz3D"
  CommandLine=""
 </Settings>
@@ -18,4 +18,5 @@
  AbsPath="\Examples\SteamApps_Example.bb" PrjFolder="\Examples" Line="0" Column="0" Tip="0" Visible="False"
  AbsPath="\Examples\SteamController_Example.bb" PrjFolder="\Examples" Line="0" Column="0" Tip="0" Visible="False"
  AbsPath="\Examples\SteamHTMLSurface_Example.bb" PrjFolder="\Examples" Line="0" Column="0" Tip="0" Visible="False"
+ AbsPath="\Examples\SteamMatchmakingServers_Example.bb" PrjFolder="\Examples" Line="0" Column="0" Tip="0" Visible="False"
 </Files>

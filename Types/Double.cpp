@@ -64,6 +64,9 @@ DLL(int64_t*) BS_Double_ToL(double_t* pThis) {
 }
 
 DLL(int32_t) BS_Double_Compare(double_t* pThis, double_t* pOther) {
+	if ((pThis == nullptr) || (pOther == nullptr))
+		return -1;
+
 	return /* It can either be Equal (0) or Smaller or Greater. Easy to check. */
 		   /* Greater */
 		(*pThis > *pOther ? 1 : 0) +

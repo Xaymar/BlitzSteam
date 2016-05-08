@@ -54,8 +54,8 @@ DLL(uint32_t) BS_ISteamNetworking_IsP2PPacketAvailable(ISteamNetworking* pThis, 
 // returns the size of the message and the steamID of the user who sent it in the last two parameters
 // if the buffer passed in is too small, the message will be truncated
 // this call is not blocking, and will return false if no data is available
-DLL(uint32_t) BS_ISteamNetworking_ReadP2PPacket(ISteamNetworking* pThis, void* pubDest, uint32_t cubDest, uint32_t* pcubMsgSize, CSteamID* pSteamIDRemote, uint32_t nChannel) {
-	return pThis->ReadP2PPacket(pubDest, cubDest, pcubMsgSize, pSteamIDRemote, nChannel);
+DLL(uint32_t) BS_ISteamNetworking_ReadP2PPacket(ISteamNetworking* pThis, void** pubDest, uint32_t cubDest, uint32_t* pcubMsgSize, CSteamID* pSteamIDRemote, uint32_t nChannel) {
+	return pThis->ReadP2PPacket(*pubDest, cubDest, pcubMsgSize, static_cast<CSteamID*>(pSteamIDRemote), nChannel);
 }
 
 // AcceptP2PSessionWithUser() should only be called in response to a P2PSessionRequest_t callback

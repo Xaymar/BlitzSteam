@@ -59,7 +59,7 @@
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <WholeProgramOptimization>false</WholeProgramOptimization>
       <AdditionalIncludeDirectories>$(ProjectDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
       <BufferSecurityCheck>false</BufferSecurityCheck>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <StructMemberAlignment>4Bytes</StructMemberAlignment>
@@ -156,12 +156,15 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="BlitzSteam.cpp" />
+    <ClCompile Include="Helpers\BlitzPointer.cpp" />
     <ClCompile Include="Helpers\Helper.cpp" />
     <ClCompile Include="Types\BlitzCallback.cpp" />
     <ClCompile Include="Types\CSteamID.cpp" />
     <ClCompile Include="Types\Double.cpp" />
+    <ClCompile Include="Types\SteamMatchmakingTypes.cpp" />
     <ClCompile Include="Types\Long.cpp" />
     <ClCompile Include="Types\Memory.cpp" />
+    <ClCompile Include="Types\SteamTypes.cpp" />
     <ClCompile Include="Wrapper\Steam.cpp" />
     <ClCompile Include="Wrapper\SteamAppList.cpp" />
     <ClCompile Include="Wrapper\SteamApps.cpp" />
@@ -195,15 +198,17 @@
     <ClInclude Include="Types\BlitzCallback.h" />
     <ClInclude Include="Types\CSteamID.h" />
     <ClInclude Include="Types\Double.h" />
+    <ClInclude Include="Types\SteamMatchmakingTypes.h" />
     <ClInclude Include="Types\Long.h" />
     <ClInclude Include="Types\Memory.h" />
+    <ClInclude Include="Types\SteamTypes.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\BlitzSteam.bb" />
     <None Include="Resources\BlitzSteam.ipf" />
     <None Include="Resources\BlitzSteamUtility.bb" />
     <None Include="Resources\Decls\BlitzSteam.decls" />
-    <None Include="Resources\Decls\BlitzSteam_BlitzCallback.decls" />
+    <None Include="Resources\Decls\BlitzSteam_Callback.decls" />
     <None Include="Resources\Decls\BlitzSteam_CSteamID.decls" />
     <None Include="Resources\Decls\BlitzSteam_Double.decls" />
     <None Include="Resources\Decls\BlitzSteam_Long.decls" />
@@ -221,6 +226,7 @@
     <None Include="Resources\Decls\BlitzSteam_SteamInventory.decls" />
     <None Include="Resources\Decls\BlitzSteam_SteamMatchmaking.decls" />
     <None Include="Resources\Decls\BlitzSteam_SteamMatchmakingServers.decls" />
+    <None Include="Resources\Decls\BlitzSteam_SteamMatchmakingTypes.decls" />
     <None Include="Resources\Decls\BlitzSteam_SteamMusic.decls" />
     <None Include="Resources\Decls\BlitzSteam_SteamMusicRemote.decls" />
     <None Include="Resources\Decls\BlitzSteam_SteamNetworking.decls" />
