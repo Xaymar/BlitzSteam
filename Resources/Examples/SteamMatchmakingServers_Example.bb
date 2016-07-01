@@ -35,7 +35,7 @@ Global Timer = CreateTimer(FRAMERATE)
 Global ServerListResponse_ServerResponded_p%:ServerListResponse_ServerResponded(0, 0)
 Global ServerListResponse_RefreshComplete_p%:ServerListResponse_RefreshComplete(0, 0)
 
-Graphics RESOLUTION_X, RESOLUTION_Y, RESOLUTION_Z, RESOLUTION_MODE
+Graphics3D RESOLUTION_X, RESOLUTION_Y, RESOLUTION_Z, RESOLUTION_MODE
 SetBuffer BackBuffer()
 
 If Not BS_SteamAPI_Init() Then RuntimeError "Failed to initialize Steam!"

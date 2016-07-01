@@ -3,7 +3,7 @@
  Version="1"
  Expanded="True"
  Icon=""
- MainFile="SteamMatchmakingServers_Example.bb"
+ MainFile="SteamHTMLSurface_Example.bb"
  Compiler="Blitz3D"
  CommandLine=""
 </Settings>
