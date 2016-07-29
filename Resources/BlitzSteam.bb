@@ -1323,7 +1323,8 @@ Const BS_SteamFriends_SetPersonaNameResponse						= BS_ECallback_SteamFriendsCal
 ;};
 
 ;[End Block]
-;[Block] API: GameServer
+
+;[Block] API: GameServer
 ;------------------------------------------------------------------------------
 ;! GameServer
 ;------------------------------------------------------------------------------
@@ -1814,13 +1815,13 @@ Type BS_LeaderboardEntry_t
 End Type
 
 Const BS_CALLBACK_UserStatsReceived							= BS_ECallback_SteamUserStatsCallbacks + 1
-Type BS_UserStatsReceived_t
+Type BS_ISteamUserStatsReceived_t
 	Field nGameId_High%, nGameId_Low%						; Game these stats are for
 	Field eResult%											; Success / error fetching the stats
 	Field steamIDUser_High%, steamIDUser_Low%				; The user for whom the stats are retrieved for
 End Type
 Const BS_CALLBACK_UserStatsStored							= BS_ECallback_SteamUserStatsCallbacks + 2
-Type BS_UserStatsStored_t
+Type BS_ISteamUserStatsStored_t
 	Field nGameId_High%, nGameId_Low%						; Game these stats are for
 	Field eResult%											; Success / error 
 End Type
@@ -1858,7 +1859,7 @@ Type BS_NumberOfCurrentPlayers_t
 	Field cPlayers											; Number of players currently playing
 End Type
 Const BS_CALLBACK_UserStatsUnloaded							= BS_ECallback_SteamUserStatsCallbacks + 8
-Type BS_UserStatsUnloaded_t
+Type BS_ISteamUserStatsUnloaded_t
 	Field steamIDUser_High, steamIDUser_Low					; User whose stats have been unloaded
 End Type
 Const BS_CALLBACK_UserAchievementIconFetched				= BS_ECallback_SteamUserStatsCallbacks + 9

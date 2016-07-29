@@ -80,7 +80,7 @@ Function BSU_Init()
 		BSU_UGC					= BS_UGC()
 		BSU_UnifiedMessages		= BS_UnifiedMessages()
 		BSU_User				= BS_User()
-		BSU_UserStats			= BS_UserStats()
+		BSU_UserStats			= BS_ISteamUserStats()
 		BSU_Utils				= BS_Utils()
 		BSU_Video				= BS_Video()
 		

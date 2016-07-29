@@ -32,8 +32,8 @@ Const RESOLUTION_MODE = 2
 ;----------------------------------------------------------------
 Global Timer = CreateTimer(FRAMERATE)
 
-Global ServerListResponse_ServerResponded_p%:ServerListResponse_ServerResponded(0, 0)
-Global ServerListResponse_RefreshComplete_p%:ServerListResponse_RefreshComplete(0, 0)
+Global ServerListResponse_ServerResponded_p%:ServerListResponse_ServerResponded(0, 0, 0)
+Global ServerListResponse_RefreshComplete_p%:ServerListResponse_RefreshComplete(0, 0, 0)
 
 Graphics3D RESOLUTION_X, RESOLUTION_Y, RESOLUTION_Z, RESOLUTION_MODE
 SetBuffer BackBuffer()
@@ -44,7 +44,7 @@ If Not BS_SteamAPI_Init() Then RuntimeError "Failed to initialize Steam!"
 ;! Main Code
 ;----------------------------------------------------------------
 Local Bank =CreateBank(1)
-Local pRequestServersResponse = BS_ISteamMatchmakingServerListResponse_New(ServerListResponse_ServerResponded_p, 0, ServerListResponse_RefreshComplete_p)
+Local pRequestServersResponse = BS_ISteamMatchmakingServerListResponse_New(0, ServerListResponse_ServerResponded_p, 0, ServerListResponse_RefreshComplete_p)
 Local hRequest = BS_ISteamMatchmakingServers_RequestInternetServerList(BS_SteamMatchmakingServers(), 480, Bank, 0, pRequestServersResponse)
 
 While Not KeyHit(1)
@@ -58,15 +58,16 @@ BS_SteamAPI_Shutdown()
 ;----------------------------------------------------------------
 ;! Functions
 ;----------------------------------------------------------------
-Function ServerListResponse_ServerResponded(hRequest%, iServer%)
+Function ServerListResponse_ServerResponded(pData%, hRequest%, iServer%)
 	If (Not ServerListResponse_ServerResponded_p)
 		ServerListResponse_ServerResponded_p = BP_GetFunctionPointer()
 		Return
 	EndIf
 	Print iServer
+	Return
 End Function
 
-Function ServerListResponse_RefreshComplete(hRequest%, eMatchMakingServerResponse%)
+Function ServerListResponse_RefreshComplete(pData%, hRequest%, eMatchMakingServerResponse%)
 	If (Not ServerListResponse_RefreshComplete_p)
 		ServerListResponse_RefreshComplete_p = BP_GetFunctionPointer()
 		Return
@@ -82,6 +83,7 @@ Function ServerListResponse_RefreshComplete(hRequest%, eMatchMakingServerRespons
 		Default
 			Print "Unknown"
 	End Select
+	Return
 End Function
 
 ;~IDEal Editor Parameters:
